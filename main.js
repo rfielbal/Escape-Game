@@ -1,148 +1,298 @@
 (() => {
   "use strict";
 
-  const INTERNAL_WIDTH = 320;
-  const INTERNAL_HEIGHT = 180;
-  const FOV = Math.PI / 3;
-  const MAX_DEPTH = 24;
-  const RAY_STEP = 0.02;
-  const COLUMN_WIDTH = 2;
+  const INTERNAL_WIDTH = 640;
+  const INTERNAL_HEIGHT = 384;
 
   const TILE = {
     FLOOR: 0,
     WALL: 1,
-    DOOR_1: 11,
-    DOOR_2: 12,
-    DOOR_EXIT: 13
+    DOOR_1: 2,
+    DOOR_2: 3,
+    DOOR_EXIT: 4
   };
 
-  const ROOM_LABELS = {
-    1: "Salle I - Renaissance",
-    2: "Salle II - Impressionnisme",
-    3: "Salle III - Avant-gardes"
+  const ROOM_THEMES = {
+    1: {
+      id: 1,
+      name: "Salle 1 - Angoisse interieure",
+      shortName: "Salle 1",
+      word: "INTERIEUR",
+      intro:
+        "Ici, des artistes juges instables ont transforme leur douleur et leur angoisse en langage visuel.",
+      puzzle: {
+        question:
+          "Quel message commun emerges-tu de Van Gogh, Munch et Goya dans cette salle ?",
+        options: [
+          {
+            text: "Ils peignent surtout des commandes officielles pour rassurer le pouvoir.",
+            explanation: "Leur demarche va au contraire vers l'intime et l'inquietude.",
+            correct: false
+          },
+          {
+            text: "Ils transforment la souffrance interieure en image, ce qui choque leur epoque.",
+            explanation:
+              "Exact. Leur force est d'oser montrer l'interieur humain plutot que l'image sociale attendue.",
+            correct: true
+          },
+          {
+            text: "Ils refusent l'emotion personnelle et recherchent une neutralite froide.",
+            explanation: "C'est l'inverse de ce que leurs oeuvres montrent.",
+            correct: false
+          }
+        ]
+      }
+    },
+    2: {
+      id: 2,
+      name: "Salle 2 - Reve et visions",
+      shortName: "Salle 2",
+      word: "IMAGINAIRE",
+      intro:
+        "Ces artistes ont ete parfois qualifies de fous car ils introduisent le reve, l'etrange et l'irrationnel.",
+      puzzle: {
+        question:
+          "Quel point commun relie Bosch, Dali et Magritte face au regard social ?",
+        options: [
+          {
+            text: "Ils copient le reel sans jamais le questionner.",
+            explanation: "Leur demarche questionne justement ce qui parait reel.",
+            correct: false
+          },
+          {
+            text: "Ils utilisent l'imaginaire pour bousculer la notion de raison et de normalite.",
+            explanation:
+              "Exact. Ce n'est pas la folie des artistes, mais une strategie pour ouvrir d'autres lectures du monde.",
+            correct: true
+          },
+          {
+            text: "Ils veulent supprimer tout symbole pour rester purement decoratifs.",
+            explanation: "Le symbole est central dans leurs oeuvres.",
+            correct: false
+          }
+        ]
+      }
+    },
+    3: {
+      id: 3,
+      name: "Salle 3 - Rupture et scandale",
+      shortName: "Salle 3",
+      word: "RUPTURE",
+      intro:
+        "Quand les codes explosent, la societe parle vite de folie. Ici, la transgression est assumee.",
+      puzzle: {
+        question:
+          "Que comprends-tu en comparant Picasso, Kandinsky et Basquiat ?",
+        options: [
+          {
+            text: "Ils respectent les normes academiques pour ne pas choquer le public.",
+            explanation: "Leur impact vient de la rupture des normes en place.",
+            correct: false
+          },
+          {
+            text: "Ils cassent les formes et les codes sociaux, d'ou l'etiquette de folie percue.",
+            explanation:
+              "Exact. Leur geste artistique est une rupture, pas une absence de sens.",
+            correct: true
+          },
+          {
+            text: "Ils evitent toute position critique envers leur epoque.",
+            explanation: "Leurs oeuvres portent une forte charge critique.",
+            correct: false
+          }
+        ]
+      }
+    }
   };
 
   const ARTWORKS = [
     {
-      id: "arnolfini",
+      id: "vangogh-starry",
       room: 1,
-      title: "Les Epoux Arnolfini",
-      artist: "Jan van Eyck",
-      family: "Eyck",
-      year: 1434,
-      movement: "Renaissance flamande",
-      summary: "Portrait celebre pour ses symboles caches dans les details du decor.",
-      clue: "Observe bien l'annee et garde son chiffre des unites.",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/3/33/Van_Eyck_-_Arnolfini_Portrait.jpg",
-      sourceUrl: "https://fr.wikipedia.org/wiki/Les_%C3%89poux_Arnolfini"
+      title: "La Nuit etoilee",
+      artist: "Vincent van Gogh",
+      year: "1889",
+      movement: "Post-impressionnisme",
+      summary:
+        "Paysage nocturne peint depuis l'asile de Saint-Remy. Le ciel tourbillonnant met l'etat interieur au premier plan.",
+      socialView:
+        "Ses gestes et sa sensibilite ont ete lus comme de la folie, alors qu'ils constituent une ecriture emotionnelle radicale.",
+      learning:
+        "Observer l'oeuvre, c'est lire une experience humaine intense, pas un simple decor.",
+      clue:
+        "Indice de salle: l'image parle du dedans autant que du dehors.",
+      uvClue: "UV: " + "Ce qui derange ici, c'est l'interiorite exposee.",
+      imageUrl:
+        "https://upload.wikimedia.org/wikipedia/commons/e/ea/The_Starry_Night.JPG",
+      sourceUrl:
+        "https://fr.wikipedia.org/wiki/La_Nuit_%C3%A9toil%C3%A9e_(1889)"
     },
     {
-      id: "last-supper",
+      id: "munch-scream",
       room: 1,
-      title: "La Cene",
-      artist: "Leonard de Vinci",
-      family: "Vinci",
-      year: 1498,
-      movement: "Haute Renaissance",
-      summary: "Fresque monumentale ou le cadrage et les gestes racontent une tension dramatique.",
-      clue: "Cette oeuvre sert de pivot temporel dans la salle.",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/4/4b/Leonardo_da_Vinci_%281452-1519%29_-_The_Last_Supper_%281495-1498%29.jpg",
-      sourceUrl: "https://fr.wikipedia.org/wiki/La_C%C3%A8ne_(L%C3%A9onard_de_Vinci)"
-    },
-    {
-      id: "school-athens",
-      room: 1,
-      title: "L'Ecole d'Athenes",
-      artist: "Raphael",
-      family: "Raphael",
-      year: 1511,
-      movement: "Renaissance italienne",
-      summary: "Scene philosophique qui reunit penseurs antiques dans une architecture ideale.",
-      clue: "Retiens la position de cette date dans l'ordre chronologique.",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/9/94/School_of_Athens_Raphael.jpg",
-      sourceUrl: "https://fr.wikipedia.org/wiki/L%27%C3%89cole_d%27Ath%C3%A8nes"
-    },
-    {
-      id: "impression-sunrise",
-      room: 2,
-      title: "Impression, soleil levant",
-      artist: "Claude Monet",
-      family: "Monet",
-      year: 1872,
-      movement: "Impressionnisme",
-      summary: "Toile fondatrice qui a donne son nom au mouvement impressionniste.",
-      clue: "Ce titre est central pour l'enigme de la salle.",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/5/56/Claude_Monet%2C_Impression%2C_soleil_levant.jpg",
-      sourceUrl: "https://fr.wikipedia.org/wiki/Impression,_soleil_levant",
-      movementOrigin: true
-    },
-    {
-      id: "moulin-galette",
-      room: 2,
-      title: "Bal du moulin de la Galette",
-      artist: "Pierre-Auguste Renoir",
-      family: "Renoir",
-      year: 1876,
-      movement: "Impressionnisme",
-      summary: "Scene de vie parisienne, lumiere filtree et foule en mouvement.",
-      clue: "Observe l'annee pour mesurer l'ecart avec les autres oeuvres.",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Pierre-Auguste_Renoir%2C_Le_Moulin_de_la_Galette.jpg",
-      sourceUrl: "https://fr.wikipedia.org/wiki/Bal_du_moulin_de_la_Galette"
-    },
-    {
-      id: "degas-star",
-      room: 2,
-      title: "L'Etoile",
-      artist: "Edgar Degas",
-      family: "Degas",
-      year: 1878,
-      movement: "Impressionnisme",
-      summary: "Danseuse eclairee au coeur de la scene, point de vue dramatique.",
-      clue: "Repere si cette oeuvre est la plus recente de la salle.",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/5/57/Edgar_Degas_-_The_Star_%28L%27%C3%89toile%29.jpg",
-      sourceUrl: "https://fr.wikipedia.org/wiki/L%27%C3%89toile_(Degas)"
-    },
-    {
-      id: "grande-jatte",
-      room: 3,
-      title: "Un dimanche apres-midi a l'Ile de la Grande Jatte",
-      artist: "Georges Seurat",
-      family: "Seurat",
-      year: 1884,
-      movement: "Neo-impressionnisme",
-      summary: "Composition construite par points de couleur et rythmes geometriques.",
-      clue: "Active le mode UV: un nombre secret est cache dans le cadre.",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/b/b7/Georges_Seurat_1884-86_A_Sunday_on_La_Grande_Jatte.jpg",
-      sourceUrl: "https://fr.wikipedia.org/wiki/Un_dimanche_apr%C3%A8s-midi_%C3%A0_l%27%C3%8Ele_de_la_Grande_Jatte",
-      uvValue: 3
-    },
-    {
-      id: "the-scream",
-      room: 3,
       title: "Le Cri",
       artist: "Edvard Munch",
-      family: "Munch",
-      year: 1893,
+      year: "1893",
       movement: "Expressionnisme",
-      summary: "Image iconique de l'angoisse moderne, ciel tourbillonnant et cri silencieux.",
-      clue: "Le mode UV devoile un deuxieme nombre.",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f4/The_Scream.jpg",
-      sourceUrl: "https://fr.wikipedia.org/wiki/Le_Cri",
-      uvValue: 1
+      summary:
+        "Figure deformee et horizon instable: l'angoisse devient forme et couleur.",
+      socialView:
+        "Longtemps percue comme image maladive, l'oeuvre est aujourd'hui l'icone d'un malaise universel.",
+      learning:
+        "L'art peut rendre visible ce que les mots cachent.",
+      clue:
+        "Indice de salle: la peur n'est pas cachee, elle est rendue visible.",
+      uvClue: "UV: " + "La societe juge souvent ce qu'elle ne veut pas ressentir.",
+      imageUrl:
+        "https://upload.wikimedia.org/wikipedia/commons/f/f4/The_Scream.jpg",
+      sourceUrl: "https://fr.wikipedia.org/wiki/Le_Cri"
     },
     {
-      id: "composition-viii",
+      id: "goya-saturn",
+      room: 1,
+      title: "Saturne devorant un de ses fils",
+      artist: "Francisco de Goya",
+      year: "1819-1823",
+      movement: "Romantisme noir",
+      summary:
+        "Peinture sombre et brutale issue des Peintures noires. Le monstrueux traduit la violence du monde.",
+      socialView:
+        "L'intensite de ces images a souvent ete interpretee comme demence, alors qu'elle denonce la peur et la barbarie.",
+      learning:
+        "Le choc visuel peut servir de critique sociale.",
+      clue:
+        "Indice de salle: l'oeuvre montre ce que la societe prefere ignorer.",
+      uvClue: "UV: " + "Le regard social confond parfois lucide et fou.",
+      imageUrl:
+        "https://upload.wikimedia.org/wikipedia/commons/8/8c/Francisco_de_Goya%2C_Saturno_devorando_a_su_hijo_%281819-1823%29.jpg",
+      sourceUrl:
+        "https://fr.wikipedia.org/wiki/Saturne_d%C3%A9vorant_un_de_ses_enfants"
+    },
+    {
+      id: "bosch-garden",
+      room: 2,
+      title: "Le Jardin des delices",
+      artist: "Jerome Bosch",
+      year: "vers 1490-1510",
+      movement: "Primitifs flamands",
+      summary:
+        "Triptyque foisonnant ou se melent desir, allegorie et visions troublantes.",
+      socialView:
+        "Son imaginaire a pu etre juge excessif ou delirant, alors qu'il construit une critique morale complexe.",
+      learning:
+        "Le bizarre peut etre un outil de pensee, pas un simple effet.",
+      clue:
+        "Indice de salle: ici, l'etrange sert a questionner la norme.",
+      uvClue: "UV: " + "Le reve est une methode de lecture du monde.",
+      imageUrl:
+        "https://upload.wikimedia.org/wikipedia/commons/3/38/Jheronimus_Bosch_023.jpg",
+      sourceUrl:
+        "https://fr.wikipedia.org/wiki/Le_Jardin_des_d%C3%A9lices"
+    },
+    {
+      id: "dali-memory",
+      room: 2,
+      title: "La Persistance de la memoire",
+      artist: "Salvador Dali",
+      year: "1931",
+      movement: "Surrealisme",
+      summary:
+        "Montres molles et espace desertique: le temps rationnel perd sa forme stable.",
+      socialView:
+        "Les codes surreels ont ete moques comme absurdes, avant d'etre reconnus comme une exploration de l'inconscient.",
+      learning:
+        "L'imaginaire peut expliquer une experience du temps impossible a decrire autrement.",
+      clue:
+        "Indice de salle: la logique apparente se fissure.",
+      uvClue: "UV: " + "Ce qui parait impossible peut reveler une verite intime.",
+      imageUrl:
+        "https://upload.wikimedia.org/wikipedia/en/d/dd/The_Persistence_of_Memory.jpg",
+      sourceUrl:
+        "https://fr.wikipedia.org/wiki/La_Persistance_de_la_m%C3%A9moire"
+    },
+    {
+      id: "magritte-sonofman",
+      room: 2,
+      title: "Le Fils de l'homme",
+      artist: "Rene Magritte",
+      year: "1964",
+      movement: "Surrealisme",
+      summary:
+        "Un visage masque par une pomme: l'image joue avec ce qui est cache et ce qui est attendu.",
+      socialView:
+        "Le decalage visuel fut parfois traite comme nonsense; il questionne pourtant nos habitudes de perception.",
+      learning:
+        "Voir n'est jamais neutre: on regarde avec des attentes sociales.",
+      clue:
+        "Indice de salle: l'image montre une chose et en cache une autre.",
+      uvClue: "UV: " + "L'imaginaire deplace notre regard sur le reel.",
+      imageUrl:
+        "https://upload.wikimedia.org/wikipedia/en/e/e5/Magritte_TheSonOfMan.jpg",
+      sourceUrl:
+        "https://fr.wikipedia.org/wiki/Le_Fils_de_l%27homme"
+    },
+    {
+      id: "picasso-demoiselles",
+      room: 3,
+      title: "Les Demoiselles d'Avignon",
+      artist: "Pablo Picasso",
+      year: "1907",
+      movement: "Proto-cubisme",
+      summary:
+        "Corps fragmentes et perspective brisee: rupture majeure avec la representation classique.",
+      socialView:
+        "A sa presentation, l'oeuvre est jugee violente et incoherente; elle ouvre pourtant une nouvelle grammaire picturale.",
+      learning:
+        "Changer les formes, c'est aussi changer les idees.",
+      clue:
+        "Indice de salle: quand les formes cassent, la norme vacille.",
+      uvClue: "UV: " + "RUP: premier fragment cache de la salle.",
+      imageUrl:
+        "https://upload.wikimedia.org/wikipedia/en/d/d4/Les_Demoiselles_d%27Avignon.jpg",
+      sourceUrl:
+        "https://fr.wikipedia.org/wiki/Les_Demoiselles_d%27Avignon"
+    },
+    {
+      id: "kandinsky-comp8",
       room: 3,
       title: "Composition VIII",
       artist: "Vassily Kandinsky",
-      family: "Kandinsky",
-      year: 1923,
-      movement: "Art abstrait",
-      summary: "Cercles, lignes et triangles pour traduire la musique en langage visuel.",
-      clue: "Le dernier nombre UV est ici. Classe ensuite les oeuvres par date.",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/9/97/Vassily_Kandinsky%2C_1923_-_Composition_8.jpg",
-      sourceUrl: "https://fr.wikipedia.org/wiki/Composition_VIII",
-      uvValue: 7
+      year: "1923",
+      movement: "Abstraction",
+      summary:
+        "Cercles, lignes et triangles remplacent la figuration pour traduire rythme et tension.",
+      socialView:
+        "L'abstraction fut accusee d'etre incomprehensible; elle proposait en realite un autre langage.",
+      learning:
+        "Une oeuvre peut faire sens sans raconter une scene reconnaissable.",
+      clue:
+        "Indice de salle: l'ordre visuel n'est plus celui de la copie du reel.",
+      uvClue: "UV: " + "TUR: second fragment cache de la salle.",
+      imageUrl:
+        "https://upload.wikimedia.org/wikipedia/commons/9/97/Vassily_Kandinsky%2C_1923_-_Composition_8.jpg",
+      sourceUrl:
+        "https://fr.wikipedia.org/wiki/Composition_VIII"
+    },
+    {
+      id: "basquiat-skull",
+      room: 3,
+      title: "Untitled (Skull)",
+      artist: "Jean-Michel Basquiat",
+      year: "1981",
+      movement: "Neo-expressionnisme",
+      summary:
+        "Tete explosive, signes et ecriture: energie urbaine et critique du pouvoir culturel.",
+      socialView:
+        "Son style fut parfois reduit a du chaos; il est aujourd'hui lu comme un langage politique et autobiographique.",
+      learning:
+        "Le geste brut peut porter un discours social tres construit.",
+      clue:
+        "Indice de salle: le scandale vient souvent de la rupture des hierarchies.",
+      uvClue: "UV: " + "E: troisieme fragment cache de la salle.",
+      imageUrl:
+        "https://upload.wikimedia.org/wikipedia/en/9/97/Untitled_%28Skull%29.jpg",
+      sourceUrl:
+        "https://fr.wikipedia.org/wiki/Jean-Michel_Basquiat"
     }
   ];
 
@@ -162,18 +312,14 @@
     return Math.max(min, Math.min(max, value));
   }
 
-  function normalizeAngle(angle) {
-    while (angle < -Math.PI) {
-      angle += Math.PI * 2;
-    }
-    while (angle > Math.PI) {
-      angle -= Math.PI * 2;
-    }
-    return angle;
-  }
-
-  function angleDelta(a, b) {
-    return Math.abs(normalizeAngle(a - b));
+  function normalizeAnswer(value) {
+    return value
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toUpperCase()
+      .replace(/[^A-Z ]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
   }
 
   function createFallbackSvgData(title, colorA, colorB) {
@@ -186,38 +332,12 @@
       "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'>",
       `<defs><linearGradient id='g' x1='0' x2='1' y1='0' y2='1'><stop offset='0%' stop-color='${colorA}'/><stop offset='100%' stop-color='${colorB}'/></linearGradient></defs>`,
       "<rect width='400' height='300' fill='url(#g)'/>",
-      "<rect x='24' y='22' width='352' height='256' fill='rgba(5,9,15,0.32)' stroke='rgba(255,255,255,0.35)'/>",
-      "<circle cx='88' cy='88' r='36' fill='rgba(255,255,255,0.18)'/>",
-      "<rect x='152' y='72' width='176' height='20' fill='rgba(255,255,255,0.22)'/>",
-      "<rect x='152' y='108' width='130' height='16' fill='rgba(255,255,255,0.18)'/>",
-      "<rect x='56' y='194' width='288' height='56' fill='rgba(0,0,0,0.35)'/>",
-      `<text x='200' y='228' text-anchor='middle' font-size='20' font-family='Verdana' fill='white'>${safeTitle}</text>`,
+      "<rect x='18' y='18' width='364' height='264' fill='rgba(0,0,0,0.28)' stroke='rgba(255,255,255,0.45)'/>",
+      `<text x='200' y='162' text-anchor='middle' font-size='26' font-family='Verdana' fill='white'>${safeTitle}</text>`,
       "</svg>"
     ].join("");
 
     return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-  }
-
-  function tileColor(tile, uvMode, distanceFactor) {
-    let base;
-
-    if (tile === TILE.WALL) {
-      base = uvMode ? [46, 60, 110] : [108, 78, 58];
-    } else if (tile === TILE.DOOR_1) {
-      base = uvMode ? [64, 75, 138] : [136, 58, 44];
-    } else if (tile === TILE.DOOR_2) {
-      base = uvMode ? [58, 110, 148] : [56, 96, 126];
-    } else if (tile === TILE.DOOR_EXIT) {
-      base = uvMode ? [96, 92, 172] : [148, 122, 58];
-    } else {
-      base = uvMode ? [40, 50, 92] : [84, 84, 84];
-    }
-
-    const shade = clamp(1 - distanceFactor * 0.85, 0.15, 1);
-    const r = Math.floor(base[0] * shade);
-    const g = Math.floor(base[1] * shade);
-    const b = Math.floor(base[2] * shade);
-    return `rgb(${r}, ${g}, ${b})`;
   }
 
   class AudioEngine {
@@ -228,7 +348,8 @@
       this.ambientGain = null;
       this.ambientOscA = null;
       this.ambientOscB = null;
-      this.stepAt = 0;
+      this.lastStepAt = 0;
+      this.userUnlocked = false;
     }
 
     ensure() {
@@ -243,25 +364,34 @@
 
       this.ctx = new AudioCtx();
       this.master = this.ctx.createGain();
-      this.master.gain.value = 0.15;
+      this.master.gain.value = 0.32;
       this.master.connect(this.ctx.destination);
 
       this.ambientGain = this.ctx.createGain();
-      this.ambientGain.gain.value = 0.0;
+      this.ambientGain.gain.value = 0;
       this.ambientGain.connect(this.master);
 
       this.ambientOscA = this.ctx.createOscillator();
-      this.ambientOscA.type = "triangle";
-      this.ambientOscA.frequency.value = 63;
+      this.ambientOscA.type = "sine";
+      this.ambientOscA.frequency.value = 170;
       this.ambientOscA.connect(this.ambientGain);
+      this.ambientOscA.start();
 
       this.ambientOscB = this.ctx.createOscillator();
-      this.ambientOscB.type = "sine";
-      this.ambientOscB.frequency.value = 95;
+      this.ambientOscB.type = "triangle";
+      this.ambientOscB.frequency.value = 238;
       this.ambientOscB.connect(this.ambientGain);
-
-      this.ambientOscA.start();
       this.ambientOscB.start();
+    }
+
+    kickResume() {
+      this.ensure();
+      if (!this.ctx) {
+        return;
+      }
+      if (this.ctx.state === "suspended") {
+        this.ctx.resume().catch(() => {});
+      }
     }
 
     async unlockByGesture() {
@@ -270,82 +400,104 @@
         return;
       }
       if (this.ctx.state === "suspended") {
-        await this.ctx.resume();
+        try {
+          await this.ctx.resume();
+        } catch (_error) {
+          return;
+        }
       }
+      this.userUnlocked = this.ctx.state === "running";
       this.updateAmbient();
     }
 
     updateAmbient() {
-      if (!this.ambientGain || !this.ctx) {
+      if (!this.ctx || !this.ambientGain) {
         return;
       }
       const now = this.ctx.currentTime;
-      const target = this.enabled ? 0.035 : 0;
+      const target = this.enabled ? 0.02 : 0;
       this.ambientGain.gain.cancelScheduledValues(now);
-      this.ambientGain.gain.linearRampToValueAtTime(target, now + 0.35);
+      this.ambientGain.gain.linearRampToValueAtTime(target, now + 0.3);
     }
 
     toggle() {
+      this.kickResume();
       this.enabled = !this.enabled;
       this.updateAmbient();
       return this.enabled;
+    }
+
+    playTone(config) {
+      if (!this.ctx || !this.master) {
+        return;
+      }
+
+      const {
+        wave = "triangle",
+        startHz = 440,
+        endHz = 440,
+        peak = 0.05,
+        duration = 0.14
+      } = config;
+
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = wave;
+      osc.connect(gain);
+      gain.connect(this.master);
+
+      const now = this.ctx.currentTime;
+      osc.frequency.setValueAtTime(startHz, now);
+      osc.frequency.exponentialRampToValueAtTime(Math.max(40, endHz), now + duration);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(peak, now + Math.min(0.02, duration * 0.25));
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+      osc.start(now);
+      osc.stop(now + duration + 0.01);
     }
 
     beep(type) {
       if (!this.enabled || !this.ctx || !this.master) {
         return;
       }
+      this.kickResume();
 
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-      osc.connect(gain);
-      gain.connect(this.master);
-
-      const now = this.ctx.currentTime;
       if (type === "success") {
-        osc.type = "square";
-        osc.frequency.setValueAtTime(500, now);
-        osc.frequency.exponentialRampToValueAtTime(780, now + 0.12);
+        this.playTone({ wave: "square", startHz: 620, endHz: 860, peak: 0.08, duration: 0.11 });
+        this.playTone({ wave: "triangle", startHz: 840, endHz: 1020, peak: 0.06, duration: 0.1 });
       } else if (type === "error") {
-        osc.type = "sawtooth";
-        osc.frequency.setValueAtTime(220, now);
-        osc.frequency.exponentialRampToValueAtTime(140, now + 0.12);
+        this.playTone({ wave: "sawtooth", startHz: 280, endHz: 170, peak: 0.08, duration: 0.18 });
+      } else if (type === "interact") {
+        this.playTone({ wave: "triangle", startHz: 700, endHz: 520, peak: 0.06, duration: 0.1 });
+      } else if (type === "toggle") {
+        this.playTone({ wave: "sine", startHz: 560, endHz: 660, peak: 0.05, duration: 0.08 });
       } else {
-        osc.type = "triangle";
-        osc.frequency.value = 420;
+        this.playTone({ wave: "triangle", startHz: 470, endHz: 420, peak: 0.05, duration: 0.1 });
       }
-
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(0.05, now + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
-
-      osc.start(now);
-      osc.stop(now + 0.2);
     }
 
     step() {
       if (!this.enabled || !this.ctx || !this.master) {
         return;
       }
+      this.kickResume();
+
       const now = this.ctx.currentTime;
-      if (now - this.stepAt < 0.24) {
+      if (now - this.lastStepAt < 0.16) {
         return;
       }
-      this.stepAt = now;
+      this.lastStepAt = now;
 
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-      osc.type = "triangle";
-      osc.frequency.value = 140 + Math.random() * 35;
-      osc.connect(gain);
-      gain.connect(this.master);
-
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(0.028, now + 0.015);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
-
-      osc.start(now);
-      osc.stop(now + 0.09);
+      this.playTone({
+        wave: "triangle",
+        startHz: 310 + Math.random() * 60,
+        endHz: 250 + Math.random() * 30,
+        peak: 0.03,
+        duration: 0.065
+      });
     }
   }
 
@@ -363,6 +515,7 @@
 
       this.objectiveEl = document.getElementById("objective");
       this.timerEl = document.getElementById("timer");
+      this.roomIndicatorEl = document.getElementById("room-indicator");
       this.uvIndicatorEl = document.getElementById("uv-indicator");
       this.soundIndicatorEl = document.getElementById("sound-indicator");
       this.promptEl = document.getElementById("interaction-prompt");
@@ -375,28 +528,30 @@
       this.modalTitle = document.getElementById("modal-title");
       this.modalBody = document.getElementById("modal-body");
       this.modalCloseBtn = document.getElementById("modal-close");
+
       this.touchButtons = Array.from(document.querySelectorAll("[data-touch]"));
 
       this.audio = new AudioEngine();
 
+      this.mapWidth = 38;
+      this.mapHeight = 20;
+      this.map = [];
+
       this.keys = new Set();
       this.touchState = {
-        forward: false,
-        back: false,
+        up: false,
+        down: false,
         left: false,
-        right: false,
-        turnLeft: false,
-        turnRight: false
+        right: false
       };
+
       this.running = false;
       this.lastFrame = performance.now();
-      this.depthBuffer = new Array(INTERNAL_WIDTH).fill(MAX_DEPTH);
       this.focused = null;
 
       this.player = {
-        x: 4.5,
-        y: 7.0,
-        angle: 0
+        x: 3.5,
+        y: 10.5
       };
 
       this.state = {
@@ -405,7 +560,7 @@
         finished: false,
         uvMode: false,
         viewedArtworks: new Set(),
-        uvScanned: new Set(),
+        uvReadArtworks: new Set(),
         solvedRooms: {
           1: false,
           2: false,
@@ -420,13 +575,13 @@
       };
 
       this.interactables = [];
-      this.map = [];
-      this.mapWidth = 40;
-      this.mapHeight = 15;
+      this.tileSize = 16;
+      this.mapOffsetX = 16;
+      this.mapOffsetY = 32;
 
-      this.attachUi();
       this.buildMap();
       this.buildInteractables();
+      this.attachUi();
       this.refreshNotebook();
       this.updateObjective();
       this.updateStatusBadges();
@@ -439,44 +594,20 @@
         this.state.startedAt = performance.now();
         this.running = true;
         await this.audio.unlockByGesture();
-        this.audio.beep("soft");
-        this.canvas.focus();
+        this.audio.beep("toggle");
       });
 
       this.restartButton.addEventListener("click", () => {
         window.location.reload();
       });
 
-      this.modalCloseBtn.addEventListener("click", () => {
-        this.closeModal();
-      });
-
-      this.closeNotebookBtn.addEventListener("click", () => {
-        this.toggleNotebook(false);
-      });
-
-      this.canvas.addEventListener("click", () => {
-        if (!this.running || this.isOverlayOpen()) {
-          return;
-        }
-        if (document.pointerLockElement !== this.canvas && this.canvas.requestPointerLock) {
-          this.canvas.requestPointerLock();
-        }
-      });
-
-      document.addEventListener("mousemove", (event) => {
-        if (!this.running || this.isOverlayOpen()) {
-          return;
-        }
-        if (document.pointerLockElement !== this.canvas) {
-          return;
-        }
-        this.player.angle = normalizeAngle(this.player.angle + event.movementX * 0.0025);
-      });
+      this.modalCloseBtn.addEventListener("click", () => this.closeModal());
+      this.closeNotebookBtn.addEventListener("click", () => this.toggleNotebook(false));
 
       window.addEventListener("resize", () => this.resizeCanvas());
 
       document.addEventListener("keydown", (event) => {
+        this.audio.unlockByGesture();
         const key = event.key.toLowerCase();
 
         if (["arrowup", "arrowdown", "arrowleft", "arrowright", " "].includes(key)) {
@@ -487,11 +618,11 @@
           if (key === "e") {
             this.tryInteract();
           }
-          if (key === "u") {
-            this.toggleUvMode();
-          }
           if (key === "j") {
             this.toggleNotebook();
+          }
+          if (key === "u") {
+            this.toggleUvMode();
           }
           if (key === "m") {
             this.toggleSound();
@@ -520,6 +651,7 @@
 
         const press = (event) => {
           event.preventDefault();
+          this.audio.unlockByGesture();
           if (!this.running || this.state.finished || this.isOverlayOpen()) {
             return;
           }
@@ -528,41 +660,40 @@
             this.tryInteract();
             return;
           }
-
+          if (action === "notebook") {
+            this.toggleNotebook();
+            return;
+          }
           if (action === "uv") {
             this.toggleUvMode();
             return;
           }
+          if (action === "sound") {
+            this.toggleSound();
+            return;
+          }
 
-          if (action === "forward") {
-            this.touchState.forward = true;
-          } else if (action === "back") {
-            this.touchState.back = true;
+          if (action === "up") {
+            this.touchState.up = true;
+          } else if (action === "down") {
+            this.touchState.down = true;
           } else if (action === "left") {
             this.touchState.left = true;
           } else if (action === "right") {
             this.touchState.right = true;
-          } else if (action === "turn-left") {
-            this.touchState.turnLeft = true;
-          } else if (action === "turn-right") {
-            this.touchState.turnRight = true;
           }
         };
 
         const release = (event) => {
           event.preventDefault();
-          if (action === "forward") {
-            this.touchState.forward = false;
-          } else if (action === "back") {
-            this.touchState.back = false;
+          if (action === "up") {
+            this.touchState.up = false;
+          } else if (action === "down") {
+            this.touchState.down = false;
           } else if (action === "left") {
             this.touchState.left = false;
           } else if (action === "right") {
             this.touchState.right = false;
-          } else if (action === "turn-left") {
-            this.touchState.turnLeft = false;
-          } else if (action === "turn-right") {
-            this.touchState.turnRight = false;
           }
         };
 
@@ -577,6 +708,12 @@
       this.canvas.width = INTERNAL_WIDTH;
       this.canvas.height = INTERNAL_HEIGHT;
       this.ctx.imageSmoothingEnabled = false;
+
+      this.tileSize = Math.floor(
+        Math.min(this.canvas.width / this.mapWidth, this.canvas.height / this.mapHeight)
+      );
+      this.mapOffsetX = Math.floor((this.canvas.width - this.mapWidth * this.tileSize) / 2);
+      this.mapOffsetY = Math.floor((this.canvas.height - this.mapHeight * this.tileSize) / 2);
     }
 
     buildMap() {
@@ -590,41 +727,40 @@
         }
       }
 
-      const partitions = [10, 11, 21, 22, 32, 33];
-      for (const x of partitions) {
-        for (let y = 1; y < this.mapHeight - 1; y += 1) {
-          map[y][x] = TILE.WALL;
-        }
+      for (let y = 1; y < this.mapHeight - 1; y += 1) {
+        map[y][12] = TILE.WALL;
+        map[y][24] = TILE.WALL;
+        map[y][35] = TILE.WALL;
       }
 
-      map[7][10] = TILE.DOOR_1;
-      map[7][11] = TILE.DOOR_1;
-      map[7][21] = TILE.DOOR_2;
-      map[7][22] = TILE.DOOR_2;
-      map[7][32] = TILE.DOOR_EXIT;
-      map[7][33] = TILE.DOOR_EXIT;
+      map[10][12] = TILE.DOOR_1;
+      map[10][24] = TILE.DOOR_2;
+      map[10][35] = TILE.DOOR_EXIT;
 
       this.map = map;
     }
 
     buildInteractables() {
       this.interactables = [
-        { id: "art-arnolfini", type: "artwork", artworkId: "arnolfini", room: 1, x: 3.3, y: 3.0, label: "Cadre d'art" },
-        { id: "art-cene", type: "artwork", artworkId: "last-supper", room: 1, x: 7.6, y: 3.0, label: "Cadre d'art" },
-        { id: "art-athenes", type: "artwork", artworkId: "school-athens", room: 1, x: 5.2, y: 11.0, label: "Cadre d'art" },
-        { id: "terminal-r1", type: "terminal", room: 1, x: 8.3, y: 7.0, label: "Console salle I" },
+        { id: "panel-r1", type: "panel", room: 1, x: 2.5, y: 2.5, label: "Panneau de salle" },
+        { id: "art-vangogh", type: "artwork", room: 1, artworkId: "vangogh-starry", x: 4.5, y: 4.5, label: "Oeuvre" },
+        { id: "art-munch", type: "artwork", room: 1, artworkId: "munch-scream", x: 8.5, y: 4.5, label: "Oeuvre" },
+        { id: "art-goya", type: "artwork", room: 1, artworkId: "goya-saturn", x: 6.5, y: 15.5, label: "Oeuvre" },
+        { id: "terminal-r1", type: "terminal", room: 1, x: 10.4, y: 10.5, label: "Console salle 1" },
 
-        { id: "art-monet", type: "artwork", artworkId: "impression-sunrise", room: 2, x: 14.0, y: 3.0, label: "Cadre d'art" },
-        { id: "art-renoir", type: "artwork", artworkId: "moulin-galette", room: 2, x: 18.4, y: 3.0, label: "Cadre d'art" },
-        { id: "art-degas", type: "artwork", artworkId: "degas-star", room: 2, x: 16.3, y: 11.0, label: "Cadre d'art" },
-        { id: "terminal-r2", type: "terminal", room: 2, x: 19.2, y: 7.0, label: "Console salle II" },
+        { id: "panel-r2", type: "panel", room: 2, x: 14.5, y: 2.5, label: "Panneau de salle" },
+        { id: "art-bosch", type: "artwork", room: 2, artworkId: "bosch-garden", x: 16.5, y: 4.5, label: "Oeuvre" },
+        { id: "art-dali", type: "artwork", room: 2, artworkId: "dali-memory", x: 20.5, y: 4.5, label: "Oeuvre" },
+        { id: "art-magritte", type: "artwork", room: 2, artworkId: "magritte-sonofman", x: 18.5, y: 15.5, label: "Oeuvre" },
+        { id: "terminal-r2", type: "terminal", room: 2, x: 22.4, y: 10.5, label: "Console salle 2" },
 
-        { id: "art-seurat", type: "artwork", artworkId: "grande-jatte", room: 3, x: 24.2, y: 3.0, label: "Cadre d'art" },
-        { id: "art-munch", type: "artwork", artworkId: "the-scream", room: 3, x: 28.4, y: 3.0, label: "Cadre d'art" },
-        { id: "art-kandinsky", type: "artwork", artworkId: "composition-viii", room: 3, x: 26.0, y: 11.0, label: "Cadre d'art" },
-        { id: "terminal-r3", type: "terminal", room: 3, x: 30.2, y: 7.0, label: "Console salle III" },
+        { id: "panel-r3", type: "panel", room: 3, x: 26.5, y: 2.5, label: "Panneau de salle" },
+        { id: "art-picasso", type: "artwork", room: 3, artworkId: "picasso-demoiselles", x: 28.5, y: 4.5, label: "Oeuvre" },
+        { id: "art-kandinsky", type: "artwork", room: 3, artworkId: "kandinsky-comp8", x: 32.0, y: 4.5, label: "Oeuvre" },
+        { id: "art-basquiat", type: "artwork", room: 3, artworkId: "basquiat-skull", x: 30.5, y: 15.5, label: "Oeuvre" },
+        { id: "terminal-r3", type: "terminal", room: 3, x: 34.0, y: 10.5, label: "Console salle 3" },
 
-        { id: "terminal-exit", type: "exit", x: 31.1, y: 7.0, label: "Porte principale" }
+        { id: "exit-terminal", type: "exit", x: 34.4, y: 8.6, label: "Digicode sortie" }
       ];
     }
 
@@ -647,7 +783,7 @@
     update(dt) {
       const canControl = !this.isOverlayOpen();
       if (canControl) {
-        this.updatePlayerMovement(dt);
+        this.updateMovement(dt);
       } else {
         this.resetTouchState();
       }
@@ -655,89 +791,54 @@
       this.focused = this.findFocusedInteractable();
       this.updatePrompt();
       this.updateTimer();
+      this.updateRoomIndicator();
       this.checkVictory();
     }
 
-    resetTouchState() {
-      this.touchState.forward = false;
-      this.touchState.back = false;
-      this.touchState.left = false;
-      this.touchState.right = false;
-      this.touchState.turnLeft = false;
-      this.touchState.turnRight = false;
-    }
+    updateMovement(dt) {
+      const speed = 3.2;
 
-    updateTimer() {
-      if (!this.state.startedAt) {
-        this.timerEl.textContent = "Temps: 00:00";
+      let dx = 0;
+      let dy = 0;
+
+      if (this.keys.has("z") || this.keys.has("w") || this.keys.has("arrowup") || this.touchState.up) {
+        dy -= 1;
+      }
+      if (this.keys.has("s") || this.keys.has("arrowdown") || this.touchState.down) {
+        dy += 1;
+      }
+      if (this.keys.has("q") || this.keys.has("a") || this.keys.has("arrowleft") || this.touchState.left) {
+        dx -= 1;
+      }
+      if (this.keys.has("d") || this.keys.has("arrowright") || this.touchState.right) {
+        dx += 1;
+      }
+
+      if (dx === 0 && dy === 0) {
         return;
       }
 
-      this.state.elapsedMs = performance.now() - this.state.startedAt;
-      const totalSec = Math.floor(this.state.elapsedMs / 1000);
-      const min = Math.floor(totalSec / 60);
-      const sec = totalSec % 60;
-      this.timerEl.textContent = `Temps: ${pad2(min)}:${pad2(sec)}`;
-    }
+      const length = Math.hypot(dx, dy) || 1;
+      dx /= length;
+      dy /= length;
 
-    updatePlayerMovement(dt) {
-      const moveSpeed = 2.2;
-      const rotateSpeed = 1.9;
+      const targetX = this.player.x + dx * speed * dt;
+      const targetY = this.player.y + dy * speed * dt;
 
-      let move = 0;
-      let strafe = 0;
-      let rotate = 0;
-
-      if (this.keys.has("z") || this.keys.has("w") || this.keys.has("arrowup") || this.touchState.forward) {
-        move += moveSpeed * dt;
-      }
-      if (this.keys.has("s") || this.keys.has("arrowdown") || this.touchState.back) {
-        move -= moveSpeed * dt;
-      }
-      if (this.keys.has("q") || this.keys.has("a") || this.touchState.left) {
-        strafe -= moveSpeed * dt;
-      }
-      if (this.keys.has("d") || this.touchState.right) {
-        strafe += moveSpeed * dt;
-      }
-      if (this.keys.has("arrowleft") || this.touchState.turnLeft) {
-        rotate -= rotateSpeed * dt;
-      }
-      if (this.keys.has("arrowright") || this.touchState.turnRight) {
-        rotate += rotateSpeed * dt;
-      }
-
-      this.player.angle = normalizeAngle(this.player.angle + rotate);
-
-      if (move === 0 && strafe === 0) {
-        return;
-      }
-
-      const dx = Math.cos(this.player.angle) * move + Math.cos(this.player.angle + Math.PI / 2) * strafe;
-      const dy = Math.sin(this.player.angle) * move + Math.sin(this.player.angle + Math.PI / 2) * strafe;
-
-      this.tryMove(this.player.x + dx, this.player.y + dy);
+      this.tryMove(targetX, this.player.y);
+      this.tryMove(this.player.x, targetY);
       this.audio.step();
     }
 
     tryMove(targetX, targetY) {
-      const radius = 0.22;
+      const radius = 0.28;
+      const canMove = !this.isSolidAt(targetX + radius, targetY + radius)
+        && !this.isSolidAt(targetX - radius, targetY + radius)
+        && !this.isSolidAt(targetX + radius, targetY - radius)
+        && !this.isSolidAt(targetX - radius, targetY - radius);
 
-      const canMoveX = !this.isSolidAt(targetX + radius, this.player.y)
-        && !this.isSolidAt(targetX - radius, this.player.y)
-        && !this.isSolidAt(targetX, this.player.y + radius)
-        && !this.isSolidAt(targetX, this.player.y - radius);
-
-      if (canMoveX) {
+      if (canMove) {
         this.player.x = targetX;
-      }
-
-      const canMoveY = !this.isSolidAt(this.player.x + radius, targetY)
-        && !this.isSolidAt(this.player.x - radius, targetY)
-        && !this.isSolidAt(this.player.x, targetY + radius)
-        && !this.isSolidAt(this.player.x, targetY - radius);
-
-      if (canMoveY) {
         this.player.y = targetY;
       }
     }
@@ -750,213 +851,296 @@
     getTileAt(x, y) {
       const tx = Math.floor(x);
       const ty = Math.floor(y);
-
       if (tx < 0 || ty < 0 || tx >= this.mapWidth || ty >= this.mapHeight) {
         return TILE.WALL;
       }
-
       return this.map[ty][tx];
     }
 
-    castRay(angle) {
-      const cos = Math.cos(angle);
-      const sin = Math.sin(angle);
+    isLineBlocked(x1, y1, x2, y2) {
+      const dist = Math.hypot(x2 - x1, y2 - y1);
+      const steps = Math.max(2, Math.ceil(dist * 10));
 
-      let depth = 0;
-      let hitX = this.player.x;
-      let hitY = this.player.y;
-      let tile = TILE.FLOOR;
-
-      while (depth < MAX_DEPTH) {
-        depth += RAY_STEP;
-        hitX = this.player.x + cos * depth;
-        hitY = this.player.y + sin * depth;
-        tile = this.getTileAt(hitX, hitY);
-
-        if (tile !== TILE.FLOOR) {
-          break;
+      for (let i = 1; i < steps; i += 1) {
+        const t = i / steps;
+        const sx = x1 + (x2 - x1) * t;
+        const sy = y1 + (y2 - y1) * t;
+        if (this.isSolidAt(sx, sy)) {
+          return true;
         }
       }
 
-      return {
-        depth,
-        hitX,
-        hitY,
-        tile
-      };
-    }
-
-    render() {
-      this.drawBackground();
-      this.drawWalls();
-      this.drawSprites();
-      this.drawScanlines();
-    }
-
-    drawBackground() {
-      if (this.state.uvMode) {
-        this.ctx.fillStyle = "#0f1530";
-      } else {
-        this.ctx.fillStyle = "#1d253b";
-      }
-      this.ctx.fillRect(0, 0, INTERNAL_WIDTH, INTERNAL_HEIGHT / 2);
-
-      if (this.state.uvMode) {
-        this.ctx.fillStyle = "#080d1f";
-      } else {
-        this.ctx.fillStyle = "#14100c";
-      }
-      this.ctx.fillRect(0, INTERNAL_HEIGHT / 2, INTERNAL_WIDTH, INTERNAL_HEIGHT / 2);
-
-      const fogAlpha = this.state.uvMode ? 0.15 : 0.08;
-      this.ctx.fillStyle = `rgba(0, 0, 0, ${fogAlpha})`;
-      this.ctx.fillRect(0, 0, INTERNAL_WIDTH, INTERNAL_HEIGHT);
-    }
-
-    drawWalls() {
-      for (let x = 0; x < INTERNAL_WIDTH; x += COLUMN_WIDTH) {
-        const rayAngle = this.player.angle - FOV / 2 + (x / INTERNAL_WIDTH) * FOV;
-        const ray = this.castRay(rayAngle);
-
-        const correctedDepth = Math.max(0.001, ray.depth * Math.cos(rayAngle - this.player.angle));
-        const wallHeight = Math.min(INTERNAL_HEIGHT, (INTERNAL_HEIGHT / correctedDepth) * 1.05);
-        const top = Math.floor((INTERNAL_HEIGHT - wallHeight) / 2);
-
-        const hitTextureCoord = Math.abs((ray.hitX + ray.hitY) * 2.5) % 1;
-        const textureNudge = hitTextureCoord > 0.5 ? 0.05 : -0.03;
-        const distanceFactor = clamp(correctedDepth / MAX_DEPTH + textureNudge, 0, 1);
-
-        this.ctx.fillStyle = tileColor(ray.tile, this.state.uvMode, distanceFactor);
-        this.ctx.fillRect(x, top, COLUMN_WIDTH, wallHeight);
-
-        const shadowStrength = clamp(distanceFactor * 0.7, 0.05, 0.7);
-        this.ctx.fillStyle = `rgba(0, 0, 0, ${shadowStrength})`;
-        this.ctx.fillRect(x, top + wallHeight, COLUMN_WIDTH, INTERNAL_HEIGHT - (top + wallHeight));
-
-        this.depthBuffer[x] = correctedDepth;
-        if (x + 1 < INTERNAL_WIDTH) {
-          this.depthBuffer[x + 1] = correctedDepth;
-        }
-      }
-    }
-
-    drawSprites() {
-      const sprites = [];
-
-      for (const obj of this.interactables) {
-        if (!this.isInteractableVisible(obj)) {
-          continue;
-        }
-
-        const dx = obj.x - this.player.x;
-        const dy = obj.y - this.player.y;
-        const distance = Math.hypot(dx, dy);
-        const relAngle = normalizeAngle(Math.atan2(dy, dx) - this.player.angle);
-
-        if (Math.abs(relAngle) > FOV / 2 + 0.22) {
-          continue;
-        }
-
-        const size = clamp(115 / distance, 6, 88);
-        const screenX = Math.floor((0.5 + relAngle / FOV) * INTERNAL_WIDTH - size / 2);
-        const screenY = Math.floor(INTERNAL_HEIGHT / 2 - size / 2);
-
-        sprites.push({
-          obj,
-          distance,
-          size,
-          screenX,
-          screenY
-        });
-      }
-
-      sprites.sort((a, b) => b.distance - a.distance);
-
-      for (const sprite of sprites) {
-        const centerX = clamp(Math.floor(sprite.screenX + sprite.size / 2), 0, INTERNAL_WIDTH - 1);
-        if (sprite.distance > this.depthBuffer[centerX] + 0.2) {
-          continue;
-        }
-
-        let fill = "#b28a50";
-        if (sprite.obj.type === "terminal") {
-          fill = "#4da7d4";
-        }
-        if (sprite.obj.type === "exit") {
-          fill = "#dfba55";
-        }
-
-        if (this.state.uvMode && sprite.obj.type === "artwork") {
-          fill = "#8f6bff";
-        }
-
-        this.ctx.fillStyle = fill;
-        this.ctx.fillRect(sprite.screenX, sprite.screenY, sprite.size, sprite.size);
-
-        this.ctx.strokeStyle = "rgba(255,255,255,0.5)";
-        this.ctx.strokeRect(sprite.screenX, sprite.screenY, sprite.size, sprite.size);
-
-        if (this.state.uvMode && sprite.obj.type === "artwork") {
-          const art = ART_BY_ID.get(sprite.obj.artworkId);
-          if (art && typeof art.uvValue === "number") {
-            this.ctx.fillStyle = "#dbcbff";
-            this.ctx.font = "10px monospace";
-            this.ctx.textAlign = "center";
-            this.ctx.fillText(String(art.uvValue), sprite.screenX + sprite.size / 2, sprite.screenY + sprite.size / 2 + 3);
-          }
-        }
-      }
-    }
-
-    drawScanlines() {
-      this.ctx.fillStyle = "rgba(0,0,0,0.09)";
-      for (let y = 0; y < INTERNAL_HEIGHT; y += 2) {
-        this.ctx.fillRect(0, y, INTERNAL_WIDTH, 1);
-      }
-    }
-
-    isInteractableVisible(obj) {
-      if (obj.type === "terminal" && obj.room === 2 && !this.state.solvedRooms[1]) {
-        return false;
-      }
-      if (obj.type === "terminal" && obj.room === 3 && !this.state.solvedRooms[2]) {
-        return false;
-      }
-      return true;
+      return false;
     }
 
     findFocusedInteractable() {
       const candidates = [];
 
       for (const obj of this.interactables) {
-        if (!this.isInteractableVisible(obj)) {
-          continue;
-        }
-
         const dx = obj.x - this.player.x;
         const dy = obj.y - this.player.y;
-        const distance = Math.hypot(dx, dy);
-
-        if (distance > 1.45) {
+        const dist = Math.hypot(dx, dy);
+        if (dist > 1.3) {
           continue;
         }
 
-        const targetAngle = Math.atan2(dy, dx);
-        const delta = angleDelta(targetAngle, this.player.angle);
-        if (delta > 0.55) {
+        if (this.isLineBlocked(this.player.x, this.player.y, obj.x, obj.y)) {
           continue;
         }
 
-        const blocker = this.castRay(targetAngle);
-        if (blocker.tile !== TILE.FLOOR && blocker.depth < distance - 0.15) {
-          continue;
-        }
-
-        candidates.push({ obj, distance, delta });
+        candidates.push({ obj, dist });
       }
 
-      candidates.sort((a, b) => a.distance - b.distance || a.delta - b.delta);
+      candidates.sort((a, b) => a.dist - b.dist);
       return candidates.length ? candidates[0].obj : null;
+    }
+
+    roomFromX(x) {
+      if (x <= 11) {
+        return 1;
+      }
+      if (x <= 23) {
+        return 2;
+      }
+      if (x <= 34) {
+        return 3;
+      }
+      return 4;
+    }
+
+    roomNameFromX(x) {
+      const room = this.roomFromX(x);
+      if (room === 4) {
+        return "Sortie";
+      }
+      return ROOM_THEMES[room].shortName;
+    }
+
+    updateRoomIndicator() {
+      this.roomIndicatorEl.textContent = `Zone: ${this.roomNameFromX(this.player.x)}`;
+    }
+
+    updateTimer() {
+      if (!this.state.startedAt) {
+        this.timerEl.textContent = "Temps: 00:00";
+        return;
+      }
+
+      this.state.elapsedMs = performance.now() - this.state.startedAt;
+      const total = Math.floor(this.state.elapsedMs / 1000);
+      const min = Math.floor(total / 60);
+      const sec = total % 60;
+      this.timerEl.textContent = `Temps: ${pad2(min)}:${pad2(sec)}`;
+    }
+
+    resetTouchState() {
+      this.touchState.up = false;
+      this.touchState.down = false;
+      this.touchState.left = false;
+      this.touchState.right = false;
+    }
+
+    render() {
+      this.drawBackdrop();
+      this.drawMap();
+      this.drawInteractables();
+      this.drawPlayer();
+      this.drawFocus();
+      this.drawUvOverlay();
+    }
+
+    drawBackdrop() {
+      this.ctx.fillStyle = this.state.uvMode ? "#2f2b54" : "#9fd6c8";
+      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+      this.ctx.fillStyle = this.state.uvMode ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.1)";
+      for (let y = 0; y < this.canvas.height; y += 20) {
+        this.ctx.fillRect(0, y, this.canvas.width, 1);
+      }
+    }
+
+    floorColorForRoom(room) {
+      if (this.state.uvMode) {
+        if (room === 1) {
+          return [120, 97, 189];
+        }
+        if (room === 2) {
+          return [76, 132, 177];
+        }
+        if (room === 3) {
+          return [167, 92, 168];
+        }
+        return [96, 137, 84];
+      }
+
+      if (room === 1) {
+        return [216, 193, 171];
+      }
+      if (room === 2) {
+        return [199, 226, 241];
+      }
+      if (room === 3) {
+        return [229, 202, 224];
+      }
+      return [206, 226, 190];
+    }
+
+    drawMap() {
+      for (let y = 0; y < this.mapHeight; y += 1) {
+        for (let x = 0; x < this.mapWidth; x += 1) {
+          const tile = this.map[y][x];
+          const px = this.mapOffsetX + x * this.tileSize;
+          const py = this.mapOffsetY + y * this.tileSize;
+
+          if (tile === TILE.FLOOR) {
+            const room = this.roomFromX(x);
+            const [r, g, b] = this.floorColorForRoom(room);
+            const shade = (x + y) % 2 === 0 ? 8 : -4;
+            const cr = clamp(r + shade, 0, 255);
+            const cg = clamp(g + shade, 0, 255);
+            const cb = clamp(b + shade, 0, 255);
+            this.ctx.fillStyle = `rgb(${cr}, ${cg}, ${cb})`;
+            this.ctx.fillRect(px, py, this.tileSize, this.tileSize);
+
+            this.ctx.strokeStyle = "rgba(0,0,0,0.06)";
+            this.ctx.strokeRect(px, py, this.tileSize, this.tileSize);
+          } else if (tile === TILE.WALL) {
+            this.ctx.fillStyle = this.state.uvMode ? "#2a2446" : "#6c5a45";
+            this.ctx.fillRect(px, py, this.tileSize, this.tileSize);
+            this.ctx.fillStyle = this.state.uvMode ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.12)";
+            this.ctx.fillRect(px, py, this.tileSize, Math.max(2, Math.floor(this.tileSize * 0.18)));
+          } else if (tile === TILE.DOOR_1 || tile === TILE.DOOR_2 || tile === TILE.DOOR_EXIT) {
+            const color = tile === TILE.DOOR_1
+              ? (this.state.uvMode ? "#6b5aa7" : "#b06a4f")
+              : tile === TILE.DOOR_2
+                ? (this.state.uvMode ? "#4b79a8" : "#4f91b0")
+                : (this.state.uvMode ? "#a871d0" : "#b5973f");
+            this.ctx.fillStyle = color;
+            this.ctx.fillRect(px, py, this.tileSize, this.tileSize);
+            this.ctx.fillStyle = "rgba(255,255,255,0.3)";
+            this.ctx.fillRect(px + 2, py + 2, this.tileSize - 4, 2);
+          }
+        }
+      }
+
+      this.ctx.strokeStyle = this.state.uvMode ? "rgba(255,255,255,0.3)" : "rgba(34,42,43,0.35)";
+      this.ctx.lineWidth = 2;
+      this.ctx.strokeRect(
+        this.mapOffsetX,
+        this.mapOffsetY,
+        this.mapWidth * this.tileSize,
+        this.mapHeight * this.tileSize
+      );
+    }
+
+    drawInteractables() {
+      for (const obj of this.interactables) {
+        const cx = this.mapOffsetX + obj.x * this.tileSize;
+        const cy = this.mapOffsetY + obj.y * this.tileSize;
+        const size = Math.max(7, Math.floor(this.tileSize * 0.7));
+
+        if (obj.type === "panel") {
+          this.ctx.fillStyle = this.state.uvMode ? "#4b4f8f" : "#e4f2f0";
+          this.ctx.fillRect(cx - size / 2, cy - size / 2, size, size);
+          this.ctx.strokeStyle = this.state.uvMode ? "#d4cdff" : "#1f4040";
+          this.ctx.strokeRect(cx - size / 2, cy - size / 2, size, size);
+          this.ctx.fillStyle = this.state.uvMode ? "#e6ddff" : "#1f4040";
+          this.ctx.font = "bold 9px monospace";
+          this.ctx.textAlign = "center";
+          this.ctx.fillText("i", cx, cy + 3);
+          continue;
+        }
+
+        if (obj.type === "artwork") {
+          const art = ART_BY_ID.get(obj.artworkId);
+          const room = art ? art.room : 1;
+          const frameColor = room === 1
+            ? (this.state.uvMode ? "#e9d5ff" : "#8a4f2f")
+            : room === 2
+              ? (this.state.uvMode ? "#cff3ff" : "#2c6f98")
+              : (this.state.uvMode ? "#ffd6ff" : "#7d2f7a");
+          this.ctx.fillStyle = frameColor;
+          this.ctx.fillRect(cx - size / 2, cy - size / 2, size, size);
+          this.ctx.fillStyle = this.state.uvMode ? "#35255d" : "#f9f3ea";
+          this.ctx.fillRect(cx - size / 2 + 2, cy - size / 2 + 2, size - 4, size - 4);
+
+          if (art && this.state.viewedArtworks.has(art.id)) {
+            this.ctx.fillStyle = this.state.uvMode ? "#abffbf" : "#1f6e45";
+            this.ctx.fillRect(cx + size / 2 - 5, cy - size / 2 + 1, 4, 4);
+          }
+
+          if (this.state.uvMode && art && art.uvClue) {
+            this.ctx.fillStyle = "#f6e6ff";
+            this.ctx.fillRect(cx - 2, cy - 2, 4, 4);
+          }
+          continue;
+        }
+
+        if (obj.type === "terminal") {
+          const solved = this.state.solvedRooms[obj.room] === true;
+          this.ctx.fillStyle = solved
+            ? (this.state.uvMode ? "#7dffbd" : "#3ea96a")
+            : (this.state.uvMode ? "#95d3ff" : "#3d83ae");
+          this.ctx.fillRect(cx - size / 2, cy - size / 2, size, size);
+          this.ctx.fillStyle = "rgba(255,255,255,0.8)";
+          this.ctx.fillRect(cx - size / 2 + 2, cy - size / 2 + 2, size - 4, 3);
+          continue;
+        }
+
+        if (obj.type === "exit") {
+          this.ctx.fillStyle = this.state.exitUnlocked
+            ? (this.state.uvMode ? "#a5ff9a" : "#6ec66e")
+            : (this.state.uvMode ? "#ffd388" : "#d7ac4e");
+          this.ctx.fillRect(cx - size / 2, cy - size / 2, size, size);
+          this.ctx.fillStyle = "rgba(0,0,0,0.18)";
+          this.ctx.fillRect(cx - size / 2 + 2, cy - size / 2 + 2, size - 4, size - 4);
+        }
+      }
+    }
+
+    drawPlayer() {
+      const cx = this.mapOffsetX + this.player.x * this.tileSize;
+      const cy = this.mapOffsetY + this.player.y * this.tileSize;
+      const radius = Math.max(5, Math.floor(this.tileSize * 0.33));
+
+      this.ctx.fillStyle = "rgba(0,0,0,0.25)";
+      this.ctx.beginPath();
+      this.ctx.arc(cx + 1, cy + 2, radius, 0, Math.PI * 2);
+      this.ctx.fill();
+
+      this.ctx.fillStyle = this.state.uvMode ? "#f4dbff" : "#ffefbe";
+      this.ctx.beginPath();
+      this.ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      this.ctx.fill();
+
+      this.ctx.fillStyle = this.state.uvMode ? "#472f6d" : "#6e4e1b";
+      this.ctx.fillRect(cx - 2, cy - 2, 2, 2);
+      this.ctx.fillRect(cx + 1, cy - 2, 2, 2);
+    }
+
+    drawFocus() {
+      if (!this.focused || this.isOverlayOpen()) {
+        return;
+      }
+
+      const cx = this.mapOffsetX + this.focused.x * this.tileSize;
+      const cy = this.mapOffsetY + this.focused.y * this.tileSize;
+      const radius = Math.max(7, Math.floor(this.tileSize * 0.45));
+
+      this.ctx.strokeStyle = this.state.uvMode ? "#f6e3ff" : "#fff4cf";
+      this.ctx.lineWidth = 2;
+      this.ctx.beginPath();
+      this.ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      this.ctx.stroke();
+    }
+
+    drawUvOverlay() {
+      if (!this.state.uvMode) {
+        return;
+      }
+
+      this.ctx.fillStyle = "rgba(167, 87, 255, 0.12)";
+      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
     updatePrompt() {
@@ -973,19 +1157,40 @@
       if (!this.running || this.state.finished || this.isOverlayOpen()) {
         return;
       }
+
       if (!this.focused) {
         return;
       }
 
-      this.audio.beep("soft");
+      this.audio.beep("interact");
 
-      if (this.focused.type === "artwork") {
+      if (this.focused.type === "panel") {
+        this.openRoomPanel(this.focused.room);
+      } else if (this.focused.type === "artwork") {
         this.openArtworkModal(this.focused.artworkId);
       } else if (this.focused.type === "terminal") {
         this.openRoomTerminal(this.focused.room);
       } else if (this.focused.type === "exit") {
         this.openExitTerminal();
       }
+    }
+
+    openRoomPanel(roomId) {
+      const theme = ROOM_THEMES[roomId];
+      if (!theme) {
+        return;
+      }
+
+      const body = this.openModal(`${theme.name} - Panneau`);
+      const intro = document.createElement("p");
+      intro.textContent = theme.intro;
+      body.appendChild(intro);
+
+      const note = document.createElement("div");
+      note.className = "clue-box";
+      note.textContent =
+        "But pedagogique: distinguer la folie percue par la societe et la demarche artistique des auteurs.";
+      body.appendChild(note);
     }
 
     openModal(title) {
@@ -1014,12 +1219,12 @@
       }
 
       this.state.viewedArtworks.add(art.id);
-      if (this.state.uvMode && typeof art.uvValue === "number") {
-        this.state.uvScanned.add(art.id);
+      if (this.state.uvMode) {
+        this.state.uvReadArtworks.add(art.id);
       }
-
       this.refreshNotebook();
-      const body = this.openModal(`${ROOM_LABELS[art.room]} - ${art.title}`);
+
+      const body = this.openModal(`${ROOM_THEMES[art.room].name} - ${art.title}`);
 
       const card = document.createElement("div");
       card.className = "artwork-card";
@@ -1029,13 +1234,11 @@
       fallback.className = "artwork-fallback";
       fallback.innerHTML = `<span>${art.title}<br>${art.artist}</span>`;
 
-      const paletteA = art.room === 1 ? "#9f6e4d" : art.room === 2 ? "#4d7a9f" : "#7165a9";
-      const paletteB = art.room === 1 ? "#4c2f24" : art.room === 2 ? "#1f476d" : "#2e2f69";
+      const paletteA = art.room === 1 ? "#b78357" : art.room === 2 ? "#5a9fc3" : "#a464aa";
+      const paletteB = art.room === 1 ? "#613925" : art.room === 2 ? "#275670" : "#5e2b64";
       fallback.style.backgroundImage = `url('${createFallbackSvgData(art.title, paletteA, paletteB)}')`;
       fallback.style.backgroundSize = "cover";
       fallback.style.backgroundPosition = "center";
-      fallback.style.color = "#ffffff";
-      fallback.style.textShadow = "0 1px 4px rgba(0,0,0,0.8)";
 
       if (art.imageUrl) {
         fallback.classList.add("hidden");
@@ -1049,271 +1252,204 @@
         });
         mediaWrap.appendChild(img);
       }
-
       mediaWrap.appendChild(fallback);
       card.appendChild(mediaWrap);
 
-      const info = document.createElement("div");
-      info.className = "meta";
-      info.innerHTML = [
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      meta.innerHTML = [
         `<strong>${art.title}</strong>`,
         `<span>Artiste: ${art.artist}</span>`,
         `<span>Annee: ${art.year}</span>`,
         `<span>Courant: ${art.movement}</span>`,
-        `<span>${art.summary}</span>`,
-        `<span><a class=\"external-link\" href=\"${art.sourceUrl}\" target=\"_blank\" rel=\"noopener\">Voir la fiche externe de l'oeuvre</a></span>`
+        `<span><strong>Contexte social:</strong> ${art.socialView}</span>`,
+        `<span><strong>Ce qu'on comprend:</strong> ${art.learning}</span>`,
+        `<span><a class="external-link" href="${art.sourceUrl}" target="_blank" rel="noopener">Source externe (fiche oeuvre)</a></span>`
       ].join("");
-
-      card.appendChild(info);
+      card.appendChild(meta);
       body.appendChild(card);
 
       const clue = document.createElement("div");
       clue.className = "clue-box";
-      clue.textContent = `Indice: ${art.clue}`;
+      clue.textContent = `Indice de salle: ${art.clue}`;
       body.appendChild(clue);
 
-      if (typeof art.uvValue === "number") {
-        const uvLine = document.createElement("div");
-        uvLine.className = "clue-box";
-
-        if (this.state.uvMode) {
-          uvLine.textContent = `Mode UV actif: marquage invisible detecte -> ${art.uvValue}`;
-        } else {
-          uvLine.textContent = "Un vernis reactif est present. Active le mode UV (touche U) puis reinspecte cette oeuvre.";
-        }
-
-        body.appendChild(uvLine);
-      }
+      const uv = document.createElement("div");
+      uv.className = "clue-box";
+      uv.textContent = this.state.uvMode
+        ? art.uvClue
+        : "Astuce: active le mode UV (U) et reinspecte l'oeuvre pour lire une note cachee.";
+      body.appendChild(uv);
 
       const note = document.createElement("p");
-      note.textContent = "Source: Wikimedia Commons / Wikipedia (ressources externes utilisees pour un projet academique).";
+      note.textContent =
+        "Projet academique: ressources artistiques externes (Wikimedia/Wikipedia) avec credit de source.";
       body.appendChild(note);
-    }
-
-    computeRoomCode(roomId) {
-      const roomArts = ARTWORKS.filter((art) => art.room === roomId);
-
-      if (roomId === 1) {
-        const years = roomArts.map((a) => a.year).sort((a, b) => a - b);
-        const units = years.map((year) => year % 10);
-        const firstDigit = units[0] + units[2];
-        const secondDigit = units[1];
-        return `${firstDigit}${secondDigit}`;
-      }
-
-      if (roomId === 2) {
-        const years = roomArts.map((a) => a.year);
-        const firstDigit = Math.max(...years) - Math.min(...years);
-        const origin = roomArts.find((a) => a.movementOrigin);
-        const secondDigit = origin ? origin.family.length : 0;
-        return `${firstDigit}${secondDigit}`;
-      }
-
-      const sorted = roomArts
-        .slice()
-        .sort((a, b) => a.year - b.year);
-      const firstDigit = sorted[0].uvValue;
-      const secondDigit = sorted[sorted.length - 1].uvValue;
-      return `${firstDigit}${secondDigit}`;
     }
 
     roomMissingArtworks(roomId) {
       return ROOM_ART_IDS[roomId].filter((id) => !this.state.viewedArtworks.has(id));
     }
 
-    roomMissingUvScans(roomId) {
-      return ROOM_ART_IDS[roomId].filter((id) => {
-        const art = ART_BY_ID.get(id);
-        return typeof art.uvValue === "number" && !this.state.uvScanned.has(id);
-      });
-    }
-
     openRoomTerminal(roomId) {
-      const body = this.openModal(`${ROOM_LABELS[roomId]} - Console enigme`);
+      const theme = ROOM_THEMES[roomId];
+      if (!theme) {
+        return;
+      }
+
+      const body = this.openModal(`${theme.name} - Console d'analyse`);
 
       if (roomId === 2 && !this.state.solvedRooms[1]) {
         const p = document.createElement("p");
-        p.textContent = "Acces refuse: termine d'abord la salle I pour debloquer ce secteur.";
+        p.textContent = "Acces refuse: termine d'abord la salle 1 pour ouvrir ce secteur.";
         body.appendChild(p);
         return;
       }
 
       if (roomId === 3 && !this.state.solvedRooms[2]) {
         const p = document.createElement("p");
-        p.textContent = "Acces refuse: la salle III reste verrouillee tant que la salle II n'est pas resolue.";
+        p.textContent = "Acces refuse: la salle 3 est liee a la validation de la salle 2.";
         body.appendChild(p);
         return;
       }
 
       if (this.state.solvedRooms[roomId]) {
-        const already = document.createElement("p");
-        already.className = "success";
-        already.textContent = `Code deja valide. Fragment obtenu: ${this.state.fragments[roomId]}`;
-        body.appendChild(already);
+        const done = document.createElement("p");
+        done.className = "success";
+        done.textContent = `Fragment deja obtenu: ${this.state.fragments[roomId]}`;
+        body.appendChild(done);
         return;
       }
 
       const missing = this.roomMissingArtworks(roomId);
       if (missing.length) {
         const p = document.createElement("p");
-        p.textContent = "Le terminal detecte des informations manquantes. Inspecte toutes les oeuvres de cette salle.";
+        p.textContent = "La console demande l'analyse des 3 oeuvres de la salle avant validation.";
         body.appendChild(p);
 
         const list = document.createElement("ul");
-        for (const id of missing) {
-          const art = ART_BY_ID.get(id);
+        for (const artId of missing) {
+          const art = ART_BY_ID.get(artId);
           const li = document.createElement("li");
-          li.textContent = art ? art.title : id;
+          li.textContent = art ? art.title : artId;
           list.appendChild(li);
         }
         body.appendChild(list);
         return;
       }
 
-      if (roomId === 3) {
-        const missingUv = this.roomMissingUvScans(roomId);
-        if (missingUv.length) {
-          const p = document.createElement("p");
-          p.textContent = "Salle III: active le mode UV et reinspecte les oeuvres pour lire les marquages caches.";
-          body.appendChild(p);
-          return;
-        }
-      }
-
       const intro = document.createElement("div");
       intro.className = "clue-box";
-
-      if (roomId === 1) {
-        intro.textContent = "Regle salle I: trie les 3 oeuvres par annee croissante. A = unite de la plus ancienne + unite de la plus recente. B = unite de l'oeuvre du milieu. Code = AB.";
-      } else if (roomId === 2) {
-        intro.textContent = "Regle salle II: A = annee la plus recente - annee la plus ancienne. B = nombre de lettres du nom de famille de l'artiste ayant peint l'oeuvre qui donne son nom a l'impressionnisme. Code = AB.";
-      } else {
-        intro.textContent = "Regle salle III: active UV, recupere les 3 nombres caches, classe les oeuvres par annee croissante, puis garde le premier et le dernier nombre. Code = AB.";
-      }
-
+      intro.textContent = theme.intro;
       body.appendChild(intro);
 
-      const row = document.createElement("div");
-      row.className = "input-row";
+      const question = document.createElement("p");
+      question.textContent = theme.puzzle.question;
+      body.appendChild(question);
 
-      const input = document.createElement("input");
-      input.className = "code-input";
-      input.type = "text";
-      input.maxLength = 2;
-      input.placeholder = "Code 2 chiffres";
-
-      const submit = document.createElement("button");
-      submit.className = "primary";
-      submit.textContent = "Valider";
+      const optionsRow = document.createElement("div");
+      optionsRow.className = "options-row";
+      body.appendChild(optionsRow);
 
       const feedback = document.createElement("div");
-
-      submit.addEventListener("click", () => {
-        const entered = input.value.trim();
-        const expected = this.computeRoomCode(roomId);
-
-        if (entered === expected) {
-          this.state.solvedRooms[roomId] = true;
-          this.state.fragments[roomId] = expected;
-          this.unlockDoorForRoom(roomId);
-          this.refreshNotebook();
-          this.updateObjective();
-          this.audio.beep("success");
-          feedback.className = "success";
-          feedback.textContent = `Correct. Fragment ${expected} enregistre.`;
-        } else {
-          this.audio.beep("error");
-          feedback.className = "error";
-          feedback.textContent = "Code incorrect. Reprends les indices des oeuvres.";
-        }
-      });
-
-      row.appendChild(input);
-      row.appendChild(submit);
-      body.appendChild(row);
       body.appendChild(feedback);
+
+      for (const option of theme.puzzle.options) {
+        const btn = document.createElement("button");
+        btn.className = "choice-btn";
+        btn.textContent = option.text;
+        btn.addEventListener("click", () => {
+          if (option.correct) {
+            this.state.solvedRooms[roomId] = true;
+            this.state.fragments[roomId] = theme.word;
+            this.unlockDoorForRoom(roomId);
+            this.updateObjective();
+            this.refreshNotebook();
+            this.audio.beep("success");
+            feedback.className = "success";
+            feedback.textContent = `${option.explanation} Mot-clef obtenu: ${theme.word}`;
+          } else {
+            this.audio.beep("error");
+            feedback.className = "error";
+            feedback.textContent = option.explanation;
+          }
+        });
+        optionsRow.appendChild(btn);
+      }
     }
 
     unlockDoorForRoom(roomId) {
       if (roomId === 1) {
-        this.map[7][10] = TILE.FLOOR;
-        this.map[7][11] = TILE.FLOOR;
-      }
-      if (roomId === 2) {
-        this.map[7][21] = TILE.FLOOR;
-        this.map[7][22] = TILE.FLOOR;
-      }
-      if (roomId === 3) {
-        // no physical door after room III, only final gate.
+        this.map[10][12] = TILE.FLOOR;
+      } else if (roomId === 2) {
+        this.map[10][24] = TILE.FLOOR;
       }
     }
 
     openExitTerminal() {
-      const body = this.openModal("Porte principale - Digicode maitre");
+      const body = this.openModal("Porte principale - Assemblage des 3 mots");
 
-      if (!this.state.solvedRooms[1] || !this.state.solvedRooms[2] || !this.state.solvedRooms[3]) {
-        const warning = document.createElement("p");
-        warning.textContent = "Le systeme exige 3 fragments. Termine d'abord les trois salles.";
-        body.appendChild(warning);
+      const missing = [];
+      if (!this.state.solvedRooms[1]) {
+        missing.push("Salle 1");
+      }
+      if (!this.state.solvedRooms[2]) {
+        missing.push("Salle 2");
+      }
+      if (!this.state.solvedRooms[3]) {
+        missing.push("Salle 3");
+      }
+
+      if (missing.length) {
+        const p = document.createElement("p");
+        p.textContent = `Fragments manquants: ${missing.join(", ")}.`;
+        body.appendChild(p);
         return;
       }
 
-      const expected = `${this.state.fragments[1]}${this.state.fragments[2]}${this.state.fragments[3]}`;
-
       const clue = document.createElement("div");
       clue.className = "clue-box";
-      clue.textContent = "Assemble les fragments dans l'ordre des salles: I -> II -> III.";
+      clue.textContent =
+        "Saisis les 3 mots dans l'ordre des salles (1 -> 2 -> 3). Exemple de format: MOT1 MOT2 MOT3";
       body.appendChild(clue);
 
-      const row = document.createElement("div");
-      row.className = "input-row";
-
       const input = document.createElement("input");
-      input.className = "code-input";
-      input.maxLength = 6;
-      input.placeholder = "Code maitre (6 chiffres)";
+      input.className = "text-input";
+      input.type = "text";
+      input.placeholder = "Entrez les 3 mots";
 
       const submit = document.createElement("button");
       submit.className = "primary";
       submit.textContent = "Debloquer";
 
-      const feedback = document.createElement("div");
-
-      submit.addEventListener("click", () => {
-        const entered = input.value.trim();
-        if (entered === expected) {
-          this.state.exitUnlocked = true;
-          this.map[7][32] = TILE.FLOOR;
-          this.map[7][33] = TILE.FLOOR;
-          this.updateObjective();
-          this.audio.beep("success");
-          feedback.className = "success";
-          feedback.textContent = "Code valide. La porte principale est deverrouillee.";
-        } else {
-          this.audio.beep("error");
-          feedback.className = "error";
-          feedback.textContent = "Mauvaise combinaison. Verifie l'ordre des fragments.";
-        }
-      });
-
+      const row = document.createElement("div");
+      row.className = "options-row";
       row.appendChild(input);
       row.appendChild(submit);
       body.appendChild(row);
+
+      const feedback = document.createElement("div");
       body.appendChild(feedback);
-    }
 
-    toggleUvMode() {
-      if (!this.running || this.state.finished) {
-        return;
-      }
-      this.state.uvMode = !this.state.uvMode;
-      this.updateStatusBadges();
-      this.audio.beep("soft");
-    }
+      const expectedRaw = `${this.state.fragments[1]} ${this.state.fragments[2]} ${this.state.fragments[3]}`;
+      const expected = normalizeAnswer(expectedRaw);
 
-    toggleSound() {
-      const on = this.audio.toggle();
-      this.soundIndicatorEl.textContent = `Son: ${on ? "ON" : "OFF"}`;
+      submit.addEventListener("click", () => {
+        const entered = normalizeAnswer(input.value);
+        if (entered === expected) {
+          this.state.exitUnlocked = true;
+          this.map[10][35] = TILE.FLOOR;
+          this.updateObjective();
+          this.audio.beep("success");
+          feedback.className = "success";
+          feedback.textContent =
+            "Code semantique valide. La porte principale est ouverte, traverse le couloir de sortie.";
+        } else {
+          this.audio.beep("error");
+          feedback.className = "error";
+          feedback.textContent = "Assemblage incorrect. Reprends les mots-clefs du carnet.";
+        }
+      });
     }
 
     toggleNotebook(forceValue) {
@@ -1321,8 +1457,8 @@
         return;
       }
 
-      const currentlyHidden = this.notebookPanel.classList.contains("hidden");
-      const shouldOpen = typeof forceValue === "boolean" ? forceValue : currentlyHidden;
+      const hidden = this.notebookPanel.classList.contains("hidden");
+      const shouldOpen = typeof forceValue === "boolean" ? forceValue : hidden;
 
       if (shouldOpen) {
         this.refreshNotebook();
@@ -1332,36 +1468,56 @@
       }
     }
 
+    toggleUvMode() {
+      if (!this.running || this.state.finished) {
+        return;
+      }
+      this.state.uvMode = !this.state.uvMode;
+      this.updateStatusBadges();
+      this.audio.beep("toggle");
+    }
+
+    toggleSound() {
+      this.audio.unlockByGesture();
+      const wasEnabled = this.audio.enabled;
+      if (wasEnabled) {
+        this.audio.beep("toggle");
+      }
+      const enabled = this.audio.toggle();
+      if (enabled) {
+        this.audio.beep("toggle");
+      }
+      this.soundIndicatorEl.textContent = `Son: ${enabled ? "ON" : "OFF"}`;
+    }
+
     refreshNotebook() {
       const root = this.notebookContent;
       root.innerHTML = "";
 
       for (const roomId of [1, 2, 3]) {
+        const theme = ROOM_THEMES[roomId];
         const section = document.createElement("section");
         section.className = "notebook-room";
 
         const title = document.createElement("h3");
-        title.textContent = ROOM_LABELS[roomId];
+        title.textContent = theme.name;
         section.appendChild(title);
+
+        const intro = document.createElement("p");
+        intro.textContent = theme.intro;
+        section.appendChild(intro);
 
         const list = document.createElement("ul");
         for (const artId of ROOM_ART_IDS[roomId]) {
           const art = ART_BY_ID.get(artId);
-          const viewed = this.state.viewedArtworks.has(artId);
+          const seen = this.state.viewedArtworks.has(artId);
 
           const li = document.createElement("li");
-          if (!viewed) {
+          if (!seen) {
             li.textContent = `[ ] Oeuvre non inspectee`;
           } else {
-            let line = `[x] ${art.title} - ${art.artist} (${art.year})`;
-            if (typeof art.uvValue === "number") {
-              if (this.state.uvScanned.has(artId)) {
-                line += ` | UV: ${art.uvValue}`;
-              } else {
-                line += " | UV: non lu";
-              }
-            }
-            li.textContent = line;
+            const uv = this.state.uvReadArtworks.has(artId) ? " | UV lu" : " | UV non lu";
+            li.textContent = `[x] ${art.title} - ${art.artist}${uv}`;
           }
           list.appendChild(li);
         }
@@ -1370,7 +1526,7 @@
         if (this.state.fragments[roomId]) {
           const fragment = document.createElement("div");
           fragment.className = "fragment";
-          fragment.textContent = `Fragment obtenu: ${this.state.fragments[roomId]}`;
+          fragment.textContent = `Mot-clef obtenu: ${this.state.fragments[roomId]}`;
           section.appendChild(fragment);
         }
 
@@ -1379,30 +1535,30 @@
 
       const summary = document.createElement("section");
       summary.className = "notebook-room";
-      const collected = `${this.state.fragments[1] || "__"} ${this.state.fragments[2] || "__"} ${this.state.fragments[3] || "__"}`;
+      const f1 = this.state.fragments[1] || "___";
+      const f2 = this.state.fragments[2] || "___";
+      const f3 = this.state.fragments[3] || "___";
       summary.innerHTML = `
-        <h3>Assemblage du code maitre</h3>
-        <p>Ordre attendu: Salle I -> Salle II -> Salle III</p>
-        <p><strong>${collected}</strong></p>
+        <h3>Synthese finale</h3>
+        <p>Fil rouge: la folie percue par la societe peut masquer une demarche artistique lucide et innovante.</p>
+        <p>Assemblage (1 -> 2 -> 3): <strong>${f1} ${f2} ${f3}</strong></p>
       `;
       root.appendChild(summary);
     }
 
     updateObjective() {
       let text;
-
       if (!this.state.solvedRooms[1]) {
-        text = "Objectif: Explorer la salle Renaissance, inspecter 3 oeuvres et resoudre la console I.";
+        text = "Objectif: Salle 1. Observe Van Gogh, Munch, Goya puis valide la console d'analyse.";
       } else if (!this.state.solvedRooms[2]) {
-        text = "Objectif: Salle II ouverte. Observe les oeuvres impressionnistes et calcule le fragment suivant.";
+        text = "Objectif: Salle 2 ouverte. Comprendre le role du reve et des visions dans les oeuvres.";
       } else if (!this.state.solvedRooms[3]) {
-        text = "Objectif: Salle III. Active UV, releve les nombres caches, puis valide la console III.";
+        text = "Objectif: Salle 3. Identifier la rupture des codes et le scandale social.";
       } else if (!this.state.exitUnlocked) {
-        text = "Objectif: Recomposer le code maitre (6 chiffres) sur la porte principale.";
+        text = "Objectif: Recomposer la phrase-clef avec les 3 mots obtenus.";
       } else {
-        text = "Objectif: La porte est ouverte. Traverse le sas de sortie.";
+        text = "Objectif: La sortie est ouverte. Traverse le couloir final.";
       }
-
       this.objectiveEl.textContent = text;
     }
 
@@ -1416,7 +1572,7 @@
         return;
       }
 
-      if (this.player.x > 34.5 && this.player.y > 6.0 && this.player.y < 8.0) {
+      if (this.player.x > 35.5 && this.player.y > 9.0 && this.player.y < 12.0) {
         this.finishRun();
       }
     }
@@ -1427,16 +1583,13 @@
       this.closeModal();
       this.toggleNotebook(false);
 
-      const totalSec = Math.floor(this.state.elapsedMs / 1000);
-      const min = Math.floor(totalSec / 60);
-      const sec = totalSec % 60;
-      this.endTime.textContent = `Temps final: ${pad2(min)}:${pad2(sec)} | Cible recommandee: ~30:00`;
+      const total = Math.floor(this.state.elapsedMs / 1000);
+      const min = Math.floor(total / 60);
+      const sec = total % 60;
+      this.endTime.textContent = `Temps final: ${pad2(min)}:${pad2(sec)} | Cible conseillee: ~30:00`;
+
       this.endScreen.classList.remove("hidden");
       this.endScreen.classList.add("visible");
-
-      if (document.pointerLockElement === this.canvas && document.exitPointerLock) {
-        document.exitPointerLock();
-      }
     }
   }
 

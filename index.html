@@ -3,60 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Le Secret du Conservateur</title>
+  <title>Le Secret du Conservateur - Folie percue</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div id="app">
-    <canvas id="game" width="320" height="180" aria-label="Vue 3D du musee"></canvas>
+    <canvas id="game" width="640" height="384" aria-label="Musee en vue top-down pixel"></canvas>
 
     <div id="start-screen" class="overlay visible">
       <div class="panel intro-panel">
         <h1>Le Secret du Conservateur</h1>
         <p>
-          Visite nocturne. Portes verrouillees. Le conservateur te lance un defi:
-          comprendre les oeuvres, resoudre les enigmes et recomposer le code maitre.
+          Cette nuit, le conservateur te bloque dans le musee.
+          Son defi: comprendre pourquoi certains artistes furent traites de "fous"
+          par leur epoque.
+        </p>
+        <p>
+          Traverse 3 salles thematiques, observe les oeuvres, lis les biographies,
+          puis reponds aux consoles pour extraire 3 mots-clefs.
+          Assemble ces mots pour ouvrir la sortie.
         </p>
         <ul>
-          <li>3 salles, 3 fragments de code</li>
-          <li>Duree cible: ~30 minutes</li>
-          <li>Objectif: sortir du musee</li>
+          <li>Salle 1: Angoisse interieure</li>
+          <li>Salle 2: Reve et visions</li>
+          <li>Salle 3: Rupture et scandale</li>
         </ul>
+
         <div class="controls-list">
-          <span>ZQSD / WASD: se deplacer</span>
-          <span>Fleches / Souris: regarder</span>
+          <span>ZQSD / WASD / Fleches: deplacement</span>
           <span>E: interagir</span>
-          <span>U: mode UV</span>
           <span>J: carnet</span>
+          <span>U: mode UV</span>
           <span>M: son ON/OFF</span>
         </div>
-        <button id="start-btn" class="primary">Commencer l'escape game</button>
+
+        <button id="start-btn" class="primary">Entrer dans le musee</button>
       </div>
     </div>
 
     <div id="hud">
-      <div id="objective">Objectif: Explorer la salle Renaissance et observer les oeuvres.</div>
+      <div id="objective">Objectif: Explorer la salle Angoisse interieure.</div>
       <div id="status-line">
         <span id="timer">Temps: 00:00</span>
+        <span id="room-indicator">Zone: Salle 1</span>
         <span id="uv-indicator">UV: OFF</span>
         <span id="sound-indicator">Son: ON</span>
       </div>
       <div id="interaction-prompt" class="hidden">[E] Interagir</div>
-      <div id="crosshair" aria-hidden="true">+</div>
+    </div>
+
+    <div id="quick-actions">
+      <span>[E] Interagir</span>
+      <span>[J] Carnet</span>
+      <span>[U] UV</span>
+      <span>[M] Son</span>
     </div>
 
     <div id="touch-controls" aria-label="Controles tactiles">
       <div class="touch-grid">
-        <button type="button" data-touch="forward">FWD</button>
+        <button type="button" data-touch="up">UP</button>
         <button type="button" data-touch="left">L</button>
-        <button type="button" data-touch="back">BWD</button>
+        <button type="button" data-touch="down">DN</button>
         <button type="button" data-touch="right">R</button>
       </div>
       <div class="touch-grid">
-        <button type="button" data-touch="turn-left">TL</button>
-        <button type="button" data-touch="turn-right">TR</button>
         <button type="button" data-touch="interact">E</button>
+        <button type="button" data-touch="notebook">J</button>
         <button type="button" data-touch="uv">UV</button>
+        <button type="button" data-touch="sound">M</button>
       </div>
     </div>
 
@@ -80,8 +94,9 @@
       <div class="panel intro-panel">
         <h1>Porte deverrouillee</h1>
         <p>
-          Tu as reussi a sortir. Le conservateur admet ta victoire:
-          "Tu n'as pas seulement regarde l'art. Tu l'as compris."
+          Tu as compris le fil rouge:
+          la "folie" est souvent un regard social pose sur des artistes qui
+          bousculent les normes.
         </p>
         <p id="end-time"></p>
         <button id="restart-btn" class="primary">Rejouer</button>

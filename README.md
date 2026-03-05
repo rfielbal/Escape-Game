@@ -1,70 +1,63 @@
 # Escape Game - Le Secret du Conservateur
 
-Projet BTS SIO: escape game web en style 3D pixel (raycasting), sur le theme du musee.
+Projet BTS SIO: escape game web en vue top-down pixel, centre sur la question
+`"folie percue par la societe"` dans l'histoire de l'art.
 
-## Objectif
-Tu es enferme dans un musee. Pour sortir, il faut:
-- explorer 3 salles,
-- analyser des oeuvres,
-- resoudre 3 enigmes pour obtenir 3 fragments,
-- assembler le code maitre et deverrouiller la porte principale.
+## Concept pedagogique
+Le joueur ne cherche plus des chiffres.
+Il doit:
+- observer des oeuvres,
+- lire leur contexte social,
+- comprendre les points communs entre artistes,
+- extraire 3 mots-clefs de comprehension.
 
-Duree cible: environ 30 minutes.
+La sortie s'ouvre avec ces 3 mots dans le bon ordre.
+
+## Salles thematiques
+1. **Angoisse interieure**
+   - Van Gogh, Munch, Goya
+   - mot-clef: `INTERIEUR`
+2. **Reve et visions**
+   - Bosch, Dali, Magritte
+   - mot-clef: `IMAGINAIRE`
+3. **Rupture et scandale**
+   - Picasso, Kandinsky, Basquiat
+   - mot-clef: `RUPTURE`
 
 ## Lancement
 Aucun build requis.
 
-Option 1 (simple):
+Option simple:
 - ouvrir `index.html` dans un navigateur moderne.
 
-Option 2 (recommandee):
-- lancer un serveur statique local (exemple Python):
+Option recommandee:
 ```bash
 python3 -m http.server 8000
 ```
-- ouvrir [http://localhost:8000](http://localhost:8000)
+Puis ouvrir [http://localhost:8000](http://localhost:8000)
 
 ## Controles
 Desktop:
-- `ZQSD` / `WASD`: deplacement
-- `Fleches` / souris: orientation
+- `ZQSD` / `WASD` / fleches: deplacement
 - `E`: interagir
-- `U`: mode UV
 - `J`: carnet
+- `U`: mode UV
 - `M`: son ON/OFF
 
 Mobile:
-- boutons tactiles affiches en bas d'ecran
-
-## Structure des enigmes
-- Salle I (Renaissance): logique chronologique sur les annees
-- Salle II (Impressionnisme): ecart de dates + info artiste
-- Salle III (Avant-gardes): lecture UV + classement chronologique
-- Porte finale: code maitre = assemblage des 3 fragments
+- boutons tactiles affiches en bas
 
 ## Fichiers principaux
-- `index.html`: structure UI
-- `styles.css`: style pixel + overlays + mobile
-- `main.js`: moteur raycasting, gameplay, enigmes, audio
+- `index.html`: interface du jeu
+- `styles.css`: style pixel, overlays, barre d'actions
+- `main.js`: moteur top-down, progression, enigmes, audio
 
-## Ressources artistiques et sources
-Les fiches d'oeuvres utilisent des references externes (Wikipedia / Wikimedia Commons) avec liens inclus dans le jeu.
+## Ressources externes
+Les fiches d'oeuvres utilisent des liens externes (Wikipedia / Wikimedia Commons).
+Un fallback visuel local est prevu si une image distante ne charge pas.
 
-Oeuvres integrees dans le gameplay:
-- Les Epoux Arnolfini - Jan van Eyck (1434)
-- La Cene - Leonard de Vinci (1495-1498)
-- L'Ecole d'Athenes - Raphael (1511)
-- Impression, soleil levant - Claude Monet (1872)
-- Bal du moulin de la Galette - Pierre-Auguste Renoir (1876)
-- L'Etoile - Edgar Degas (1878)
-- Un dimanche apres-midi a l'Ile de la Grande Jatte - Georges Seurat (1884-1886)
-- Le Cri - Edvard Munch (1893)
-- Composition VIII - Vassily Kandinsky (1923)
-
-## Notes juridiques
-Pour un cadre scolaire, il est recommande de:
-- privilegier des reproductions de domaine public / licences ouvertes,
-- conserver les credits sources,
-- verifier les conditions de reutilisation selon la juridiction et la source.
-
-Le jeu prevoit un fallback visuel local si une image distante ne charge pas.
+## Note juridique
+Pour rester propre meme en contexte academique:
+- conserver les credits des sources,
+- privilegier les reproductions libres ou domaine public,
+- verifier les conditions de reutilisation de chaque source.
