@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Le Secret du Conservateur</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <canvas id="game" width="320" height="180" aria-label="Vue 3D du musee"></canvas>
+
+    <div id="start-screen" class="overlay visible">
+      <div class="panel intro-panel">
+        <h1>Le Secret du Conservateur</h1>
+        <p>
+          Visite nocturne. Portes verrouillees. Le conservateur te lance un defi:
+          comprendre les oeuvres, resoudre les enigmes et recomposer le code maitre.
+        </p>
+        <ul>
+          <li>3 salles, 3 fragments de code</li>
+          <li>Duree cible: ~30 minutes</li>
+          <li>Objectif: sortir du musee</li>
+        </ul>
+        <div class="controls-list">
+          <span>ZQSD / WASD: se deplacer</span>
+          <span>Fleches / Souris: regarder</span>
+          <span>E: interagir</span>
+          <span>U: mode UV</span>
+          <span>J: carnet</span>
+          <span>M: son ON/OFF</span>
+        </div>
+        <button id="start-btn" class="primary">Commencer l'escape game</button>
+      </div>
+    </div>
+
+    <div id="hud">
+      <div id="objective">Objectif: Explorer la salle Renaissance et observer les oeuvres.</div>
+      <div id="status-line">
+        <span id="timer">Temps: 00:00</span>
+        <span id="uv-indicator">UV: OFF</span>
+        <span id="sound-indicator">Son: ON</span>
+      </div>
+      <div id="interaction-prompt" class="hidden">[E] Interagir</div>
+      <div id="crosshair" aria-hidden="true">+</div>
+    </div>
+
+    <div id="touch-controls" aria-label="Controles tactiles">
+      <div class="touch-grid">
+        <button type="button" data-touch="forward">FWD</button>
+        <button type="button" data-touch="left">L</button>
+        <button type="button" data-touch="back">BWD</button>
+        <button type="button" data-touch="right">R</button>
+      </div>
+      <div class="touch-grid">
+        <button type="button" data-touch="turn-left">TL</button>
+        <button type="button" data-touch="turn-right">TR</button>
+        <button type="button" data-touch="interact">E</button>
+        <button type="button" data-touch="uv">UV</button>
+      </div>
+    </div>
+
+    <div id="notebook" class="overlay-panel hidden" aria-live="polite">
+      <div class="panel">
+        <h2>Carnet du visiteur</h2>
+        <div id="notebook-content"></div>
+        <button id="close-notebook" class="secondary">Fermer (J)</button>
+      </div>
+    </div>
+
+    <div id="modal" class="overlay-panel hidden" aria-live="polite">
+      <div class="panel" id="modal-panel">
+        <button id="modal-close" class="icon-btn" aria-label="Fermer">x</button>
+        <h2 id="modal-title"></h2>
+        <div id="modal-body"></div>
+      </div>
+    </div>
+
+    <div id="end-screen" class="overlay hidden">
+      <div class="panel intro-panel">
+        <h1>Porte deverrouillee</h1>
+        <p>
+          Tu as reussi a sortir. Le conservateur admet ta victoire:
+          "Tu n'as pas seulement regarde l'art. Tu l'as compris."
+        </p>
+        <p id="end-time"></p>
+        <button id="restart-btn" class="primary">Rejouer</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
