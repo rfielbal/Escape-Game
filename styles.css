@@ -49,15 +49,15 @@ body {
   pointer-events: none;
   position: absolute;
   inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   padding: 10px;
   z-index: 8;
 }
 
 #objective {
-  align-self: center;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
   max-width: 920px;
   text-align: center;
   background: linear-gradient(180deg, rgba(255, 252, 247, 0.94), rgba(245, 237, 223, 0.94));
@@ -71,11 +71,12 @@ body {
 }
 
 #status-line {
+  position: absolute;
+  left: 10px;
+  bottom: 76px;
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  align-self: flex-start;
-  margin-bottom: 78px;
 }
 
 #status-line span {
@@ -90,8 +91,10 @@ body {
 }
 
 #interaction-prompt {
-  align-self: center;
-  margin-bottom: 116px;
+  position: absolute;
+  left: 50%;
+  bottom: 76px;
+  transform: translateX(-50%);
   background: rgba(31, 42, 44, 0.92);
   color: #f7f9fa;
   border: 2px solid rgba(215, 157, 65, 0.82);
@@ -405,10 +408,10 @@ button {
   }
 
   #status-line {
-    margin-bottom: 142px;
+    bottom: 162px;
   }
 
   #interaction-prompt {
-    margin-bottom: 176px;
+    bottom: 162px;
   }
 }

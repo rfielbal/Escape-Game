@@ -433,7 +433,8 @@
         startHz = 440,
         endHz = 440,
         peak = 0.05,
-        duration = 0.14
+        duration = 0.14,
+        delay = 0
       } = config;
 
       const osc = this.ctx.createOscillator();
@@ -443,7 +444,7 @@
       osc.connect(gain);
       gain.connect(this.master);
 
-      const now = this.ctx.currentTime;
+      const now = this.ctx.currentTime + delay;
       osc.frequency.setValueAtTime(startHz, now);
       osc.frequency.exponentialRampToValueAtTime(Math.max(40, endHz), now + duration);
 
@@ -471,6 +472,10 @@
         this.playTone({ wave: "sine", startHz: 480, endHz: 420, peak: 0.08, duration: 0.08 });
       } else if (type === "toggle") {
         this.playTone({ wave: "sine", startHz: 620, endHz: 760, peak: 0.1, duration: 0.08 });
+      } else if (type === "door") {
+        this.playTone({ wave: "triangle", startHz: 210, endHz: 96, peak: 0.18, duration: 0.24 });
+        this.playTone({ wave: "square", startHz: 110, endHz: 84, peak: 0.1, duration: 0.18, delay: 0.04 });
+        this.playTone({ wave: "sawtooth", startHz: 480, endHz: 190, peak: 0.04, duration: 0.16, delay: 0.02 });
       } else {
         this.playTone({ wave: "triangle", startHz: 520, endHz: 440, peak: 0.08, duration: 0.1 });
       }
@@ -620,7 +625,7 @@
         }
 
         if (!event.repeat) {
-          if (key === "e" && !this.modalPanel.classList.contains("hidden") && this.activeModalKind === "artwork") {
+          if (key === "e" && !this.modalPanel.classList.contains("hidden") && !this.isTextEntryActive()) {
             this.closeModal();
             return;
           }
@@ -711,6 +716,16 @@
         button.addEventListener("pointercancel", release);
         button.addEventListener("pointerleave", release);
       }
+    }
+
+    isTextEntryActive() {
+      const active = document.activeElement;
+      if (!active) {
+        return false;
+      }
+
+      const tag = active.tagName;
+      return tag === "INPUT" || tag === "TEXTAREA" || active.isContentEditable;
     }
 
     resizeCanvas() {
@@ -839,7 +854,8 @@
     }
 
     updateMovement(dt) {
-      const speed = 3.2;
+      const sprinting = this.keys.has("shift");
+      const speed = sprinting ? 5.2 : 3.2;
 
       let dx = 0;
       let dy = 0;
@@ -897,7 +913,11 @@
 
     isSolidAt(x, y) {
       const tile = this.getTileAt(x, y);
-      return tile !== TILE.FLOOR;
+      if (tile !== TILE.FLOOR) {
+        return true;
+      }
+
+      return this.isBlockedByObject(x, y);
     }
 
     getTileAt(x, y) {
@@ -909,7 +929,60 @@
       return this.map[ty][tx];
     }
 
-    isLineBlocked(x1, y1, x2, y2) {
+    getInteractableCollider(obj) {
+      if (obj.type === "panel") {
+        return { x: obj.x, y: obj.y, w: 0.7, h: 0.7 };
+      }
+      if (obj.type === "artwork") {
+        return { x: obj.x, y: obj.y, w: 0.78, h: 0.78 };
+      }
+      if (obj.type === "terminal" || obj.type === "exit") {
+        return { x: obj.x, y: obj.y, w: 0.8, h: 0.8 };
+      }
+      return null;
+    }
+
+    getDecorationCollider(decoration) {
+      if (decoration.type === "bench") {
+        return { x: decoration.x, y: decoration.y, w: 1.45, h: 0.8 };
+      }
+      if (decoration.type === "plant") {
+        return { x: decoration.x, y: decoration.y - 0.05, w: 0.9, h: 0.9 };
+      }
+      if (decoration.type === "pedestal") {
+        return { x: decoration.x, y: decoration.y, w: 0.9, h: 0.9 };
+      }
+      return null;
+    }
+
+    pointInsideCollider(x, y, collider) {
+      return Math.abs(x - collider.x) <= collider.w / 2
+        && Math.abs(y - collider.y) <= collider.h / 2;
+    }
+
+    isBlockedByObject(x, y, ignoredId = null) {
+      for (const decoration of this.decorations) {
+        const collider = this.getDecorationCollider(decoration);
+        if (collider && this.pointInsideCollider(x, y, collider)) {
+          return true;
+        }
+      }
+
+      for (const obj of this.interactables) {
+        if (ignoredId && obj.id === ignoredId) {
+          continue;
+        }
+
+        const collider = this.getInteractableCollider(obj);
+        if (collider && this.pointInsideCollider(x, y, collider)) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    isLineBlocked(x1, y1, x2, y2, ignoredId = null) {
       const dist = Math.hypot(x2 - x1, y2 - y1);
       const steps = Math.max(2, Math.ceil(dist * 10));
 
@@ -917,7 +990,10 @@
         const t = i / steps;
         const sx = x1 + (x2 - x1) * t;
         const sy = y1 + (y2 - y1) * t;
-        if (this.isSolidAt(sx, sy)) {
+        if (this.getTileAt(sx, sy) !== TILE.FLOOR) {
+          return true;
+        }
+        if (this.isBlockedByObject(sx, sy, ignoredId)) {
           return true;
         }
       }
@@ -936,7 +1012,7 @@
           continue;
         }
 
-        if (this.isLineBlocked(this.player.x, this.player.y, obj.x, obj.y)) {
+        if (this.isLineBlocked(this.player.x, this.player.y, obj.x, obj.y, obj.id)) {
           continue;
         }
 
@@ -1429,6 +1505,11 @@
       note.textContent =
         "But pedagogique: distinguer la folie percue par la societe et la demarche artistique des auteurs.";
       body.appendChild(note);
+
+      const closeHint = document.createElement("div");
+      closeHint.className = "modal-hint";
+      closeHint.textContent = "Fermer: touche E, Echap ou bouton x";
+      body.appendChild(closeHint);
     }
 
     openModal(title, kind = "generic") {
@@ -1621,13 +1702,20 @@
         });
         optionsRow.appendChild(btn);
       }
+
+      const closeHint = document.createElement("div");
+      closeHint.className = "modal-hint";
+      closeHint.textContent = "Fermer: touche E, Echap ou bouton x";
+      body.appendChild(closeHint);
     }
 
     unlockDoorForRoom(roomId) {
       if (roomId === 1) {
         this.map[10][12] = TILE.FLOOR;
+        window.setTimeout(() => this.audio.beep("door"), 90);
       } else if (roomId === 2) {
         this.map[10][24] = TILE.FLOOR;
+        window.setTimeout(() => this.audio.beep("door"), 90);
       }
     }
 
@@ -1686,6 +1774,7 @@
           this.map[10][35] = TILE.FLOOR;
           this.updateObjective();
           this.audio.beep("success");
+          window.setTimeout(() => this.audio.beep("door"), 90);
           feedback.className = "success";
           feedback.textContent =
             "Code semantique valide. La porte principale est ouverte, traverse le couloir de sortie.";
@@ -1695,6 +1784,11 @@
           feedback.textContent = "Assemblage incorrect. Reprends les mots-clefs du carnet.";
         }
       });
+
+      const closeHint = document.createElement("div");
+      closeHint.className = "modal-hint";
+      closeHint.textContent = "Fermer: touche E, Echap ou bouton x";
+      body.appendChild(closeHint);
     }
 
     toggleNotebook(forceValue) {
