@@ -1,78 +1,78 @@
 # Le Secret du Conservateur
 
-Escape game web realise dans le cadre d'un BTS SIO.
+Escape game realise dans le cadre d'un BTS SIO.
 
-Le projet prend la forme d'un jeu en vue top-down pixel dans lequel le joueur explore un musee ferme de nuit. Le fil rouge du jeu est la notion de "folie percue par la societe" appliquee a plusieurs artistes et courants artistiques.
+Le projet existe maintenant sous deux formes :
+- une version web locale
+- une version application desktop pour Windows et macOS
 
-## Concept
+Le jeu se deroule dans un musee ferme de nuit et suit un fil rouge unique : la "folie percue par la societe" dans l'histoire de l'art.
 
-Le joueur ne doit pas seulement trouver un code.
-Il doit :
-- observer des oeuvres,
-- lire des informations sur les artistes,
-- comprendre ce qui relie les oeuvres d'une meme salle,
-- repondre a une console d'analyse,
-- recuperer 3 mots-clefs,
-- assembler ces mots pour ouvrir la sortie.
+## Ce que contient le jeu
 
-Le but est de montrer que des artistes parfois juges "fous" par leur epoque ont surtout propose de nouvelles manieres de voir, de ressentir et de representer le monde.
+Le joueur explore 3 salles thematiques :
+- Salle 1 - Angoisse interieure
+- Salle 2 - Reve et visions
+- Salle 3 - Rupture et scandale
 
-## Scenario
+Dans chaque salle, il observe des oeuvres, lit des informations sur les artistes, comprend ce qui relie les oeuvres entre elles, puis valide une console d'analyse.
 
-Lors d'une visite nocturne, le conservateur du musee enferme le joueur et lui lance un defi :
-"Tu ne sortiras pas tant que tu n'auras pas compris l'art que les autres ont refuse de comprendre."
+Le jeu ne repose pas sur des calculs. Il repose sur la comprehension, l'observation et l'interpretation.
 
-Le joueur traverse 3 salles thematiques. Chaque salle regroupe des artistes autour d'une meme idee, puis une console demande d'identifier ce que leurs oeuvres disent vraiment.
+Les 3 mots-clefs finaux sont :
+- `INTERIEUR`
+- `IMAGINAIRE`
+- `RUPTURE`
 
-## Salles du jeu
+## Installation simple depuis GitHub
 
-1. Salle 1 - Angoisse interieure
-- Artistes : Vincent van Gogh, Edvard Munch, Francisco de Goya
-- Mot-clef obtenu : `INTERIEUR`
+Si tu veux simplement jouer au jeu sans utiliser VS Code ni lancer de serveur local, il faut passer par la page des releases GitHub.
 
-2. Salle 2 - Reve et visions
-- Artistes : Jerome Bosch, Salvador Dali, Rene Magritte
-- Mot-clef obtenu : `IMAGINAIRE`
+Etapes :
+1. Ouvre la page GitHub du projet.
+2. Clique sur `Releases`.
+3. Ouvre la derniere release disponible.
+4. Telecharge le fichier qui correspond a ton ordinateur.
+5. Ne telecharge pas `Source code (zip)` ou `Source code (tar.gz)` si tu veux seulement jouer.
 
-3. Salle 3 - Rupture et scandale
-- Artistes : Pablo Picasso, Vassily Kandinsky, Jean-Michel Basquiat
-- Mot-clef obtenu : `RUPTURE`
+### Quel fichier choisir ?
 
-Code final :
-- ordre des mots : `INTERIEUR IMAGINAIRE RUPTURE`
+Pour Windows :
+- telecharger le fichier `.exe`
 
-## Objectif pedagogique
+Pour Mac Intel :
+- telecharger le fichier `.dmg` contenant `mac-x64`
 
-Le jeu cherche a faire comprendre que :
-- la "folie" attribuee a certains artistes vient souvent du regard social pose sur ce qui derange,
-- une oeuvre peut exprimer l'angoisse, le reve ou la rupture sans etre absurde,
-- les artistes etudies ne sont pas "fous" au sens simpliste du terme ; ils proposent une autre lecture du reel, de l'emotion et de la societe.
+Pour Mac Apple Silicon (M1, M2, M3, etc.) :
+- telecharger le fichier `.dmg` contenant `mac-arm64`
 
-## Gameplay
+## Installation sur Windows
 
-- Exploration libre des salles
-- Interaction avec les panneaux, oeuvres et consoles
-- Carnet de progression
-- Mode UV pour lire certains indices caches
-- Code final base sur 3 mots-clefs
+1. Telecharge le fichier `.exe` depuis la release.
+2. Double-clique sur le fichier telecharge.
+3. Suis les etapes de l'installateur.
+4. Lance le jeu depuis le bureau ou le menu demarrer.
 
-## Controles
+## Installation sur macOS
 
-Clavier :
-- `ZQSD` / `WASD` / fleches : se deplacer
-- `Maj` : courir
-- `E` : interagir
-- `E` / `Echap` / `x` : fermer une fenetre d'information
-- `J` : ouvrir ou fermer le carnet
-- `U` : activer ou desactiver le mode UV
-- `M` : activer ou couper le son
+1. Telecharge le fichier `.dmg` adapte a ton Mac.
+2. Ouvre le fichier `.dmg`.
+3. Glisse l'application dans le dossier `Applications`.
+4. Ouvre l'application depuis `Applications`.
 
-Mobile :
-- boutons tactiles en bas de l'ecran
+Si macOS bloque l'ouverture car l'application vient d'un developpeur non identifie :
+1. ferme le message d'erreur
+2. va dans `Reglages Systeme`
+3. ouvre `Confidentialite et securite`
+4. clique sur `Ouvrir quand meme`
 
-## Lancement
+Autre methode :
+- clic droit sur l'application
+- puis `Ouvrir`
 
-Aucun build n'est necessaire.
+## Lancement local de la version web
+
+Si tu veux lancer le projet comme un site web local :
 
 Option simple :
 - ouvrir `index.html` dans un navigateur moderne
@@ -84,30 +84,100 @@ python3 -m http.server 8000
 
 Puis ouvrir [http://localhost:8000](http://localhost:8000)
 
+## Controles
+
+Clavier :
+- `ZQSD` / `WASD` / fleches : se deplacer
+- `Maj` : courir
+- `E` : interagir
+- `E` / `Echap` / `x` : fermer une fenetre
+- `J` : ouvrir ou fermer le carnet
+- `U` : activer ou desactiver le mode UV
+- `M` : activer ou couper le son
+
+Mobile :
+- boutons tactiles en bas de l'ecran
+
+## Objectif pedagogique
+
+Le jeu cherche a montrer que des artistes souvent juges "fous" par leur epoque ont surtout propose de nouvelles manieres de voir, de ressentir et de representer le monde.
+
+Le joueur doit comprendre que :
+- la folie percue est souvent un regard social,
+- une oeuvre troublante n'est pas vide de sens,
+- l'art peut exprimer l'angoisse, le reve, la rupture et la critique sociale.
+
 ## Structure du projet
 
 - `index.html` : structure de l'interface
-- `styles.css` : styles, HUD, overlays et rendu UI
-- `main.js` : logique du jeu, progression, collisions, rendu canvas, audio
-- `assets/artworks/` : reproductions locales des oeuvres et visuels utilises dans le jeu
+- `styles.css` : styles, HUD et overlays
+- `main.js` : logique du jeu, collisions, progression, rendu et audio
+- `assets/artworks/` : reproductions locales des oeuvres
+- `electron/main.js` : fenetre desktop Electron
+- `.github/workflows/release-desktop.yml` : build automatique Windows et macOS
+- `guide-professeur.txt` : scenario, solution et lecture pedagogique
+
+## Faire une release desktop
+
+Le projet est prepare pour produire :
+- un installateur Windows
+- une application macOS
+
+Les releases sont automatisees via GitHub Actions.
+
+### Methode recommandee
+
+1. Modifier le projet
+2. Mettre a jour la version dans `package.json`
+3. Creer un tag Git :
+```bash
+git tag v1.0.0
+git push origin main --tags
+```
+4. GitHub Actions lance automatiquement les builds Windows et macOS
+5. Les fichiers sont ajoutes a la release GitHub
+
+### Methode manuelle
+
+Il est aussi possible de lancer le workflow depuis l'onglet `Actions` sur GitHub avec `workflow_dispatch`.
+
+## Lancement et build pour le developpement
+
+Prerequis :
+- Node.js 20 ou plus recent
+- npm
+
+Installation des dependances :
+```bash
+npm install
+```
+
+Lancer l'application desktop en local :
+```bash
+npm run start
+```
+
+Construire la version Windows :
+```bash
+npm run dist:win
+```
+
+Construire la version macOS :
+```bash
+npm run dist:mac
+```
+
+Construire toutes les cibles configurees :
+```bash
+npm run dist
+```
 
 ## Ressources artistiques
 
-Le projet utilise des references d'oeuvres issues de Wikipedia et Wikimedia Commons, avec liens sources affiches dans le jeu.
+Le projet utilise des references artistiques issues de Wikipedia et Wikimedia Commons.
+Les visuels necessaires au jeu sont stockes localement dans `assets/artworks/` pour eviter de dependre du reseau au moment de jouer.
 
-Pour garantir un affichage stable, les images necessaires au jeu sont stockees localement dans `assets/artworks/`.
+## Remarque importante
 
-## Etat actuel du projet
-
-Le projet comprend actuellement :
-- une vue top-down pixel jouable
-- 3 salles thematiques
-- des interactions avec les oeuvres
-- des consoles d'analyse
-- un carnet
-- des effets sonores
-- des collisions sur les murs et les objets des salles
-
-## Remarque
-
-Ce projet a une intention a la fois ludique et pedagogique. L'objectif n'est pas seulement de "reussir" l'escape game, mais de comprendre ce que l'on retient des artistes, de leurs oeuvres et du regard que la societe a porte sur eux.
+Le but du projet n'est pas seulement de "finir un escape game".
+Le but est de faire emerger une lecture de l'art, des artistes et du regard que la societe porte sur ce qui la derange ou la depasse.

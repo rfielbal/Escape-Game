@@ -1,0 +1,66 @@
+{
+  "name": "le-secret-du-conservateur",
+  "productName": "Le Secret du Conservateur",
+  "version": "1.0.0",
+  "description": "Escape game desktop et web autour de la folie percue par la societe dans l'histoire de l'art.",
+  "main": "electron/main.js",
+  "author": "Raphael",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "dist:mac": "electron-builder --mac dmg",
+    "dist:win": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "^35.0.0",
+    "electron-builder": "^26.0.0"
+  },
+  "build": {
+    "appId": "com.raphael.lesecretduconservateur",
+    "productName": "Le Secret du Conservateur",
+    "files": [
+      "index.html",
+      "styles.css",
+      "main.js",
+      "assets/**/*",
+      "electron/**/*",
+      "README.md",
+      "guide-professeur.txt",
+      "package.json"
+    ],
+    "asar": true,
+    "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
+    "mac": {
+      "category": "public.app-category.games",
+      "identity": null,
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}
