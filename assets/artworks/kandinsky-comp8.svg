@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f6f0df"/>
+      <stop offset="100%" stop-color="#d9e6f7"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <circle cx="196" cy="182" r="86" fill="none" stroke="#2c2a7e" stroke-width="12"/>
+  <circle cx="580" cy="154" r="42" fill="#f1bb2f"/>
+  <circle cx="512" cy="388" r="76" fill="none" stroke="#d04f7b" stroke-width="10"/>
+  <circle cx="290" cy="402" r="48" fill="#5fbae4"/>
+  <rect x="94" y="306" width="560" height="8" fill="#1f1f1f" transform="rotate(-18 374 310)"/>
+  <rect x="130" y="114" width="488" height="7" fill="#222" transform="rotate(35 374 118)"/>
+  <rect x="196" y="470" width="356" height="6" fill="#1f1f1f" transform="rotate(-2 374 473)"/>
+  <polygon points="650,414 726,518 586,522" fill="#202020"/>
+  <polygon points="426,194 492,288 364,298" fill="#f0b933"/>
+  <polygon points="118,442 180,516 84,522" fill="#e9565d"/>
+  <circle cx="356" cy="156" r="18" fill="#131313"/>
+  <circle cx="428" cy="118" r="12" fill="#e65760"/>
+  <circle cx="624" cy="284" r="14" fill="#53b9df"/>
+  <text x="400" y="566" text-anchor="middle" font-size="28" font-family="Trebuchet MS, Verdana, sans-serif" fill="#2d324a">
+    Composition VIII - interpretation locale
+  </text>
+</svg>

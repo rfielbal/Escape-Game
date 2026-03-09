@@ -122,8 +122,7 @@
       clue:
         "Indice de salle: l'image parle du dedans autant que du dehors.",
       uvClue: "UV: " + "Ce qui derange ici, c'est l'interiorite exposee.",
-      imageUrl:
-        "https://upload.wikimedia.org/wikipedia/commons/e/ea/The_Starry_Night.JPG",
+      assetPath: "assets/artworks/starry-night.jpg",
       sourceUrl:
         "https://fr.wikipedia.org/wiki/La_Nuit_%C3%A9toil%C3%A9e_(1889)"
     },
@@ -143,8 +142,7 @@
       clue:
         "Indice de salle: la peur n'est pas cachee, elle est rendue visible.",
       uvClue: "UV: " + "La societe juge souvent ce qu'elle ne veut pas ressentir.",
-      imageUrl:
-        "https://upload.wikimedia.org/wikipedia/commons/f/f4/The_Scream.jpg",
+      assetPath: "assets/artworks/the-scream.jpg",
       sourceUrl: "https://fr.wikipedia.org/wiki/Le_Cri"
     },
     {
@@ -163,8 +161,7 @@
       clue:
         "Indice de salle: l'oeuvre montre ce que la societe prefere ignorer.",
       uvClue: "UV: " + "Le regard social confond parfois lucide et fou.",
-      imageUrl:
-        "https://upload.wikimedia.org/wikipedia/commons/8/8c/Francisco_de_Goya%2C_Saturno_devorando_a_su_hijo_%281819-1823%29.jpg",
+      assetPath: "assets/artworks/goya-saturn.jpg",
       sourceUrl:
         "https://fr.wikipedia.org/wiki/Saturne_d%C3%A9vorant_un_de_ses_enfants"
     },
@@ -184,8 +181,7 @@
       clue:
         "Indice de salle: ici, l'etrange sert a questionner la norme.",
       uvClue: "UV: " + "Le reve est une methode de lecture du monde.",
-      imageUrl:
-        "https://upload.wikimedia.org/wikipedia/commons/3/38/Jheronimus_Bosch_023.jpg",
+      assetPath: "assets/artworks/bosch-garden.jpg",
       sourceUrl:
         "https://fr.wikipedia.org/wiki/Le_Jardin_des_d%C3%A9lices"
     },
@@ -205,8 +201,7 @@
       clue:
         "Indice de salle: la logique apparente se fissure.",
       uvClue: "UV: " + "Ce qui parait impossible peut reveler une verite intime.",
-      imageUrl:
-        "https://upload.wikimedia.org/wikipedia/en/d/dd/The_Persistence_of_Memory.jpg",
+      assetPath: "assets/artworks/dali-memory.jpg",
       sourceUrl:
         "https://fr.wikipedia.org/wiki/La_Persistance_de_la_m%C3%A9moire"
     },
@@ -226,8 +221,7 @@
       clue:
         "Indice de salle: l'image montre une chose et en cache une autre.",
       uvClue: "UV: " + "L'imaginaire deplace notre regard sur le reel.",
-      imageUrl:
-        "https://upload.wikimedia.org/wikipedia/en/e/e5/Magritte_TheSonOfMan.jpg",
+      assetPath: "assets/artworks/magritte-sonofman.jpg",
       sourceUrl:
         "https://fr.wikipedia.org/wiki/Le_Fils_de_l%27homme"
     },
@@ -247,8 +241,7 @@
       clue:
         "Indice de salle: quand les formes cassent, la norme vacille.",
       uvClue: "UV: " + "RUP: premier fragment cache de la salle.",
-      imageUrl:
-        "https://upload.wikimedia.org/wikipedia/en/d/d4/Les_Demoiselles_d%27Avignon.jpg",
+      assetPath: "assets/artworks/picasso-demoiselles.jpg",
       sourceUrl:
         "https://fr.wikipedia.org/wiki/Les_Demoiselles_d%27Avignon"
     },
@@ -268,8 +261,7 @@
       clue:
         "Indice de salle: l'ordre visuel n'est plus celui de la copie du reel.",
       uvClue: "UV: " + "TUR: second fragment cache de la salle.",
-      imageUrl:
-        "https://upload.wikimedia.org/wikipedia/commons/9/97/Vassily_Kandinsky%2C_1923_-_Composition_8.jpg",
+      assetPath: "assets/artworks/kandinsky-comp8.svg",
       sourceUrl:
         "https://fr.wikipedia.org/wiki/Composition_VIII"
     },
@@ -289,8 +281,7 @@
       clue:
         "Indice de salle: le scandale vient souvent de la rupture des hierarchies.",
       uvClue: "UV: " + "E: troisieme fragment cache de la salle.",
-      imageUrl:
-        "https://upload.wikimedia.org/wikipedia/en/9/97/Untitled_%28Skull%29.jpg",
+      assetPath: "assets/artworks/basquiat-skull.svg",
       sourceUrl:
         "https://fr.wikipedia.org/wiki/Jean-Michel_Basquiat"
     }
@@ -340,14 +331,47 @@
     return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
   }
 
+  function drawRoundedRect(ctx, x, y, width, height, radius) {
+    const r = Math.min(radius, width / 2, height / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + width, y, x + width, y + height, r);
+    ctx.arcTo(x + width, y + height, x, y + height, r);
+    ctx.arcTo(x, y + height, x, y, r);
+    ctx.arcTo(x, y, x + width, y, r);
+    ctx.closePath();
+  }
+
+  function drawImageCover(ctx, image, x, y, width, height) {
+    if (!image || !image.complete || !image.naturalWidth || !image.naturalHeight) {
+      return false;
+    }
+
+    const sourceRatio = image.naturalWidth / image.naturalHeight;
+    const targetRatio = width / height;
+
+    let sx = 0;
+    let sy = 0;
+    let sw = image.naturalWidth;
+    let sh = image.naturalHeight;
+
+    if (sourceRatio > targetRatio) {
+      sw = image.naturalHeight * targetRatio;
+      sx = (image.naturalWidth - sw) / 2;
+    } else {
+      sh = image.naturalWidth / targetRatio;
+      sy = (image.naturalHeight - sh) / 2;
+    }
+
+    ctx.drawImage(image, sx, sy, sw, sh, x, y, width, height);
+    return true;
+  }
+
   class AudioEngine {
     constructor() {
       this.enabled = true;
       this.ctx = null;
       this.master = null;
-      this.ambientGain = null;
-      this.ambientOscA = null;
-      this.ambientOscB = null;
       this.lastStepAt = 0;
       this.userUnlocked = false;
     }
@@ -364,24 +388,8 @@
 
       this.ctx = new AudioCtx();
       this.master = this.ctx.createGain();
-      this.master.gain.value = 0.32;
+      this.master.gain.value = 0.68;
       this.master.connect(this.ctx.destination);
-
-      this.ambientGain = this.ctx.createGain();
-      this.ambientGain.gain.value = 0;
-      this.ambientGain.connect(this.master);
-
-      this.ambientOscA = this.ctx.createOscillator();
-      this.ambientOscA.type = "sine";
-      this.ambientOscA.frequency.value = 170;
-      this.ambientOscA.connect(this.ambientGain);
-      this.ambientOscA.start();
-
-      this.ambientOscB = this.ctx.createOscillator();
-      this.ambientOscB.type = "triangle";
-      this.ambientOscB.frequency.value = 238;
-      this.ambientOscB.connect(this.ambientGain);
-      this.ambientOscB.start();
     }
 
     kickResume() {
@@ -407,23 +415,11 @@
         }
       }
       this.userUnlocked = this.ctx.state === "running";
-      this.updateAmbient();
-    }
-
-    updateAmbient() {
-      if (!this.ctx || !this.ambientGain) {
-        return;
-      }
-      const now = this.ctx.currentTime;
-      const target = this.enabled ? 0.02 : 0;
-      this.ambientGain.gain.cancelScheduledValues(now);
-      this.ambientGain.gain.linearRampToValueAtTime(target, now + 0.3);
     }
 
     toggle() {
       this.kickResume();
       this.enabled = !this.enabled;
-      this.updateAmbient();
       return this.enabled;
     }
 
@@ -466,16 +462,17 @@
       this.kickResume();
 
       if (type === "success") {
-        this.playTone({ wave: "square", startHz: 620, endHz: 860, peak: 0.08, duration: 0.11 });
-        this.playTone({ wave: "triangle", startHz: 840, endHz: 1020, peak: 0.06, duration: 0.1 });
+        this.playTone({ wave: "square", startHz: 740, endHz: 1040, peak: 0.15, duration: 0.11 });
+        this.playTone({ wave: "triangle", startHz: 980, endHz: 1240, peak: 0.12, duration: 0.1 });
       } else if (type === "error") {
-        this.playTone({ wave: "sawtooth", startHz: 280, endHz: 170, peak: 0.08, duration: 0.18 });
+        this.playTone({ wave: "sawtooth", startHz: 320, endHz: 170, peak: 0.16, duration: 0.2 });
       } else if (type === "interact") {
-        this.playTone({ wave: "triangle", startHz: 700, endHz: 520, peak: 0.06, duration: 0.1 });
+        this.playTone({ wave: "triangle", startHz: 880, endHz: 620, peak: 0.13, duration: 0.1 });
+        this.playTone({ wave: "sine", startHz: 480, endHz: 420, peak: 0.08, duration: 0.08 });
       } else if (type === "toggle") {
-        this.playTone({ wave: "sine", startHz: 560, endHz: 660, peak: 0.05, duration: 0.08 });
+        this.playTone({ wave: "sine", startHz: 620, endHz: 760, peak: 0.1, duration: 0.08 });
       } else {
-        this.playTone({ wave: "triangle", startHz: 470, endHz: 420, peak: 0.05, duration: 0.1 });
+        this.playTone({ wave: "triangle", startHz: 520, endHz: 440, peak: 0.08, duration: 0.1 });
       }
     }
 
@@ -486,17 +483,17 @@
       this.kickResume();
 
       const now = this.ctx.currentTime;
-      if (now - this.lastStepAt < 0.16) {
+      if (now - this.lastStepAt < 0.14) {
         return;
       }
       this.lastStepAt = now;
 
       this.playTone({
-        wave: "triangle",
-        startHz: 310 + Math.random() * 60,
-        endHz: 250 + Math.random() * 30,
-        peak: 0.03,
-        duration: 0.065
+        wave: "square",
+        startHz: 190 + Math.random() * 40,
+        endHz: 140 + Math.random() * 30,
+        peak: 0.07,
+        duration: 0.055
       });
     }
   }
@@ -528,6 +525,7 @@
       this.modalTitle = document.getElementById("modal-title");
       this.modalBody = document.getElementById("modal-body");
       this.modalCloseBtn = document.getElementById("modal-close");
+      this.activeModalKind = null;
 
       this.touchButtons = Array.from(document.querySelectorAll("[data-touch]"));
 
@@ -551,7 +549,10 @@
 
       this.player = {
         x: 3.5,
-        y: 10.5
+        y: 10.5,
+        facing: "right",
+        walkPhase: 0,
+        moving: false
       };
 
       this.state = {
@@ -575,12 +576,16 @@
       };
 
       this.interactables = [];
+      this.decorations = [];
+      this.artworkImages = new Map();
       this.tileSize = 16;
       this.mapOffsetX = 16;
       this.mapOffsetY = 32;
 
       this.buildMap();
       this.buildInteractables();
+      this.buildDecorations();
+      this.preloadArtworkImages();
       this.attachUi();
       this.refreshNotebook();
       this.updateObjective();
@@ -615,6 +620,10 @@
         }
 
         if (!event.repeat) {
+          if (key === "e" && !this.modalPanel.classList.contains("hidden") && this.activeModalKind === "artwork") {
+            this.closeModal();
+            return;
+          }
           if (key === "e") {
             this.tryInteract();
           }
@@ -764,6 +773,40 @@
       ];
     }
 
+    buildDecorations() {
+      this.decorations = [
+        { type: "runner", room: 1, x: 6.5, y: 10.0, w: 5.5, h: 8.5 },
+        { type: "runner", room: 2, x: 18.5, y: 10.0, w: 5.5, h: 8.5 },
+        { type: "runner", room: 3, x: 30.0, y: 10.0, w: 5.5, h: 8.5 },
+        { type: "bench", room: 1, x: 6.5, y: 9.5 },
+        { type: "bench", room: 2, x: 18.5, y: 9.5 },
+        { type: "bench", room: 3, x: 30.0, y: 9.5 },
+        { type: "plant", room: 1, x: 2.1, y: 16.6 },
+        { type: "plant", room: 1, x: 10.6, y: 16.6 },
+        { type: "plant", room: 2, x: 14.3, y: 16.6 },
+        { type: "plant", room: 2, x: 22.4, y: 16.6 },
+        { type: "plant", room: 3, x: 26.3, y: 16.6 },
+        { type: "plant", room: 3, x: 33.7, y: 16.6 },
+        { type: "pedestal", room: 1, x: 3.3, y: 9.8 },
+        { type: "pedestal", room: 2, x: 15.2, y: 9.8 },
+        { type: "pedestal", room: 3, x: 27.2, y: 9.8 }
+      ];
+    }
+
+    preloadArtworkImages() {
+      for (const art of ARTWORKS) {
+        if (!art.assetPath) {
+          continue;
+        }
+
+        const image = new Image();
+        image.decoding = "async";
+        image.loading = "eager";
+        image.src = art.assetPath;
+        this.artworkImages.set(art.id, image);
+      }
+    }
+
     run() {
       const loop = (time) => {
         const dt = Math.min((time - this.lastFrame) / 1000, 0.05);
@@ -815,12 +858,21 @@
       }
 
       if (dx === 0 && dy === 0) {
+        this.player.moving = false;
         return;
       }
 
       const length = Math.hypot(dx, dy) || 1;
       dx /= length;
       dy /= length;
+
+      this.player.moving = true;
+      this.player.walkPhase += dt * 16;
+      if (Math.abs(dx) > Math.abs(dy)) {
+        this.player.facing = dx > 0 ? "right" : "left";
+      } else {
+        this.player.facing = dy > 0 ? "down" : "up";
+      }
 
       const targetX = this.player.x + dx * speed * dt;
       const targetY = this.player.y + dy * speed * dt;
@@ -943,6 +995,7 @@
     render() {
       this.drawBackdrop();
       this.drawMap();
+      this.drawDecorations();
       this.drawInteractables();
       this.drawPlayer();
       this.drawFocus();
@@ -950,13 +1003,28 @@
     }
 
     drawBackdrop() {
-      this.ctx.fillStyle = this.state.uvMode ? "#2f2b54" : "#9fd6c8";
+      const gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
+      if (this.state.uvMode) {
+        gradient.addColorStop(0, "#261f47");
+        gradient.addColorStop(1, "#110f24");
+      } else {
+        gradient.addColorStop(0, "#f6ead3");
+        gradient.addColorStop(1, "#d8e8dd");
+      }
+
+      this.ctx.fillStyle = gradient;
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-      this.ctx.fillStyle = this.state.uvMode ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.1)";
-      for (let y = 0; y < this.canvas.height; y += 20) {
+      this.ctx.fillStyle = this.state.uvMode ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.08)";
+      for (let y = 0; y < this.canvas.height; y += 18) {
         this.ctx.fillRect(0, y, this.canvas.width, 1);
       }
+
+      this.ctx.fillStyle = this.state.uvMode ? "rgba(172, 111, 255, 0.08)" : "rgba(70, 109, 114, 0.06)";
+      this.ctx.beginPath();
+      this.ctx.arc(this.canvas.width * 0.18, this.canvas.height * 0.2, 120, 0, Math.PI * 2);
+      this.ctx.arc(this.canvas.width * 0.82, this.canvas.height * 0.17, 140, 0, Math.PI * 2);
+      this.ctx.fill();
     }
 
     floorColorForRoom(room) {
@@ -995,20 +1063,31 @@
           if (tile === TILE.FLOOR) {
             const room = this.roomFromX(x);
             const [r, g, b] = this.floorColorForRoom(room);
-            const shade = (x + y) % 2 === 0 ? 8 : -4;
+            const shade = room === 1
+              ? ((x + y) % 2 === 0 ? 12 : -8)
+              : room === 2
+                ? ((x + y) % 3 === 0 ? 10 : -3)
+                : ((x + y) % 2 === 0 ? 5 : -5);
             const cr = clamp(r + shade, 0, 255);
             const cg = clamp(g + shade, 0, 255);
             const cb = clamp(b + shade, 0, 255);
             this.ctx.fillStyle = `rgb(${cr}, ${cg}, ${cb})`;
             this.ctx.fillRect(px, py, this.tileSize, this.tileSize);
 
-            this.ctx.strokeStyle = "rgba(0,0,0,0.06)";
+            if (room === 1 && y % 2 === 0) {
+              this.ctx.fillStyle = "rgba(102, 66, 34, 0.08)";
+              this.ctx.fillRect(px, py + this.tileSize - 2, this.tileSize, 1);
+            }
+
+            this.ctx.strokeStyle = "rgba(0,0,0,0.05)";
             this.ctx.strokeRect(px, py, this.tileSize, this.tileSize);
           } else if (tile === TILE.WALL) {
-            this.ctx.fillStyle = this.state.uvMode ? "#2a2446" : "#6c5a45";
+            this.ctx.fillStyle = this.state.uvMode ? "#2d2748" : "#6f5945";
             this.ctx.fillRect(px, py, this.tileSize, this.tileSize);
-            this.ctx.fillStyle = this.state.uvMode ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.12)";
-            this.ctx.fillRect(px, py, this.tileSize, Math.max(2, Math.floor(this.tileSize * 0.18)));
+            this.ctx.fillStyle = this.state.uvMode ? "#4d427b" : "#9e8068";
+            this.ctx.fillRect(px, py, this.tileSize, Math.max(3, Math.floor(this.tileSize * 0.22)));
+            this.ctx.fillStyle = "rgba(0,0,0,0.12)";
+            this.ctx.fillRect(px, py + this.tileSize - 2, this.tileSize, 2);
           } else if (tile === TILE.DOOR_1 || tile === TILE.DOOR_2 || tile === TILE.DOOR_EXIT) {
             const color = tile === TILE.DOOR_1
               ? (this.state.uvMode ? "#6b5aa7" : "#b06a4f")
@@ -1017,11 +1096,15 @@
                 : (this.state.uvMode ? "#a871d0" : "#b5973f");
             this.ctx.fillStyle = color;
             this.ctx.fillRect(px, py, this.tileSize, this.tileSize);
-            this.ctx.fillStyle = "rgba(255,255,255,0.3)";
+            this.ctx.fillStyle = "rgba(255,255,255,0.38)";
             this.ctx.fillRect(px + 2, py + 2, this.tileSize - 4, 2);
+            this.ctx.fillStyle = "rgba(0,0,0,0.15)";
+            this.ctx.fillRect(px + this.tileSize / 2 - 1, py + 3, 2, this.tileSize - 6);
           }
         }
       }
+
+      this.drawRoomAtmosphere();
 
       this.ctx.strokeStyle = this.state.uvMode ? "rgba(255,255,255,0.3)" : "rgba(34,42,43,0.35)";
       this.ctx.lineWidth = 2;
@@ -1031,6 +1114,117 @@
         this.mapWidth * this.tileSize,
         this.mapHeight * this.tileSize
       );
+    }
+
+    drawRoomAtmosphere() {
+      const rooms = [
+        { id: 1, x1: 1, x2: 11, tint: this.state.uvMode ? "rgba(186, 144, 255, 0.12)" : "rgba(152, 92, 48, 0.08)" },
+        { id: 2, x1: 13, x2: 23, tint: this.state.uvMode ? "rgba(142, 215, 255, 0.12)" : "rgba(70, 145, 188, 0.08)" },
+        { id: 3, x1: 25, x2: 34, tint: this.state.uvMode ? "rgba(242, 161, 255, 0.12)" : "rgba(156, 65, 148, 0.08)" }
+      ];
+
+      this.ctx.textAlign = "center";
+      for (const room of rooms) {
+        const x = this.mapOffsetX + room.x1 * this.tileSize;
+        const y = this.mapOffsetY + this.tileSize;
+        const width = (room.x2 - room.x1 + 1) * this.tileSize;
+        const height = (this.mapHeight - 2) * this.tileSize;
+
+        this.ctx.fillStyle = room.tint;
+        drawRoundedRect(this.ctx, x + 4, y + 4, width - 8, height - 8, 14);
+        this.ctx.fill();
+
+        this.ctx.fillStyle = this.state.uvMode ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.32)";
+        drawRoundedRect(this.ctx, x + width / 2 - 54, y + 8, 108, 22, 8);
+        this.ctx.fill();
+
+        this.ctx.fillStyle = this.state.uvMode ? "#f0e4ff" : "#324243";
+        this.ctx.font = "bold 11px Trebuchet MS";
+        this.ctx.fillText(ROOM_THEMES[room.id].shortName, x + width / 2, y + 23);
+      }
+    }
+
+    drawDecorations() {
+      for (const decoration of this.decorations) {
+        if (decoration.type === "runner") {
+          this.drawRunner(decoration);
+        } else if (decoration.type === "bench") {
+          this.drawBench(decoration);
+        } else if (decoration.type === "plant") {
+          this.drawPlant(decoration);
+        } else if (decoration.type === "pedestal") {
+          this.drawPedestal(decoration);
+        }
+      }
+    }
+
+    drawRunner(decoration) {
+      const x = this.mapOffsetX + (decoration.x - decoration.w / 2) * this.tileSize;
+      const y = this.mapOffsetY + (decoration.y - decoration.h / 2) * this.tileSize;
+      const width = decoration.w * this.tileSize;
+      const height = decoration.h * this.tileSize;
+      const fill = decoration.room === 1
+        ? (this.state.uvMode ? "rgba(121, 85, 176, 0.36)" : "rgba(157, 81, 48, 0.24)")
+        : decoration.room === 2
+          ? (this.state.uvMode ? "rgba(73, 140, 193, 0.34)" : "rgba(90, 164, 198, 0.22)")
+          : (this.state.uvMode ? "rgba(167, 74, 184, 0.34)" : "rgba(171, 84, 154, 0.2)");
+      const border = this.state.uvMode ? "rgba(255,255,255,0.14)" : "rgba(79, 61, 41, 0.16)";
+
+      this.ctx.fillStyle = fill;
+      drawRoundedRect(this.ctx, x, y, width, height, 14);
+      this.ctx.fill();
+      this.ctx.strokeStyle = border;
+      this.ctx.lineWidth = 2;
+      drawRoundedRect(this.ctx, x + 2, y + 2, width - 4, height - 4, 12);
+      this.ctx.stroke();
+    }
+
+    drawBench(decoration) {
+      const cx = this.mapOffsetX + decoration.x * this.tileSize;
+      const cy = this.mapOffsetY + decoration.y * this.tileSize;
+      const width = this.tileSize * 1.35;
+      const height = this.tileSize * 0.55;
+
+      this.ctx.fillStyle = "rgba(0,0,0,0.16)";
+      this.ctx.fillRect(cx - width / 2 + 2, cy - 1, width, height);
+      this.ctx.fillStyle = this.state.uvMode ? "#7d6ca9" : "#7d5d3c";
+      drawRoundedRect(this.ctx, cx - width / 2, cy - height / 2, width, height, 4);
+      this.ctx.fill();
+      this.ctx.fillStyle = this.state.uvMode ? "#ab9fd1" : "#b18a5c";
+      this.ctx.fillRect(cx - width / 2 + 2, cy - height / 2 + 2, width - 4, 3);
+    }
+
+    drawPlant(decoration) {
+      const cx = this.mapOffsetX + decoration.x * this.tileSize;
+      const cy = this.mapOffsetY + decoration.y * this.tileSize;
+
+      this.ctx.fillStyle = this.state.uvMode ? "#7053a4" : "#9b7248";
+      this.ctx.fillRect(cx - 5, cy + 1, 10, 6);
+      this.ctx.fillStyle = this.state.uvMode ? "#c1b0ff" : "#5f9c55";
+      this.ctx.beginPath();
+      this.ctx.arc(cx, cy - 1, 7, 0, Math.PI * 2);
+      this.ctx.fill();
+      this.ctx.fillStyle = this.state.uvMode ? "#e7dcff" : "#78bf6e";
+      this.ctx.beginPath();
+      this.ctx.arc(cx - 4, cy - 4, 4, 0, Math.PI * 2);
+      this.ctx.arc(cx + 4, cy - 4, 4, 0, Math.PI * 2);
+      this.ctx.fill();
+    }
+
+    drawPedestal(decoration) {
+      const cx = this.mapOffsetX + decoration.x * this.tileSize;
+      const cy = this.mapOffsetY + decoration.y * this.tileSize;
+
+      this.ctx.fillStyle = "rgba(0,0,0,0.12)";
+      this.ctx.fillRect(cx - 7, cy - 1, 14, 12);
+      this.ctx.fillStyle = this.state.uvMode ? "#dad6ff" : "#f4efe6";
+      this.ctx.fillRect(cx - 8, cy - 8, 16, 14);
+      this.ctx.strokeStyle = this.state.uvMode ? "#7963b4" : "#bcaf94";
+      this.ctx.strokeRect(cx - 8, cy - 8, 16, 14);
+      this.ctx.fillStyle = this.state.uvMode ? "#b298ff" : "#d6c7a4";
+      this.ctx.beginPath();
+      this.ctx.arc(cx, cy - 10, 5, 0, Math.PI * 2);
+      this.ctx.fill();
     }
 
     drawInteractables() {
@@ -1059,10 +1253,33 @@
             : room === 2
               ? (this.state.uvMode ? "#cff3ff" : "#2c6f98")
               : (this.state.uvMode ? "#ffd6ff" : "#7d2f7a");
+          const innerX = Math.round(cx - size / 2 + 2);
+          const innerY = Math.round(cy - size / 2 + 2);
+          const innerSize = Math.round(size - 4);
+
+          this.ctx.fillStyle = this.state.uvMode ? "rgba(255,255,255,0.08)" : "rgba(255, 223, 174, 0.22)";
+          this.ctx.beginPath();
+          this.ctx.ellipse(cx, cy + size * 0.12, size * 0.85, size * 1.25, 0, 0, Math.PI * 2);
+          this.ctx.fill();
+
           this.ctx.fillStyle = frameColor;
           this.ctx.fillRect(cx - size / 2, cy - size / 2, size, size);
           this.ctx.fillStyle = this.state.uvMode ? "#35255d" : "#f9f3ea";
-          this.ctx.fillRect(cx - size / 2 + 2, cy - size / 2 + 2, size - 4, size - 4);
+          this.ctx.fillRect(innerX, innerY, innerSize, innerSize);
+
+          const image = art ? this.artworkImages.get(art.id) : null;
+          this.ctx.save();
+          this.ctx.beginPath();
+          this.ctx.rect(innerX, innerY, innerSize, innerSize);
+          this.ctx.clip();
+          if (!drawImageCover(this.ctx, image, innerX, innerY, innerSize, innerSize)) {
+            this.ctx.fillStyle = this.state.uvMode ? "#3e2d68" : "#eadcc7";
+            this.ctx.fillRect(innerX, innerY, innerSize, innerSize);
+          }
+          this.ctx.restore();
+
+          this.ctx.fillStyle = this.state.uvMode ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.2)";
+          this.ctx.fillRect(innerX + 1, innerY + 1, innerSize - 2, 2);
 
           if (art && this.state.viewedArtworks.has(art.id)) {
             this.ctx.fillStyle = this.state.uvMode ? "#abffbf" : "#1f6e45";
@@ -1073,6 +1290,10 @@
             this.ctx.fillStyle = "#f6e6ff";
             this.ctx.fillRect(cx - 2, cy - 2, 4, 4);
           }
+
+          this.ctx.fillStyle = this.state.uvMode ? "#f4e9ff" : "#ffffff";
+          drawRoundedRect(this.ctx, cx - size / 2 + 1, cy + size / 2 + 2, size - 2, 5, 2);
+          this.ctx.fill();
           continue;
         }
 
@@ -1099,23 +1320,40 @@
     }
 
     drawPlayer() {
-      const cx = this.mapOffsetX + this.player.x * this.tileSize;
-      const cy = this.mapOffsetY + this.player.y * this.tileSize;
-      const radius = Math.max(5, Math.floor(this.tileSize * 0.33));
+      const cx = Math.round(this.mapOffsetX + this.player.x * this.tileSize);
+      const cy = Math.round(this.mapOffsetY + this.player.y * this.tileSize);
+      const bob = Math.round(this.player.moving ? Math.sin(this.player.walkPhase) * 1.4 : 0);
+      const swing = Math.round(this.player.moving ? Math.sin(this.player.walkPhase) * 2 : 0);
 
-      this.ctx.fillStyle = "rgba(0,0,0,0.25)";
+      this.ctx.fillStyle = "rgba(0,0,0,0.22)";
       this.ctx.beginPath();
-      this.ctx.arc(cx + 1, cy + 2, radius, 0, Math.PI * 2);
+      this.ctx.ellipse(cx, cy + 7, 8, 4, 0, 0, Math.PI * 2);
       this.ctx.fill();
 
-      this.ctx.fillStyle = this.state.uvMode ? "#f4dbff" : "#ffefbe";
-      this.ctx.beginPath();
-      this.ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-      this.ctx.fill();
+      this.ctx.fillStyle = this.state.uvMode ? "#2d2553" : "#2f4c78";
+      this.ctx.fillRect(cx - 5, cy - 1 + bob, 10, 10);
+      this.ctx.fillStyle = this.state.uvMode ? "#f7e6ff" : "#ffd8b1";
+      this.ctx.fillRect(cx - 4, cy - 9 + bob, 8, 8);
+      this.ctx.fillStyle = this.state.uvMode ? "#c7afff" : "#745031";
+      this.ctx.fillRect(cx - 5, cy - 11 + bob, 10, 3);
 
-      this.ctx.fillStyle = this.state.uvMode ? "#472f6d" : "#6e4e1b";
-      this.ctx.fillRect(cx - 2, cy - 2, 2, 2);
-      this.ctx.fillRect(cx + 1, cy - 2, 2, 2);
+      this.ctx.fillStyle = this.state.uvMode ? "#d9caff" : "#f1c57d";
+      if (this.player.facing === "left") {
+        this.ctx.fillRect(cx - 6, cy - 7 + bob, 2, 2);
+      } else if (this.player.facing === "right") {
+        this.ctx.fillRect(cx + 4, cy - 7 + bob, 2, 2);
+      } else {
+        this.ctx.fillRect(cx - 3, cy - 7 + bob, 2, 2);
+        this.ctx.fillRect(cx + 1, cy - 7 + bob, 2, 2);
+      }
+
+      this.ctx.fillStyle = this.state.uvMode ? "#ece3ff" : "#523216";
+      this.ctx.fillRect(cx - 5, cy + 9, 3, 4 + Math.max(0, swing));
+      this.ctx.fillRect(cx + 2, cy + 9, 3, 4 + Math.max(0, -swing));
+
+      this.ctx.fillStyle = this.state.uvMode ? "#eadfff" : "#dba85f";
+      this.ctx.fillRect(cx - 7, cy + 1 + bob, 2, 6);
+      this.ctx.fillRect(cx + 5, cy + 1 + bob, 2, 6);
     }
 
     drawFocus() {
@@ -1181,7 +1419,7 @@
         return;
       }
 
-      const body = this.openModal(`${theme.name} - Panneau`);
+      const body = this.openModal(`${theme.name} - Panneau`, "panel");
       const intro = document.createElement("p");
       intro.textContent = theme.intro;
       body.appendChild(intro);
@@ -1193,9 +1431,10 @@
       body.appendChild(note);
     }
 
-    openModal(title) {
+    openModal(title, kind = "generic") {
       this.modalTitle.textContent = title;
       this.modalBody.innerHTML = "";
+      this.activeModalKind = kind;
       this.modalPanel.classList.remove("hidden");
       return this.modalBody;
     }
@@ -1203,6 +1442,7 @@
     closeModal() {
       this.modalPanel.classList.add("hidden");
       this.modalBody.innerHTML = "";
+      this.activeModalKind = null;
     }
 
     isOverlayOpen() {
@@ -1224,7 +1464,7 @@
       }
       this.refreshNotebook();
 
-      const body = this.openModal(`${ROOM_THEMES[art.room].name} - ${art.title}`);
+      const body = this.openModal(`${ROOM_THEMES[art.room].name} - ${art.title}`, "artwork");
 
       const card = document.createElement("div");
       card.className = "artwork-card";
@@ -1240,11 +1480,11 @@
       fallback.style.backgroundSize = "cover";
       fallback.style.backgroundPosition = "center";
 
-      if (art.imageUrl) {
+      if (art.assetPath) {
         fallback.classList.add("hidden");
         const img = document.createElement("img");
         img.className = "artwork-image";
-        img.src = art.imageUrl;
+        img.src = art.assetPath;
         img.alt = `${art.title} - ${art.artist}`;
         img.addEventListener("error", () => {
           img.remove();
@@ -1285,6 +1525,11 @@
       note.textContent =
         "Projet academique: ressources artistiques externes (Wikimedia/Wikipedia) avec credit de source.";
       body.appendChild(note);
+
+      const closeHint = document.createElement("div");
+      closeHint.className = "modal-hint";
+      closeHint.textContent = "Fermer: touche E, Echap ou bouton x";
+      body.appendChild(closeHint);
     }
 
     roomMissingArtworks(roomId) {
@@ -1297,7 +1542,7 @@
         return;
       }
 
-      const body = this.openModal(`${theme.name} - Console d'analyse`);
+      const body = this.openModal(`${theme.name} - Console d'analyse`, "terminal");
 
       if (roomId === 2 && !this.state.solvedRooms[1]) {
         const p = document.createElement("p");
@@ -1387,7 +1632,7 @@
     }
 
     openExitTerminal() {
-      const body = this.openModal("Porte principale - Assemblage des 3 mots");
+      const body = this.openModal("Porte principale - Assemblage des 3 mots", "exit");
 
       const missing = [];
       if (!this.state.solvedRooms[1]) {

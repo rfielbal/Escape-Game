@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f6df62"/>
+      <stop offset="100%" stop-color="#d47446"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect x="72" y="72" width="656" height="456" fill="rgba(14,14,14,0.15)"/>
+  <path d="M290 144 L476 144 L544 248 L520 410 L426 482 L304 462 L236 364 L246 230 Z" fill="#2e75be" stroke="#151515" stroke-width="12"/>
+  <path d="M328 194 L392 176 L454 192 L488 248 L470 310 L410 346 L340 332 L300 280 Z" fill="#f6d7a8" stroke="#121212" stroke-width="10"/>
+  <circle cx="360" cy="252" r="34" fill="#141414"/>
+  <circle cx="444" cy="252" r="28" fill="#141414"/>
+  <circle cx="360" cy="252" r="10" fill="#f4ede3"/>
+  <circle cx="444" cy="252" r="9" fill="#f4ede3"/>
+  <polygon points="402,272 424,314 384,314" fill="#d63939"/>
+  <rect x="344" y="356" width="118" height="62" fill="#f4ede3" stroke="#141414" stroke-width="8"/>
+  <line x1="366" y1="360" x2="366" y2="414" stroke="#141414" stroke-width="7"/>
+  <line x1="394" y1="360" x2="394" y2="414" stroke="#141414" stroke-width="7"/>
+  <line x1="422" y1="360" x2="422" y2="414" stroke="#141414" stroke-width="7"/>
+  <line x1="450" y1="360" x2="450" y2="414" stroke="#141414" stroke-width="7"/>
+  <rect x="246" y="172" width="42" height="14" fill="#141414"/>
+  <rect x="520" y="192" width="42" height="14" fill="#141414"/>
+  <path d="M208 118 L246 136 L226 168" fill="none" stroke="#141414" stroke-width="9"/>
+  <path d="M570 428 L612 456 L584 492" fill="none" stroke="#141414" stroke-width="9"/>
+  <text x="400" y="564" text-anchor="middle" font-size="28" font-family="Trebuchet MS, Verdana, sans-serif" fill="#1e1e1e">
+    Untitled (Skull) - interpretation locale
+  </text>
+</svg>
