@@ -1,63 +1,63 @@
 LE SECRET DU CONSERVATEUR
 Guide professeur
 
-1. Presentation generale
+1. Présentation générale
 
-Le jeu est un escape game web en vue top-down pixel realise pour un projet de BTS SIO.
-Le joueur est enferme dans un musee pendant une visite nocturne. Le conservateur lui impose un parcours dans 3 salles pour comprendre pourquoi certains artistes ont ete percus comme "fous" par leur epoque.
+Le jeu est un escape game web en vue top-down pixel, réalisé dans le cadre d'un BTS SIO.
+Le joueur est enfermé dans un musée pendant une visite nocturne. Le conservateur lui impose un parcours en trois salles pour comprendre pourquoi certains artistes ont été perçus comme « fous » par leur époque.
 
-L'objectif n'est pas seulement de jouer, mais de faire emerger une reflexion sur le regard social pose sur l'art, les artistes et les formes nouvelles de creation.
-
-
-2. Theme du jeu
-
-Theme central :
-La folie percue par la societe
-
-Le jeu montre que des artistes ont souvent ete juges excessifs, incomprehensibles, instables ou choquants, non parce qu'ils etaient "fous" au sens simple du terme, mais parce qu'ils remettaient en cause les normes artistiques, sociales ou emotionnelles de leur temps.
+L'objectif n'est pas seulement de jouer, mais de faire émerger une réflexion sur le regard social porté sur l'art, les artistes et les formes nouvelles de création.
 
 
-3. Scenario
+2. Thème du jeu
 
-Lors d'une visite nocturne, le conservateur verrouille le musee et lance un defi au joueur :
+Thème central :
+La folie perçue par la société
 
-"Tu ne sortiras pas tant que tu n'auras pas compris l'art que les autres ont refuse de comprendre."
+Le jeu montre que des artistes ont souvent été jugés excessifs, incompréhensibles, instables ou choquants, non parce qu'ils étaient « fous » au sens simple du terme, mais parce qu'ils remettaient en cause les normes artistiques, sociales ou émotionnelles de leur temps.
+
+
+3. Scénario
+
+Lors d'une visite nocturne, le conservateur verrouille le musée et lance un défi au joueur :
+
+« Tu ne sortiras pas tant que tu n'auras pas compris l'art que les autres ont refusé de comprendre. »
 
 Le joueur doit :
-- visiter 3 salles,
-- observer les oeuvres,
-- lire des informations sur les artistes,
-- comprendre le lien entre les oeuvres d'une meme salle,
-- valider une console d'analyse,
-- recuperer 3 mots-clefs,
-- entrer ces 3 mots dans l'ordre pour sortir.
+- visiter trois salles ;
+- observer les œuvres ;
+- lire des informations sur les artistes ;
+- comprendre le lien entre les œuvres d'une même salle ;
+- valider une console d'analyse ;
+- récupérer trois mots-clés ;
+- entrer ces trois mots dans l'ordre pour sortir.
 
 
 4. Structure des salles
 
-Salle 1 - Angoisse interieure
+Salle 1 - Angoisse intérieure
 Artistes :
 - Vincent van Gogh
 - Edvard Munch
 - Francisco de Goya
 
-Idee de la salle :
-Ces oeuvres rendent visibles la souffrance, l'angoisse, la peur et la violence interieure. Ce qui a pu etre percu comme une forme de folie devient ici un langage artistique.
+Idée de la salle :
+Ces œuvres rendent visibles la souffrance, l'angoisse, la peur et la violence intérieure. Ce qui a pu être perçu comme une forme de folie devient ici un langage artistique.
 
-Mot-clef :
+Mot-clé :
 INTERIEUR
 
 
-Salle 2 - Reve et visions
+Salle 2 - Rêve et visions
 Artistes :
-- Jerome Bosch
-- Salvador Dali
-- Rene Magritte
+- Jérôme Bosch
+- Salvador Dalí
+- René Magritte
 
-Idee de la salle :
-Les artistes de cette salle s'appuient sur l'etrange, le reve, le symbole et l'irrationnel. Ils deplacent la logique ordinaire et montrent que l'imaginaire peut etre une autre maniere de penser.
+Idée de la salle :
+Les artistes de cette salle s'appuient sur l'étrange, le rêve, le symbole et l'irrationnel. Ils déplacent la logique ordinaire et montrent que l'imaginaire peut être une autre manière de penser.
 
-Mot-clef :
+Mot-clé :
 IMAGINAIRE
 
 
@@ -67,79 +67,79 @@ Artistes :
 - Vassily Kandinsky
 - Jean-Michel Basquiat
 
-Idee de la salle :
-Les artistes de cette salle cassent les formes, les codes academiques et les habitudes visuelles. Ils ont souvent choque parce qu'ils proposaient une rupture nette avec ce que le public attendait.
+Idée de la salle :
+Les artistes de cette salle cassent les formes, les codes académiques et les habitudes visuelles. Ils ont souvent choqué parce qu'ils proposaient une rupture nette avec ce que le public attendait.
 
-Mot-clef :
+Mot-clé :
 RUPTURE
 
 
-5. Soluce complete
+5. Solution complète
 
-Etape 1 :
-Explorer la salle 1 et consulter les 3 oeuvres.
+Étape 1 :
+Explorer la salle 1 et consulter les trois œuvres.
 
-Bonne interpretation a retenir :
-Les artistes de la salle 1 transforment la souffrance interieure en image. Leurs oeuvres montrent ce que la societe cache ou refuse de regarder.
+Bonne interprétation à retenir :
+Les artistes de la salle 1 transforment la souffrance intérieure en image. Leurs œuvres montrent ce que la société cache ou refuse de regarder.
 
-Mot-clef obtenu :
+Mot-clé obtenu :
 INTERIEUR
 
 
-Etape 2 :
-Explorer la salle 2 et consulter les 3 oeuvres.
+Étape 2 :
+Explorer la salle 2 et consulter les trois œuvres.
 
-Bonne interpretation a retenir :
-Les artistes de la salle 2 utilisent l'imaginaire, le reve et l'etrange pour remettre en cause ce qui parait normal ou rationnel.
+Bonne interprétation à retenir :
+Les artistes de la salle 2 utilisent l'imaginaire, le rêve et l'étrange pour remettre en cause ce qui paraît normal ou rationnel.
 
-Mot-clef obtenu :
+Mot-clé obtenu :
 IMAGINAIRE
 
 
-Etape 3 :
-Explorer la salle 3 et consulter les 3 oeuvres.
+Étape 3 :
+Explorer la salle 3 et consulter les trois œuvres.
 
-Bonne interpretation a retenir :
-Les artistes de la salle 3 rompent avec les formes, les regles et les attentes du public. Ce qui est percu comme scandaleux ou absurde devient une innovation artistique.
+Bonne interprétation à retenir :
+Les artistes de la salle 3 rompent avec les formes, les règles et les attentes du public. Ce qui est perçu comme scandaleux ou absurde devient une innovation artistique.
 
-Mot-clef obtenu :
+Mot-clé obtenu :
 RUPTURE
 
 
-Etape 4 :
+Étape 4 :
 Assemblage final
 
-Ordre des mots a entrer :
+Ordre des mots à entrer :
 INTERIEUR IMAGINAIRE RUPTURE
 
 
-6. Ce que le jeu cherche a transmettre
+6. Ce que le jeu cherche à transmettre
 
-Le jeu cherche a faire comprendre que :
-- la folie percue est souvent une reaction sociale face a une oeuvre nouvelle ou derangeante,
-- l'art permet de rendre visibles des emotions, des visions ou des critiques que les formes classiques expriment moins directement,
-- un artiste peut etre rejete a son epoque avant d'etre reconnu plus tard.
+Le jeu cherche à faire comprendre que :
+- la folie perçue est souvent une réaction sociale face à une œuvre nouvelle ou dérangeante ;
+- l'art permet de rendre visibles des émotions, des visions ou des critiques que les formes classiques expriment moins directement ;
+- un artiste peut être rejeté à son époque avant d'être reconnu plus tard.
 
-Le joueur doit retenir que l'incomprehension du public ne signifie pas absence de sens. Au contraire, les artistes choisis montrent qu'une oeuvre peut etre tres construite, tres lucide et profondement signifiante meme lorsqu'elle trouble ou choque.
+Le joueur doit retenir que l'incompréhension du public ne signifie pas l'absence de sens. Au contraire, les artistes choisis montrent qu'une œuvre peut être très construite, très lucide et profondément signifiante, même lorsqu'elle trouble ou choque.
 
 
-7. Ce que l'on retient des auteurs et de leurs oeuvres
+7. Ce que l'on retient des auteurs et de leurs œuvres
 
 Vincent van Gogh, Edvard Munch et Francisco de Goya :
-On retient que l'art peut porter l'angoisse, la peur, la souffrance et l'obscurite humaine sans etre seulement decoratif. Le malaise visible dans leurs oeuvres n'est pas un accident ; c'est un langage.
+On retient que l'art peut porter l'angoisse, la peur, la souffrance et l'obscurité humaine sans être seulement décoratif. Le malaise visible dans leurs œuvres n'est pas un accident ; c'est un langage.
 
-Jerome Bosch, Salvador Dali et Rene Magritte :
-On retient que l'imaginaire, le reve et le bizarre ne sont pas des delires gratuits. Ils servent a interroger le monde, la logique, la morale, la perception et les habitudes du regard.
+Jérôme Bosch, Salvador Dalí et René Magritte :
+On retient que l'imaginaire, le rêve et le bizarre ne sont pas des délires gratuits. Ils servent à interroger le monde, la logique, la morale, la perception et les habitudes du regard.
 
 Pablo Picasso, Vassily Kandinsky et Jean-Michel Basquiat :
-On retient que casser les formes ne veut pas dire detruire le sens. La rupture artistique peut au contraire ouvrir de nouvelles lectures du reel, du corps, de la societe et de la culture.
+On retient que casser les formes ne veut pas dire détruire le sens. La rupture artistique peut, au contraire, ouvrir de nouvelles lectures du réel, du corps, de la société et de la culture.
 
 
-8. Petite reflexion finale
+8. Petite réflexion finale
 
-Le jeu invite a se demander si ce que l'on appelle "folie" dans l'art n'est pas souvent une simple peur de ce qui change.
+Le jeu invite à se demander si ce que l'on appelle « folie » dans l'art n'est pas souvent une simple peur de ce qui change.
 
-Les artistes presentes dans ce parcours ne sont pas reunis pour etre reduits a une image romantique du "genie fou". Ils sont reunis parce qu'ils montrent que l'art devient souvent plus fort lorsqu'il ose quitter les normes, troubler le spectateur et proposer une autre verite.
+Les artistes présentés dans ce parcours ne sont pas réunis pour être réduits à une image romantique du « génie fou ». Ils sont réunis parce qu'ils montrent que l'art devient souvent plus fort lorsqu'il ose quitter les normes, troubler le spectateur et proposer une autre vérité.
 
 En sortant du jeu, ce que l'on doit retenir est simple :
-une oeuvre difficile, etrange ou choquante n'est pas vide de sens ; elle demande souvent d'etre mieux regardee.
+une œuvre difficile, étrange ou choquante n'est pas vide de sens ; elle demande souvent d'être mieux regardée.

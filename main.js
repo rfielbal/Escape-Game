@@ -15,29 +15,29 @@
   const ROOM_THEMES = {
     1: {
       id: 1,
-      name: "Salle 1 - Angoisse interieure",
+      name: "Salle 1 - Angoisse intérieure",
       shortName: "Salle 1",
       word: "INTERIEUR",
       intro:
-        "Ici, des artistes juges instables ont transforme leur douleur et leur angoisse en langage visuel.",
+        "Ici, des artistes jugés instables ont transformé leur douleur et leur angoisse en langage visuel.",
       puzzle: {
         question:
-          "Quel message commun emerges-tu de Van Gogh, Munch et Goya dans cette salle ?",
+          "Quel message commun dégages-tu de Van Gogh, Munch et Goya dans cette salle ?",
         options: [
           {
             text: "Ils peignent surtout des commandes officielles pour rassurer le pouvoir.",
-            explanation: "Leur demarche va au contraire vers l'intime et l'inquietude.",
+            explanation: "Leur démarche va, au contraire, vers l'intime et l'inquiétude.",
             correct: false
           },
           {
-            text: "Ils transforment la souffrance interieure en image, ce qui choque leur epoque.",
+            text: "Ils transforment la souffrance intérieure en image, ce qui choque leur époque.",
             explanation:
-              "Exact. Leur force est d'oser montrer l'interieur humain plutot que l'image sociale attendue.",
+              "Exact. Leur force est d'oser montrer l'intérieur humain plutôt que l'image sociale attendue.",
             correct: true
           },
           {
-            text: "Ils refusent l'emotion personnelle et recherchent une neutralite froide.",
-            explanation: "C'est l'inverse de ce que leurs oeuvres montrent.",
+            text: "Ils refusent l'émotion personnelle et recherchent une neutralité froide.",
+            explanation: "C'est l'inverse de ce que leurs œuvres montrent.",
             correct: false
           }
         ]
@@ -45,29 +45,29 @@
     },
     2: {
       id: 2,
-      name: "Salle 2 - Reve et visions",
+      name: "Salle 2 - Rêve et visions",
       shortName: "Salle 2",
       word: "IMAGINAIRE",
       intro:
-        "Ces artistes ont ete parfois qualifies de fous car ils introduisent le reve, l'etrange et l'irrationnel.",
+        "Ces artistes ont parfois été qualifiés de fous, car ils introduisent le rêve, l'étrange et l'irrationnel.",
       puzzle: {
         question:
-          "Quel point commun relie Bosch, Dali et Magritte face au regard social ?",
+          "Quel point commun relie Bosch, Dalí et Magritte face au regard social ?",
         options: [
           {
-            text: "Ils copient le reel sans jamais le questionner.",
-            explanation: "Leur demarche questionne justement ce qui parait reel.",
+            text: "Ils copient le réel sans jamais le questionner.",
+            explanation: "Leur démarche questionne justement ce qui paraît réel.",
             correct: false
           },
           {
-            text: "Ils utilisent l'imaginaire pour bousculer la notion de raison et de normalite.",
+            text: "Ils utilisent l'imaginaire pour bousculer la notion de raison et de normalité.",
             explanation:
-              "Exact. Ce n'est pas la folie des artistes, mais une strategie pour ouvrir d'autres lectures du monde.",
+              "Exact. Ce n'est pas la folie des artistes, mais une stratégie pour ouvrir d'autres lectures du monde.",
             correct: true
           },
           {
-            text: "Ils veulent supprimer tout symbole pour rester purement decoratifs.",
-            explanation: "Le symbole est central dans leurs oeuvres.",
+            text: "Ils veulent supprimer tout symbole pour rester purement décoratifs.",
+            explanation: "Le symbole est central dans leurs œuvres.",
             correct: false
           }
         ]
@@ -79,25 +79,25 @@
       shortName: "Salle 3",
       word: "RUPTURE",
       intro:
-        "Quand les codes explosent, la societe parle vite de folie. Ici, la transgression est assumee.",
+        "Quand les codes explosent, la société parle vite de folie. Ici, la transgression est assumée.",
       puzzle: {
         question:
           "Que comprends-tu en comparant Picasso, Kandinsky et Basquiat ?",
         options: [
           {
-            text: "Ils respectent les normes academiques pour ne pas choquer le public.",
+            text: "Ils respectent les normes académiques pour ne pas choquer le public.",
             explanation: "Leur impact vient de la rupture des normes en place.",
             correct: false
           },
           {
-            text: "Ils cassent les formes et les codes sociaux, d'ou l'etiquette de folie percue.",
+            text: "Ils cassent les formes et les codes sociaux, d'où l'étiquette de folie perçue.",
             explanation:
               "Exact. Leur geste artistique est une rupture, pas une absence de sens.",
             correct: true
           },
           {
-            text: "Ils evitent toute position critique envers leur epoque.",
-            explanation: "Leurs oeuvres portent une forte charge critique.",
+            text: "Ils évitent toute position critique envers leur époque.",
+            explanation: "Leurs œuvres portent une forte charge critique.",
             correct: false
           }
         ]
@@ -109,19 +109,19 @@
     {
       id: "vangogh-starry",
       room: 1,
-      title: "La Nuit etoilee",
+      title: "La Nuit étoilée",
       artist: "Vincent van Gogh",
       year: "1889",
       movement: "Post-impressionnisme",
       summary:
-        "Paysage nocturne peint depuis l'asile de Saint-Remy. Le ciel tourbillonnant met l'etat interieur au premier plan.",
+        "Paysage nocturne peint depuis l'asile de Saint-Rémy. Le ciel tourbillonnant met l'état intérieur au premier plan.",
       socialView:
-        "Ses gestes et sa sensibilite ont ete lus comme de la folie, alors qu'ils constituent une ecriture emotionnelle radicale.",
+        "Ses gestes et sa sensibilité ont été lus comme de la folie, alors qu'ils constituent une écriture émotionnelle radicale.",
       learning:
-        "Observer l'oeuvre, c'est lire une experience humaine intense, pas un simple decor.",
+        "Observer l'œuvre, c'est lire une expérience humaine intense, pas un simple décor.",
       clue:
-        "Indice de salle: l'image parle du dedans autant que du dehors.",
-      uvClue: "UV: " + "Ce qui derange ici, c'est l'interiorite exposee.",
+        "L'image parle du dedans autant que du dehors.",
+      uvClue: "UV : " + "Ce qui dérange ici, c'est l'intériorité exposée.",
       assetPath: "assets/artworks/starry-night.jpg",
       sourceUrl:
         "https://fr.wikipedia.org/wiki/La_Nuit_%C3%A9toil%C3%A9e_(1889)"
@@ -136,31 +136,31 @@
       summary:
         "Figure deformee et horizon instable: l'angoisse devient forme et couleur.",
       socialView:
-        "Longtemps percue comme image maladive, l'oeuvre est aujourd'hui l'icone d'un malaise universel.",
+        "Longtemps perçue comme une image maladive, l'œuvre est aujourd'hui l'icône d'un malaise universel.",
       learning:
         "L'art peut rendre visible ce que les mots cachent.",
       clue:
-        "Indice de salle: la peur n'est pas cachee, elle est rendue visible.",
-      uvClue: "UV: " + "La societe juge souvent ce qu'elle ne veut pas ressentir.",
+        "La peur n'est pas cachée, elle est rendue visible.",
+      uvClue: "UV : " + "La société juge souvent ce qu'elle ne veut pas ressentir.",
       assetPath: "assets/artworks/the-scream.jpg",
       sourceUrl: "https://fr.wikipedia.org/wiki/Le_Cri"
     },
     {
       id: "goya-saturn",
       room: 1,
-      title: "Saturne devorant un de ses fils",
+      title: "Saturne dévorant un de ses fils",
       artist: "Francisco de Goya",
       year: "1819-1823",
       movement: "Romantisme noir",
       summary:
         "Peinture sombre et brutale issue des Peintures noires. Le monstrueux traduit la violence du monde.",
       socialView:
-        "L'intensite de ces images a souvent ete interpretee comme demence, alors qu'elle denonce la peur et la barbarie.",
+        "L'intensité de ces images a souvent été interprétée comme une démence, alors qu'elle dénonce la peur et la barbarie.",
       learning:
         "Le choc visuel peut servir de critique sociale.",
       clue:
-        "Indice de salle: l'oeuvre montre ce que la societe prefere ignorer.",
-      uvClue: "UV: " + "Le regard social confond parfois lucide et fou.",
+        "L'œuvre montre ce que la société préfère ignorer.",
+      uvClue: "UV : " + "Le regard social confond parfois ce qui est lucide et ce qui est fou.",
       assetPath: "assets/artworks/goya-saturn.jpg",
       sourceUrl:
         "https://fr.wikipedia.org/wiki/Saturne_d%C3%A9vorant_un_de_ses_enfants"
@@ -168,19 +168,19 @@
     {
       id: "bosch-garden",
       room: 2,
-      title: "Le Jardin des delices",
-      artist: "Jerome Bosch",
+      title: "Le Jardin des délices",
+      artist: "Jérôme Bosch",
       year: "vers 1490-1510",
       movement: "Primitifs flamands",
       summary:
-        "Triptyque foisonnant ou se melent desir, allegorie et visions troublantes.",
+        "Triptyque foisonnant où se mêlent désir, allégorie et visions troublantes.",
       socialView:
-        "Son imaginaire a pu etre juge excessif ou delirant, alors qu'il construit une critique morale complexe.",
+        "Son imaginaire a pu être jugé excessif ou délirant, alors qu'il construit une critique morale complexe.",
       learning:
-        "Le bizarre peut etre un outil de pensee, pas un simple effet.",
+        "Le bizarre peut être un outil de pensée, pas un simple effet.",
       clue:
-        "Indice de salle: ici, l'etrange sert a questionner la norme.",
-      uvClue: "UV: " + "Le reve est une methode de lecture du monde.",
+        "Ici, l'étrange sert à questionner la norme.",
+      uvClue: "UV : " + "Le rêve est une méthode de lecture du monde.",
       assetPath: "assets/artworks/bosch-garden.jpg",
       sourceUrl:
         "https://fr.wikipedia.org/wiki/Le_Jardin_des_d%C3%A9lices"
@@ -188,19 +188,19 @@
     {
       id: "dali-memory",
       room: 2,
-      title: "La Persistance de la memoire",
-      artist: "Salvador Dali",
+      title: "La Persistance de la mémoire",
+      artist: "Salvador Dalí",
       year: "1931",
-      movement: "Surrealisme",
+      movement: "Surréalisme",
       summary:
-        "Montres molles et espace desertique: le temps rationnel perd sa forme stable.",
+        "Montres molles et espace désertique : le temps rationnel perd sa forme stable.",
       socialView:
-        "Les codes surreels ont ete moques comme absurdes, avant d'etre reconnus comme une exploration de l'inconscient.",
+        "Les codes surréels ont été moqués comme absurdes, avant d'être reconnus comme une exploration de l'inconscient.",
       learning:
-        "L'imaginaire peut expliquer une experience du temps impossible a decrire autrement.",
+        "L'imaginaire peut expliquer une expérience du temps impossible à décrire autrement.",
       clue:
-        "Indice de salle: la logique apparente se fissure.",
-      uvClue: "UV: " + "Ce qui parait impossible peut reveler une verite intime.",
+        "La logique apparente se fissure.",
+      uvClue: "UV : " + "Ce qui paraît impossible peut révéler une vérité intime.",
       assetPath: "assets/artworks/dali-memory.jpg",
       sourceUrl:
         "https://fr.wikipedia.org/wiki/La_Persistance_de_la_m%C3%A9moire"
@@ -209,18 +209,18 @@
       id: "magritte-sonofman",
       room: 2,
       title: "Le Fils de l'homme",
-      artist: "Rene Magritte",
+      artist: "René Magritte",
       year: "1964",
-      movement: "Surrealisme",
+      movement: "Surréalisme",
       summary:
-        "Un visage masque par une pomme: l'image joue avec ce qui est cache et ce qui est attendu.",
+        "Un visage masqué par une pomme : l'image joue avec ce qui est caché et ce qui est attendu.",
       socialView:
-        "Le decalage visuel fut parfois traite comme nonsense; il questionne pourtant nos habitudes de perception.",
+        "Le décalage visuel fut parfois traité comme une absurdité ; il questionne pourtant nos habitudes de perception.",
       learning:
-        "Voir n'est jamais neutre: on regarde avec des attentes sociales.",
+        "Voir n'est jamais neutre : on regarde avec des attentes sociales.",
       clue:
-        "Indice de salle: l'image montre une chose et en cache une autre.",
-      uvClue: "UV: " + "L'imaginaire deplace notre regard sur le reel.",
+        "L'image montre une chose et en cache une autre.",
+      uvClue: "UV : " + "L'imaginaire déplace notre regard sur le réel.",
       assetPath: "assets/artworks/magritte-sonofman.jpg",
       sourceUrl:
         "https://fr.wikipedia.org/wiki/Le_Fils_de_l%27homme"
@@ -233,14 +233,14 @@
       year: "1907",
       movement: "Proto-cubisme",
       summary:
-        "Corps fragmentes et perspective brisee: rupture majeure avec la representation classique.",
+        "Corps fragmentés et perspective brisée : rupture majeure avec la représentation classique.",
       socialView:
-        "A sa presentation, l'oeuvre est jugee violente et incoherente; elle ouvre pourtant une nouvelle grammaire picturale.",
+        "À sa présentation, l'œuvre est jugée violente et incohérente ; elle ouvre pourtant une nouvelle grammaire picturale.",
       learning:
-        "Changer les formes, c'est aussi changer les idees.",
+        "Changer les formes, c'est aussi changer les idées.",
       clue:
-        "Indice de salle: quand les formes cassent, la norme vacille.",
-      uvClue: "UV: " + "RUP: premier fragment cache de la salle.",
+        "Quand les formes cassent, la norme vacille.",
+      uvClue: "UV : " + "RUP : premier fragment caché de la salle.",
       assetPath: "assets/artworks/picasso-demoiselles.jpg",
       sourceUrl:
         "https://fr.wikipedia.org/wiki/Les_Demoiselles_d%27Avignon"
@@ -255,12 +255,12 @@
       summary:
         "Cercles, lignes et triangles remplacent la figuration pour traduire rythme et tension.",
       socialView:
-        "L'abstraction fut accusee d'etre incomprehensible; elle proposait en realite un autre langage.",
+        "L'abstraction fut accusée d'être incompréhensible ; elle proposait en réalité un autre langage.",
       learning:
-        "Une oeuvre peut faire sens sans raconter une scene reconnaissable.",
+        "Une œuvre peut faire sens sans raconter une scène reconnaissable.",
       clue:
-        "Indice de salle: l'ordre visuel n'est plus celui de la copie du reel.",
-      uvClue: "UV: " + "TUR: second fragment cache de la salle.",
+        "L'ordre visuel n'est plus celui de la copie du réel.",
+      uvClue: "UV : " + "TUR : second fragment caché de la salle.",
       assetPath: "assets/artworks/kandinsky-comp8.svg",
       sourceUrl:
         "https://fr.wikipedia.org/wiki/Composition_VIII"
@@ -271,16 +271,16 @@
       title: "Untitled (Skull)",
       artist: "Jean-Michel Basquiat",
       year: "1981",
-      movement: "Neo-expressionnisme",
+      movement: "Néo-expressionnisme",
       summary:
-        "Tete explosive, signes et ecriture: energie urbaine et critique du pouvoir culturel.",
+        "Tête explosive, signes et écriture : énergie urbaine et critique du pouvoir culturel.",
       socialView:
-        "Son style fut parfois reduit a du chaos; il est aujourd'hui lu comme un langage politique et autobiographique.",
+        "Son style fut parfois réduit à du chaos ; il est aujourd'hui lu comme un langage politique et autobiographique.",
       learning:
-        "Le geste brut peut porter un discours social tres construit.",
+        "Le geste brut peut porter un discours social très construit.",
       clue:
-        "Indice de salle: le scandale vient souvent de la rupture des hierarchies.",
-      uvClue: "UV: " + "E: troisieme fragment cache de la salle.",
+        "Le scandale vient souvent de la rupture des hiérarchies.",
+      uvClue: "UV : " + "E : troisième fragment caché de la salle.",
       assetPath: "assets/artworks/basquiat-skull.svg",
       sourceUrl:
         "https://fr.wikipedia.org/wiki/Jean-Michel_Basquiat"
@@ -620,12 +620,27 @@
         this.audio.unlockByGesture();
         const key = event.key.toLowerCase();
 
-        if (["arrowup", "arrowdown", "arrowleft", "arrowright", " "].includes(key)) {
+        const textEntryActive = this.isTextEntryActive();
+
+        if (!textEntryActive && ["arrowup", "arrowdown", "arrowleft", "arrowright", " "].includes(key)) {
           event.preventDefault();
         }
 
         if (!event.repeat) {
-          if (key === "e" && !this.modalPanel.classList.contains("hidden") && !this.isTextEntryActive()) {
+          if (key === "escape") {
+            if (!this.modalPanel.classList.contains("hidden")) {
+              this.closeModal();
+            } else if (!this.notebookPanel.classList.contains("hidden")) {
+              this.toggleNotebook(false);
+            }
+            return;
+          }
+
+          if (textEntryActive) {
+            return;
+          }
+
+          if (key === "e" && !this.modalPanel.classList.contains("hidden")) {
             this.closeModal();
             return;
           }
@@ -640,13 +655,6 @@
           }
           if (key === "m") {
             this.toggleSound();
-          }
-          if (key === "escape") {
-            if (!this.modalPanel.classList.contains("hidden")) {
-              this.closeModal();
-            } else if (!this.notebookPanel.classList.contains("hidden")) {
-              this.toggleNotebook(false);
-            }
           }
         }
 
@@ -767,24 +775,24 @@
     buildInteractables() {
       this.interactables = [
         { id: "panel-r1", type: "panel", room: 1, x: 2.5, y: 2.5, label: "Panneau de salle" },
-        { id: "art-vangogh", type: "artwork", room: 1, artworkId: "vangogh-starry", x: 4.5, y: 4.5, label: "Oeuvre" },
-        { id: "art-munch", type: "artwork", room: 1, artworkId: "munch-scream", x: 8.5, y: 4.5, label: "Oeuvre" },
-        { id: "art-goya", type: "artwork", room: 1, artworkId: "goya-saturn", x: 6.5, y: 15.5, label: "Oeuvre" },
-        { id: "terminal-r1", type: "terminal", room: 1, x: 10.4, y: 10.5, label: "Console salle 1" },
+        { id: "art-vangogh", type: "artwork", room: 1, artworkId: "vangogh-starry", x: 4.5, y: 4.5, label: "Œuvre" },
+        { id: "art-munch", type: "artwork", room: 1, artworkId: "munch-scream", x: 8.5, y: 4.5, label: "Œuvre" },
+        { id: "art-goya", type: "artwork", room: 1, artworkId: "goya-saturn", x: 6.5, y: 15.5, label: "Œuvre" },
+        { id: "terminal-r1", type: "terminal", room: 1, x: 9.9, y: 10.5, label: "Console salle 1" },
 
         { id: "panel-r2", type: "panel", room: 2, x: 14.5, y: 2.5, label: "Panneau de salle" },
-        { id: "art-bosch", type: "artwork", room: 2, artworkId: "bosch-garden", x: 16.5, y: 4.5, label: "Oeuvre" },
-        { id: "art-dali", type: "artwork", room: 2, artworkId: "dali-memory", x: 20.5, y: 4.5, label: "Oeuvre" },
-        { id: "art-magritte", type: "artwork", room: 2, artworkId: "magritte-sonofman", x: 18.5, y: 15.5, label: "Oeuvre" },
-        { id: "terminal-r2", type: "terminal", room: 2, x: 22.4, y: 10.5, label: "Console salle 2" },
+        { id: "art-bosch", type: "artwork", room: 2, artworkId: "bosch-garden", x: 16.5, y: 4.5, label: "Œuvre" },
+        { id: "art-dali", type: "artwork", room: 2, artworkId: "dali-memory", x: 20.5, y: 4.5, label: "Œuvre" },
+        { id: "art-magritte", type: "artwork", room: 2, artworkId: "magritte-sonofman", x: 18.5, y: 15.5, label: "Œuvre" },
+        { id: "terminal-r2", type: "terminal", room: 2, x: 21.9, y: 10.5, label: "Console salle 2" },
 
         { id: "panel-r3", type: "panel", room: 3, x: 26.5, y: 2.5, label: "Panneau de salle" },
-        { id: "art-picasso", type: "artwork", room: 3, artworkId: "picasso-demoiselles", x: 28.5, y: 4.5, label: "Oeuvre" },
-        { id: "art-kandinsky", type: "artwork", room: 3, artworkId: "kandinsky-comp8", x: 32.0, y: 4.5, label: "Oeuvre" },
-        { id: "art-basquiat", type: "artwork", room: 3, artworkId: "basquiat-skull", x: 30.5, y: 15.5, label: "Oeuvre" },
-        { id: "terminal-r3", type: "terminal", room: 3, x: 34.0, y: 10.5, label: "Console salle 3" },
+        { id: "art-picasso", type: "artwork", room: 3, artworkId: "picasso-demoiselles", x: 28.5, y: 4.5, label: "Œuvre" },
+        { id: "art-kandinsky", type: "artwork", room: 3, artworkId: "kandinsky-comp8", x: 32.0, y: 4.5, label: "Œuvre" },
+        { id: "art-basquiat", type: "artwork", room: 3, artworkId: "basquiat-skull", x: 30.5, y: 15.5, label: "Œuvre" },
+        { id: "terminal-r3", type: "terminal", room: 3, x: 33.4, y: 10.5, label: "Console salle 3" },
 
-        { id: "exit-terminal", type: "exit", x: 34.4, y: 8.6, label: "Digicode sortie" }
+        { id: "exit-terminal", type: "exit", x: 34.15, y: 8.6, label: "Digicode de sortie" }
       ];
     }
 
@@ -931,26 +939,26 @@
 
     getInteractableCollider(obj) {
       if (obj.type === "panel") {
-        return { x: obj.x, y: obj.y, w: 0.7, h: 0.7 };
+        return { x: obj.x, y: obj.y, w: 0.58, h: 0.58 };
       }
       if (obj.type === "artwork") {
-        return { x: obj.x, y: obj.y, w: 0.78, h: 0.78 };
+        return { x: obj.x, y: obj.y, w: 0.62, h: 0.62 };
       }
       if (obj.type === "terminal" || obj.type === "exit") {
-        return { x: obj.x, y: obj.y, w: 0.8, h: 0.8 };
+        return { x: obj.x, y: obj.y, w: 0.56, h: 0.56 };
       }
       return null;
     }
 
     getDecorationCollider(decoration) {
       if (decoration.type === "bench") {
-        return { x: decoration.x, y: decoration.y, w: 1.45, h: 0.8 };
+        return { x: decoration.x, y: decoration.y, w: 1.35, h: 0.7 };
       }
       if (decoration.type === "plant") {
-        return { x: decoration.x, y: decoration.y - 0.05, w: 0.9, h: 0.9 };
+        return { x: decoration.x, y: decoration.y - 0.05, w: 0.74, h: 0.74 };
       }
       if (decoration.type === "pedestal") {
-        return { x: decoration.x, y: decoration.y, w: 0.9, h: 0.9 };
+        return { x: decoration.x, y: decoration.y, w: 0.76, h: 0.76 };
       }
       return null;
     }
@@ -1045,12 +1053,12 @@
     }
 
     updateRoomIndicator() {
-      this.roomIndicatorEl.textContent = `Zone: ${this.roomNameFromX(this.player.x)}`;
+      this.roomIndicatorEl.textContent = `Zone : ${this.roomNameFromX(this.player.x)}`;
     }
 
     updateTimer() {
       if (!this.state.startedAt) {
-        this.timerEl.textContent = "Temps: 00:00";
+        this.timerEl.textContent = "Temps : 00:00";
         return;
       }
 
@@ -1058,7 +1066,7 @@
       const total = Math.floor(this.state.elapsedMs / 1000);
       const min = Math.floor(total / 60);
       const sec = total % 60;
-      this.timerEl.textContent = `Temps: ${pad2(min)}:${pad2(sec)}`;
+      this.timerEl.textContent = `Temps : ${pad2(min)}:${pad2(sec)}`;
     }
 
     resetTouchState() {
@@ -1503,12 +1511,12 @@
       const note = document.createElement("div");
       note.className = "clue-box";
       note.textContent =
-        "But pedagogique: distinguer la folie percue par la societe et la demarche artistique des auteurs.";
+        "But pédagogique : distinguer la folie perçue par la société et la démarche artistique des auteurs.";
       body.appendChild(note);
 
       const closeHint = document.createElement("div");
       closeHint.className = "modal-hint";
-      closeHint.textContent = "Fermer: touche E, Echap ou bouton x";
+      closeHint.textContent = "Fermer : touche E, Échap ou bouton x";
       body.appendChild(closeHint);
     }
 
@@ -1580,36 +1588,36 @@
       meta.className = "meta";
       meta.innerHTML = [
         `<strong>${art.title}</strong>`,
-        `<span>Artiste: ${art.artist}</span>`,
-        `<span>Annee: ${art.year}</span>`,
-        `<span>Courant: ${art.movement}</span>`,
-        `<span><strong>Contexte social:</strong> ${art.socialView}</span>`,
-        `<span><strong>Ce qu'on comprend:</strong> ${art.learning}</span>`,
-        `<span><a class="external-link" href="${art.sourceUrl}" target="_blank" rel="noopener">Source externe (fiche oeuvre)</a></span>`
+        `<span>Artiste : ${art.artist}</span>`,
+        `<span>Année : ${art.year}</span>`,
+        `<span>Courant : ${art.movement}</span>`,
+        `<span><strong>Contexte social :</strong> ${art.socialView}</span>`,
+        `<span><strong>Ce qu'on comprend :</strong> ${art.learning}</span>`,
+        `<span><a class="external-link" href="${art.sourceUrl}" target="_blank" rel="noopener">Source externe (fiche œuvre)</a></span>`
       ].join("");
       card.appendChild(meta);
       body.appendChild(card);
 
       const clue = document.createElement("div");
       clue.className = "clue-box";
-      clue.textContent = `Indice de salle: ${art.clue}`;
+      clue.textContent = `Indice de salle : ${art.clue}`;
       body.appendChild(clue);
 
       const uv = document.createElement("div");
       uv.className = "clue-box";
       uv.textContent = this.state.uvMode
         ? art.uvClue
-        : "Astuce: active le mode UV (U) et reinspecte l'oeuvre pour lire une note cachee.";
+        : "Astuce : active le mode UV (U) et réinspecte l'œuvre pour lire une note cachée.";
       body.appendChild(uv);
 
       const note = document.createElement("p");
       note.textContent =
-        "Projet academique: ressources artistiques externes (Wikimedia/Wikipedia) avec credit de source.";
+        "Projet académique : ressources artistiques externes (Wikimedia/Wikipedia) avec crédit de source.";
       body.appendChild(note);
 
       const closeHint = document.createElement("div");
       closeHint.className = "modal-hint";
-      closeHint.textContent = "Fermer: touche E, Echap ou bouton x";
+      closeHint.textContent = "Fermer : touche E, Échap ou bouton x";
       body.appendChild(closeHint);
     }
 
@@ -1627,14 +1635,14 @@
 
       if (roomId === 2 && !this.state.solvedRooms[1]) {
         const p = document.createElement("p");
-        p.textContent = "Acces refuse: termine d'abord la salle 1 pour ouvrir ce secteur.";
+        p.textContent = "Accès refusé : termine d'abord la salle 1 pour ouvrir ce secteur.";
         body.appendChild(p);
         return;
       }
 
       if (roomId === 3 && !this.state.solvedRooms[2]) {
         const p = document.createElement("p");
-        p.textContent = "Acces refuse: la salle 3 est liee a la validation de la salle 2.";
+        p.textContent = "Accès refusé : la salle 3 est liée à la validation de la salle 2.";
         body.appendChild(p);
         return;
       }
@@ -1642,7 +1650,7 @@
       if (this.state.solvedRooms[roomId]) {
         const done = document.createElement("p");
         done.className = "success";
-        done.textContent = `Fragment deja obtenu: ${this.state.fragments[roomId]}`;
+        done.textContent = `Fragment déjà obtenu : ${this.state.fragments[roomId]}`;
         body.appendChild(done);
         return;
       }
@@ -1650,7 +1658,7 @@
       const missing = this.roomMissingArtworks(roomId);
       if (missing.length) {
         const p = document.createElement("p");
-        p.textContent = "La console demande l'analyse des 3 oeuvres de la salle avant validation.";
+        p.textContent = "La console demande l'analyse des trois œuvres de la salle avant validation.";
         body.appendChild(p);
 
         const list = document.createElement("ul");
@@ -1693,7 +1701,7 @@
             this.refreshNotebook();
             this.audio.beep("success");
             feedback.className = "success";
-            feedback.textContent = `${option.explanation} Mot-clef obtenu: ${theme.word}`;
+            feedback.textContent = `${option.explanation} Mot-clé obtenu : ${theme.word}`;
           } else {
             this.audio.beep("error");
             feedback.className = "error";
@@ -1705,7 +1713,7 @@
 
       const closeHint = document.createElement("div");
       closeHint.className = "modal-hint";
-      closeHint.textContent = "Fermer: touche E, Echap ou bouton x";
+      closeHint.textContent = "Fermer : touche E, Échap ou bouton x";
       body.appendChild(closeHint);
     }
 
@@ -1720,7 +1728,7 @@
     }
 
     openExitTerminal() {
-      const body = this.openModal("Porte principale - Assemblage des 3 mots", "exit");
+      const body = this.openModal("Porte principale - Assemblage des trois mots", "exit");
 
       const missing = [];
       if (!this.state.solvedRooms[1]) {
@@ -1735,7 +1743,7 @@
 
       if (missing.length) {
         const p = document.createElement("p");
-        p.textContent = `Fragments manquants: ${missing.join(", ")}.`;
+        p.textContent = `Fragments manquants : ${missing.join(", ")}.`;
         body.appendChild(p);
         return;
       }
@@ -1743,17 +1751,17 @@
       const clue = document.createElement("div");
       clue.className = "clue-box";
       clue.textContent =
-        "Saisis les 3 mots dans l'ordre des salles (1 -> 2 -> 3). Exemple de format: MOT1 MOT2 MOT3";
+        "Saisis les trois mots dans l'ordre des salles (1 -> 2 -> 3). Exemple de format : MOT1 MOT2 MOT3";
       body.appendChild(clue);
 
       const input = document.createElement("input");
       input.className = "text-input";
       input.type = "text";
-      input.placeholder = "Entrez les 3 mots";
+      input.placeholder = "Entrez les trois mots";
 
       const submit = document.createElement("button");
       submit.className = "primary";
-      submit.textContent = "Debloquer";
+      submit.textContent = "Débloquer";
 
       const row = document.createElement("div");
       row.className = "options-row";
@@ -1777,17 +1785,17 @@
           window.setTimeout(() => this.audio.beep("door"), 90);
           feedback.className = "success";
           feedback.textContent =
-            "Code semantique valide. La porte principale est ouverte, traverse le couloir de sortie.";
+            "Code sémantique valide. La porte principale est ouverte, traverse le couloir de sortie.";
         } else {
           this.audio.beep("error");
           feedback.className = "error";
-          feedback.textContent = "Assemblage incorrect. Reprends les mots-clefs du carnet.";
+          feedback.textContent = "Assemblage incorrect. Reprends les mots-clés du carnet.";
         }
       });
 
       const closeHint = document.createElement("div");
       closeHint.className = "modal-hint";
-      closeHint.textContent = "Fermer: touche E, Echap ou bouton x";
+      closeHint.textContent = "Fermer : touche E, Échap ou bouton x";
       body.appendChild(closeHint);
     }
 
@@ -1853,7 +1861,7 @@
 
           const li = document.createElement("li");
           if (!seen) {
-            li.textContent = `[ ] Oeuvre non inspectee`;
+            li.textContent = `[ ] Œuvre non inspectée`;
           } else {
             const uv = this.state.uvReadArtworks.has(artId) ? " | UV lu" : " | UV non lu";
             li.textContent = `[x] ${art.title} - ${art.artist}${uv}`;
@@ -1865,7 +1873,7 @@
         if (this.state.fragments[roomId]) {
           const fragment = document.createElement("div");
           fragment.className = "fragment";
-          fragment.textContent = `Mot-clef obtenu: ${this.state.fragments[roomId]}`;
+          fragment.textContent = `Mot-clé obtenu : ${this.state.fragments[roomId]}`;
           section.appendChild(fragment);
         }
 
@@ -1878,8 +1886,8 @@
       const f2 = this.state.fragments[2] || "___";
       const f3 = this.state.fragments[3] || "___";
       summary.innerHTML = `
-        <h3>Synthese finale</h3>
-        <p>Fil rouge: la folie percue par la societe peut masquer une demarche artistique lucide et innovante.</p>
+        <h3>Synthèse finale</h3>
+        <p>Fil rouge : la folie perçue par la société peut masquer une démarche artistique lucide et innovante.</p>
         <p>Assemblage (1 -> 2 -> 3): <strong>${f1} ${f2} ${f3}</strong></p>
       `;
       root.appendChild(summary);
@@ -1888,22 +1896,22 @@
     updateObjective() {
       let text;
       if (!this.state.solvedRooms[1]) {
-        text = "Objectif: Salle 1. Observe Van Gogh, Munch, Goya puis valide la console d'analyse.";
+        text = "Objectif : Salle 1. Observe Van Gogh, Munch et Goya, puis valide la console d'analyse.";
       } else if (!this.state.solvedRooms[2]) {
-        text = "Objectif: Salle 2 ouverte. Comprendre le role du reve et des visions dans les oeuvres.";
+        text = "Objectif : Salle 2 ouverte. Comprendre le rôle du rêve et des visions dans les œuvres.";
       } else if (!this.state.solvedRooms[3]) {
-        text = "Objectif: Salle 3. Identifier la rupture des codes et le scandale social.";
+        text = "Objectif : Salle 3. Identifier la rupture des codes et le scandale social.";
       } else if (!this.state.exitUnlocked) {
-        text = "Objectif: Recomposer la phrase-clef avec les 3 mots obtenus.";
+        text = "Objectif : Recomposer la phrase-clé avec les trois mots obtenus.";
       } else {
-        text = "Objectif: La sortie est ouverte. Traverse le couloir final.";
+        text = "Objectif : La sortie est ouverte. Traverse le couloir final.";
       }
       this.objectiveEl.textContent = text;
     }
 
     updateStatusBadges() {
-      this.uvIndicatorEl.textContent = `UV: ${this.state.uvMode ? "ON" : "OFF"}`;
-      this.soundIndicatorEl.textContent = `Son: ${this.audio.enabled ? "ON" : "OFF"}`;
+      this.uvIndicatorEl.textContent = `UV : ${this.state.uvMode ? "ON" : "OFF"}`;
+      this.soundIndicatorEl.textContent = `Son : ${this.audio.enabled ? "ON" : "OFF"}`;
     }
 
     checkVictory() {
@@ -1925,7 +1933,7 @@
       const total = Math.floor(this.state.elapsedMs / 1000);
       const min = Math.floor(total / 60);
       const sec = total % 60;
-      this.endTime.textContent = `Temps final: ${pad2(min)}:${pad2(sec)} | Cible conseillee: ~30:00`;
+      this.endTime.textContent = `Temps final : ${pad2(min)}:${pad2(sec)}`;
 
       this.endScreen.classList.remove("hidden");
       this.endScreen.classList.add("visible");

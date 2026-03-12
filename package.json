@@ -2,7 +2,7 @@
   "name": "le-secret-du-conservateur",
   "productName": "Le Secret du Conservateur",
   "version": "1.0.0",
-  "description": "Escape game desktop et web autour de la folie percue par la societe dans l'histoire de l'art.",
+  "description": "Escape game desktop et web autour de la folie perçue par la société dans l'histoire de l'art.",
   "main": "electron/main.js",
   "author": "Raphael",
   "private": true,
@@ -10,9 +10,9 @@
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder",
-    "dist:mac": "electron-builder --mac dmg",
-    "dist:win": "electron-builder --win nsis"
+    "dist": "electron-builder --publish never",
+    "dist:mac": "electron-builder --mac dmg --publish never",
+    "dist:win": "electron-builder --win nsis --publish never"
   },
   "devDependencies": {
     "electron": "^35.0.0",

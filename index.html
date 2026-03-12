@@ -3,65 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Le Secret du Conservateur - Folie percue</title>
+  <title>Le Secret du Conservateur - Folie perçue</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div id="app">
-    <canvas id="game" width="640" height="384" aria-label="Musee en vue top-down pixel"></canvas>
+    <canvas id="game" width="640" height="384" aria-label="Musée en vue top-down pixel"></canvas>
 
     <div id="start-screen" class="overlay visible">
       <div class="panel intro-panel">
         <h1>Le Secret du Conservateur</h1>
         <p>
-          Cette nuit, le conservateur te bloque dans le musee.
-          Son defi: comprendre pourquoi certains artistes furent traites de "fous"
-          par leur epoque.
+          Cette nuit, le conservateur te bloque dans le musée.
+          Son défi : comprendre pourquoi certains artistes furent traités de « fous »
+          par leur époque.
         </p>
         <p>
-          Traverse 3 salles thematiques, observe les oeuvres, lis les biographies,
-          puis reponds aux consoles pour extraire 3 mots-clefs.
+          Traverse trois salles thématiques, observe les œuvres, lis les biographies,
+          puis réponds aux consoles pour extraire trois mots-clés.
           Assemble ces mots pour ouvrir la sortie.
         </p>
         <ul>
-          <li>Salle 1: Angoisse interieure</li>
-          <li>Salle 2: Reve et visions</li>
+          <li>Salle 1 : Angoisse intérieure</li>
+          <li>Salle 2 : Rêve et visions</li>
           <li>Salle 3: Rupture et scandale</li>
         </ul>
 
         <div class="controls-list">
-          <span>ZQSD / WASD / Fleches: deplacement</span>
-          <span>Maj: courir</span>
-          <span>E: interagir</span>
-          <span>J: carnet</span>
-          <span>U: mode UV</span>
-          <span>M: son ON/OFF</span>
+          <span>ZQSD / WASD / Flèches : déplacement</span>
+          <span>Maj : courir</span>
+          <span>E : interagir</span>
+          <span>J : carnet</span>
+          <span>U : mode UV</span>
+          <span>M : son ON/OFF</span>
         </div>
 
-        <button id="start-btn" class="primary">Entrer dans le musee</button>
+        <button id="start-btn" class="primary">Entrer dans le musée</button>
       </div>
     </div>
 
     <div id="hud">
-      <div id="objective">Objectif: Explorer la salle Angoisse interieure.</div>
+      <div id="objective">Objectif : Explorer la salle Angoisse intérieure.</div>
       <div id="status-line">
-        <span id="timer">Temps: 00:00</span>
-        <span id="room-indicator">Zone: Salle 1</span>
-        <span id="uv-indicator">UV: OFF</span>
-        <span id="sound-indicator">Son: ON</span>
+        <span id="timer">Temps : 00:00</span>
+        <span id="room-indicator">Zone : Salle 1</span>
+        <span id="uv-indicator">UV : OFF</span>
+        <span id="sound-indicator">Son : ON</span>
       </div>
       <div id="interaction-prompt" class="hidden">[E] Interagir</div>
     </div>
 
     <div id="quick-actions">
-      <span>[E] Interagir / Fermer oeuvre</span>
+      <span>[E] Interagir / Fermer œuvre</span>
       <span>[Maj] Courir</span>
       <span>[J] Carnet</span>
       <span>[U] UV</span>
       <span>[M] Son</span>
     </div>
 
-    <div id="touch-controls" aria-label="Controles tactiles">
+    <div id="touch-controls" aria-label="Contrôles tactiles">
       <div class="touch-grid">
         <button type="button" data-touch="up">UP</button>
         <button type="button" data-touch="left">L</button>
@@ -94,10 +94,10 @@
 
     <div id="end-screen" class="overlay hidden">
       <div class="panel intro-panel">
-        <h1>Porte deverrouillee</h1>
+        <h1>Porte déverrouillée</h1>
         <p>
-          Tu as compris le fil rouge:
-          la "folie" est souvent un regard social pose sur des artistes qui
+          Tu as compris le fil rouge :
+          la « folie » est souvent un regard social posé sur des artistes qui
           bousculent les normes.
         </p>
         <p id="end-time"></p>
