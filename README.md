@@ -1,6 +1,6 @@
 # Le Secret du Conservateur
 
-Escape game réalisé dans le cadre d'un BTS SIO.
+Projet réalisé en fin de séquence de CGE dans le cadre du BTS SIO.
 
 Le projet existe désormais sous deux formes :
 - une version web locale ;
@@ -24,7 +24,7 @@ Le jeu s'appuie sur la compréhension, l'observation et l'interprétation. Il at
 Étapes :
 1. Cliquer sur `Releases`.
 2. Ouvrir la dernière release disponible.
-3. Télécharge le fichier correspondant à ton ordinateur : Mac (.dmg), windows (.exe).
+3. Télécharger le fichier correspondant à ton ordinateur : Mac (.dmg), windows (.exe).
 4. Pas besoin de télécharger `Source code (zip)` ou `Source code (tar.gz)` pour seulement y jouer.
 
 ### Quel fichier choisir ?
