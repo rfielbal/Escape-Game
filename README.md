@@ -17,24 +17,15 @@ Le joueur explore trois salles thématiques :
 
 Dans chaque salle, il observe des œuvres, lit des informations sur les artistes, comprend ce qui relie les œuvres entre elles, puis valide une console d'analyse.
 
-Le jeu ne repose pas sur des calculs. Il s'appuie sur la compréhension, l'observation et l'interprétation.
-
-Les trois mots-clés finaux sont :
-- `INTERIEUR`
-- `IMAGINAIRE`
-- `RUPTURE`
+Le jeu s'appuie sur la compréhension, l'observation et l'interprétation. Il attend 3 mots clé pour valider chaque salles.
 
 ## Installation simple depuis GitHub
 
-Si tu veux simplement jouer au jeu sans utiliser VS Code ni lancer de serveur local, il faut passer par la page des releases GitHub.
-
 Étapes :
-1. Ouvre la page GitHub du projet.
-2. Clique sur `Releases`.
-3. Ouvre la dernière release disponible.
-4. Télécharge le fichier correspondant à ton ordinateur.
-5. Ne télécharge pas `Source code (zip)` ou `Source code (tar.gz)` si tu veux seulement jouer.
-6. Si tu vois un fichier technique comme `.yml` ou `.blockmap` dans une ancienne release, ignore-le : il ne sert pas à jouer.
+1. Cliquer sur `Releases`.
+2. Ouvrir la dernière release disponible.
+3. Télécharge le fichier correspondant à ton ordinateur : Mac (.dmg), windows (.exe).
+4. Pas besoin de télécharger `Source code (zip)` ou `Source code (tar.gz)` pour seulement y jouer.
 
 ### Quel fichier choisir ?
 
@@ -47,11 +38,6 @@ Pour Mac Intel :
 Pour Mac Apple Silicon (M1, M2, M3, etc.) :
 - télécharge le fichier `.dmg` contenant `mac-arm64`.
 
-À partir des prochaines releases, la page GitHub ne publiera plus que les vrais fichiers utiles pour jouer :
-- le `.exe` Windows ;
-- le ou les `.dmg` macOS ;
-- les archives de code source automatiques de GitHub, à ignorer pour un joueur.
-
 ## Installation sur Windows
 
 1. Télécharge le fichier `.exe` depuis la release.
@@ -60,21 +46,21 @@ Pour Mac Apple Silicon (M1, M2, M3, etc.) :
 4. Lance le jeu depuis le bureau ou le menu Démarrer.
 
 Si Windows affiche un avertissement de sécurité :
-1. clique sur `Informations complémentaires` ;
-2. puis clique sur `Exécuter quand même`.
+1. cliquer sur `Informations complémentaires` ;
+2. puis cliquer sur `Exécuter quand même`.
 
 ## Installation sur macOS
 
-1. Télécharge le fichier `.dmg` adapté à ton Mac.
-2. Ouvre le fichier `.dmg`.
-3. Glisse l'application dans le dossier `Applications`.
-4. Ouvre l'application depuis `Applications`.
+1. Télécharger le fichier `.dmg` adapté à ton Mac.
+2. Ouvrir le fichier `.dmg`.
+3. Glisser l'application dans le dossier `Applications`.
+4. Ouvrir l'application depuis `Applications`.
 
 Si macOS bloque l'ouverture parce que l'application provient d'un développeur non identifié :
-1. ferme le message d'erreur ;
-2. va dans `Réglages Système` ;
-3. ouvre `Confidentialité et sécurité` ;
-4. clique sur `Ouvrir quand même`.
+1. fermer le message d'erreur ;
+2. aller dans `Réglages Système` ;
+3. ouvrir `Confidentialité et sécurité` ;
+4. cliquer sur `Ouvrir quand même`.
 
 Autre méthode :
 - fais un clic droit sur l'application ;
@@ -82,17 +68,10 @@ Autre méthode :
 
 ## Lancement local de la version web
 
-Si tu veux lancer le projet comme un site web local :
+Pour lancer le projet comme un site web local :
 
 Option simple :
-- ouvre `index.html` dans un navigateur moderne.
-
-Option recommandée :
-```bash
-python3 -m http.server 8000
-```
-
-Puis ouvre [http://localhost:8000](http://localhost:8000).
+- ouvrir `index.html` dans un navigateur.
 
 ## Contrôles
 
@@ -100,7 +79,6 @@ Clavier :
 - `ZQSD` / `WASD` / touches fléchées : se déplacer ;
 - `Maj` : courir ;
 - `E` : interagir ;
-- `E` / `Échap` / `x` : fermer une fenêtre ;
 - `J` : ouvrir ou fermer le carnet ;
 - `U` : activer ou désactiver le mode UV ;
 - `M` : activer ou couper le son.
@@ -117,6 +95,9 @@ Le joueur doit comprendre que :
 - une œuvre troublante n'est pas vide de sens ;
 - l'art peut exprimer l'angoisse, le rêve, la rupture et la critique sociale.
 
+Le but du projet n'est pas seulement de « finir un escape game ».
+Il vise aussi à faire émerger une lecture de l'art, des artistes et du regard que la société porte sur ce qui la dérange ou la dépasse.
+
 ## Structure du projet
 
 - `index.html` : structure de l'interface ;
@@ -126,30 +107,6 @@ Le joueur doit comprendre que :
 - `electron/main.js` : fenêtre Electron de l'application de bureau ;
 - `.github/workflows/release-desktop.yml` : build automatique Windows et macOS ;
 - `guide-professeur.txt` : scénario, solution et lecture pédagogique.
-
-## Faire une release de l'application
-
-Le projet est préparé pour produire :
-- un installateur Windows ;
-- une application macOS.
-
-Les releases sont automatisées via GitHub Actions.
-
-### Méthode recommandée
-
-1. Modifie le projet.
-2. Mets à jour la version dans `package.json`.
-3. Crée un tag Git :
-```bash
-git tag v1.0.0
-git push origin main --tags
-```
-4. GitHub Actions lance automatiquement les builds Windows et macOS.
-5. Les fichiers sont ajoutés à la release GitHub.
-
-### Méthode manuelle
-
-Il est aussi possible de lancer le workflow depuis l'onglet `Actions` sur GitHub avec `workflow_dispatch`.
 
 ## Lancement et build pour le développement
 
@@ -186,8 +143,3 @@ npm run dist
 
 Le projet utilise des références artistiques issues de Wikipedia et de Wikimedia Commons.
 Les visuels nécessaires au jeu sont stockés localement dans `assets/artworks/` pour éviter de dépendre du réseau au moment de jouer.
-
-## Remarque importante
-
-Le but du projet n'est pas seulement de « finir un escape game ».
-Il vise aussi à faire émerger une lecture de l'art, des artistes et du regard que la société porte sur ce qui la dérange ou la dépasse.

@@ -3,7 +3,7 @@ Guide professeur
 
 1. Présentation générale
 
-Le jeu est un escape game web en vue top-down pixel, réalisé dans le cadre d'un BTS SIO.
+Le jeu est un escape game web en vue top-down pixel.
 Le joueur est enfermé dans un musée pendant une visite nocturne. Le conservateur lui impose un parcours en trois salles pour comprendre pourquoi certains artistes ont été perçus comme « fous » par leur époque.
 
 L'objectif n'est pas seulement de jouer, mais de faire émerger une réflexion sur le regard social porté sur l'art, les artistes et les formes nouvelles de création.
