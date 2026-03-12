@@ -374,6 +374,29 @@
       this.master = null;
       this.lastStepAt = 0;
       this.userUnlocked = false;
+      this.musicVolume = 0.18;
+      this.currentMusicKey = null;
+      this.currentMusicAudio = null;
+      this.musicFadeFrame = 0;
+      this.musicTracks = {
+        room1: this.createMusicTrack("assets/audio/room-1-ambient.wav"),
+        room2: this.createMusicTrack("assets/audio/room-2-ambient.wav"),
+        room3: this.createMusicTrack("assets/audio/room-3-ambient.wav")
+      };
+    }
+
+    createMusicTrack(src) {
+      const audio = new Audio(src);
+      audio.preload = "auto";
+      audio.loop = true;
+      audio.volume = 0;
+      audio.playsInline = true;
+      audio.load();
+      return { audio };
+    }
+
+    getMusicAudios() {
+      return Object.values(this.musicTracks).map((track) => track.audio);
     }
 
     ensure() {
@@ -415,11 +438,20 @@
         }
       }
       this.userUnlocked = this.ctx.state === "running";
+
+      if (this.enabled && this.currentMusicKey && this.currentMusicAudio && this.currentMusicAudio.paused) {
+        this.currentMusicAudio.play().catch(() => {});
+      }
     }
 
     toggle() {
       this.kickResume();
       this.enabled = !this.enabled;
+      if (this.enabled) {
+        this.resumeMusic();
+      } else {
+        this.pauseMusic();
+      }
       return this.enabled;
     }
 
@@ -500,6 +532,158 @@
         peak: 0.07,
         duration: 0.055
       });
+    }
+
+    stopFade() {
+      if (!this.musicFadeFrame) {
+        return;
+      }
+      cancelAnimationFrame(this.musicFadeFrame);
+      this.musicFadeFrame = 0;
+    }
+
+    fadeAudio(audio, from, to, duration, onDone) {
+      this.stopFade();
+
+      if (!audio) {
+        if (onDone) {
+          onDone();
+        }
+        return;
+      }
+
+      if (duration <= 0) {
+        audio.volume = to;
+        if (onDone) {
+          onDone();
+        }
+        return;
+      }
+
+      const start = performance.now();
+      const tick = (now) => {
+        const t = clamp((now - start) / duration, 0, 1);
+        audio.volume = from + (to - from) * t;
+        if (t >= 1) {
+          this.musicFadeFrame = 0;
+          if (onDone) {
+            onDone();
+          }
+          return;
+        }
+        this.musicFadeFrame = requestAnimationFrame(tick);
+      };
+
+      audio.volume = from;
+      this.musicFadeFrame = requestAnimationFrame(tick);
+    }
+
+    pauseMusic() {
+      this.stopFade();
+      const current = this.currentMusicAudio;
+      if (!current) {
+        return;
+      }
+
+      for (const audio of this.getMusicAudios()) {
+        if (audio === current) {
+          continue;
+        }
+        audio.volume = 0;
+        audio.pause();
+      }
+
+      this.fadeAudio(current, current.volume, 0, 220, () => {
+        current.pause();
+      });
+    }
+
+    resumeMusic() {
+      if (!this.currentMusicKey) {
+        return;
+      }
+      this.setMusicStage(this.currentMusicKey, { restart: false, duration: 420 });
+    }
+
+    async setMusicStage(key, options = {}) {
+      this.currentMusicKey = key;
+      if (!this.enabled) {
+        return;
+      }
+
+      const track = this.musicTracks[key];
+      if (!track) {
+        return;
+      }
+
+      const nextAudio = track.audio;
+      const previousAudio = this.currentMusicAudio;
+      const fadeDuration = options.duration ?? 1400;
+      const shouldRestart = options.restart !== false;
+
+      for (const audio of this.getMusicAudios()) {
+        if (audio !== nextAudio && audio !== previousAudio) {
+          audio.volume = 0;
+          audio.pause();
+          audio.currentTime = 0;
+        }
+      }
+
+      if (previousAudio === nextAudio) {
+        if (nextAudio.paused) {
+          if (shouldRestart) {
+            nextAudio.currentTime = 0;
+          }
+          try {
+            await nextAudio.play();
+          } catch (_error) {
+            return;
+          }
+        }
+
+        this.fadeAudio(nextAudio, nextAudio.volume, this.musicVolume, fadeDuration);
+        return;
+      }
+
+      this.stopFade();
+
+      if (shouldRestart) {
+        nextAudio.currentTime = 0;
+      }
+      nextAudio.volume = 0;
+
+      try {
+        await nextAudio.play();
+      } catch (_error) {
+        return;
+      }
+
+      this.currentMusicAudio = nextAudio;
+
+      if (!previousAudio) {
+        this.fadeAudio(nextAudio, 0, this.musicVolume, Math.min(700, fadeDuration));
+        return;
+      }
+
+      const start = performance.now();
+      const tick = (now) => {
+        const t = clamp((now - start) / fadeDuration, 0, 1);
+        const eased = t * t * (3 - 2 * t);
+        previousAudio.volume = (1 - eased) * this.musicVolume;
+        nextAudio.volume = eased * this.musicVolume;
+
+        if (t >= 1) {
+          previousAudio.pause();
+          previousAudio.currentTime = 0;
+          nextAudio.volume = this.musicVolume;
+          this.musicFadeFrame = 0;
+          return;
+        }
+
+        this.musicFadeFrame = requestAnimationFrame(tick);
+      };
+
+      this.musicFadeFrame = requestAnimationFrame(tick);
     }
   }
 
@@ -605,6 +789,7 @@
         this.running = true;
         await this.audio.unlockByGesture();
         this.audio.beep("toggle");
+        this.audio.setMusicStage("room1", { restart: true, duration: 900 });
       });
 
       this.restartButton.addEventListener("click", () => {
@@ -1720,10 +1905,16 @@
     unlockDoorForRoom(roomId) {
       if (roomId === 1) {
         this.map[10][12] = TILE.FLOOR;
-        window.setTimeout(() => this.audio.beep("door"), 90);
+        window.setTimeout(() => {
+          this.audio.beep("door");
+          this.audio.setMusicStage("room2", { restart: true, duration: 1500 });
+        }, 90);
       } else if (roomId === 2) {
         this.map[10][24] = TILE.FLOOR;
-        window.setTimeout(() => this.audio.beep("door"), 90);
+        window.setTimeout(() => {
+          this.audio.beep("door");
+          this.audio.setMusicStage("room3", { restart: true, duration: 1500 });
+        }, 90);
       }
     }
 

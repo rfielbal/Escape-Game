@@ -104,6 +104,7 @@ Il vise aussi à faire émerger une lecture de l'art, des artistes et du regard 
 - `styles.css` : styles, HUD et overlays ;
 - `main.js` : logique du jeu, collisions, progression, rendu et audio ;
 - `assets/artworks/` : reproductions locales des œuvres ;
+- `assets/audio/` : musiques d'ambiance locales des trois salles ;
 - `electron/main.js` : fenêtre Electron de l'application de bureau ;
 - `.github/workflows/release-desktop.yml` : build automatique Windows et macOS ;
 - `guide-professeur.txt` : scénario, solution et lecture pédagogique.
