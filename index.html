@@ -92,6 +92,17 @@
       </div>
     </div>
 
+    <div id="artwork-zoom" class="overlay-panel zoom-overlay hidden" aria-live="polite">
+      <div class="panel zoom-panel" id="zoom-panel">
+        <button id="zoom-close" class="icon-btn" aria-label="Fermer le zoom">x</button>
+        <div class="zoom-media-wrap">
+          <img id="zoom-image" class="zoom-image hidden" alt="Vue agrandie de l'œuvre">
+          <div id="zoom-fallback" class="artwork-fallback hidden"></div>
+        </div>
+        <p id="zoom-caption" class="modal-hint"></p>
+      </div>
+    </div>
+
     <div id="end-screen" class="overlay hidden">
       <div class="panel intro-panel">
         <h1>Porte déverrouillée</h1>

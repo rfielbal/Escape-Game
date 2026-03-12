@@ -715,6 +715,12 @@
       this.modalBody = document.getElementById("modal-body");
       this.modalCloseBtn = document.getElementById("modal-close");
       this.activeModalKind = null;
+      this.zoomOverlay = document.getElementById("artwork-zoom");
+      this.zoomPanel = document.getElementById("zoom-panel");
+      this.zoomImage = document.getElementById("zoom-image");
+      this.zoomFallback = document.getElementById("zoom-fallback");
+      this.zoomCaption = document.getElementById("zoom-caption");
+      this.zoomCloseBtn = document.getElementById("zoom-close");
 
       this.touchButtons = Array.from(document.querySelectorAll("[data-touch]"));
 
@@ -798,6 +804,17 @@
 
       this.modalCloseBtn.addEventListener("click", () => this.closeModal());
       this.closeNotebookBtn.addEventListener("click", () => this.toggleNotebook(false));
+      this.zoomCloseBtn.addEventListener("click", () => this.closeArtworkZoom());
+
+      this.zoomOverlay.addEventListener("click", (event) => {
+        if (event.target === this.zoomOverlay) {
+          this.closeArtworkZoom();
+        }
+      });
+
+      this.zoomPanel.addEventListener("click", (event) => {
+        event.stopPropagation();
+      });
 
       window.addEventListener("resize", () => this.resizeCanvas());
 
@@ -813,7 +830,9 @@
 
         if (!event.repeat) {
           if (key === "escape") {
-            if (!this.modalPanel.classList.contains("hidden")) {
+            if (this.isArtworkZoomOpen()) {
+              this.closeArtworkZoom();
+            } else if (!this.modalPanel.classList.contains("hidden")) {
               this.closeModal();
             } else if (!this.notebookPanel.classList.contains("hidden")) {
               this.toggleNotebook(false);
@@ -822,6 +841,11 @@
           }
 
           if (textEntryActive) {
+            return;
+          }
+
+          if (key === "e" && this.isArtworkZoomOpen()) {
+            this.closeArtworkZoom();
             return;
           }
 
@@ -1714,16 +1738,62 @@
     }
 
     closeModal() {
+      this.closeArtworkZoom();
       this.modalPanel.classList.add("hidden");
       this.modalBody.innerHTML = "";
       this.activeModalKind = null;
     }
 
+    isArtworkZoomOpen() {
+      return !this.zoomOverlay.classList.contains("hidden");
+    }
+
     isOverlayOpen() {
-      return !this.modalPanel.classList.contains("hidden")
+      return this.isArtworkZoomOpen()
+        || !this.modalPanel.classList.contains("hidden")
         || !this.notebookPanel.classList.contains("hidden")
         || this.startScreen.classList.contains("visible")
         || this.endScreen.classList.contains("visible");
+    }
+
+    openArtworkZoom(art, fallbackDataUrl) {
+      if (!art) {
+        return;
+      }
+
+      this.zoomImage.classList.add("hidden");
+      this.zoomImage.removeAttribute("src");
+      this.zoomFallback.innerHTML = `<span>${art.title}<br>${art.artist}</span>`;
+      this.zoomFallback.style.backgroundImage = `url('${fallbackDataUrl}')`;
+      this.zoomFallback.style.backgroundSize = "contain";
+      this.zoomFallback.style.backgroundRepeat = "no-repeat";
+      this.zoomFallback.style.backgroundPosition = "center";
+      this.zoomFallback.classList.remove("hidden");
+
+      if (art.assetPath) {
+        this.zoomImage.src = art.assetPath;
+        this.zoomImage.alt = `${art.title} - ${art.artist}`;
+        this.zoomImage.onload = () => {
+          this.zoomFallback.classList.add("hidden");
+          this.zoomImage.classList.remove("hidden");
+        };
+        this.zoomImage.onerror = () => {
+          this.zoomImage.classList.add("hidden");
+          this.zoomFallback.classList.remove("hidden");
+        };
+      } else {
+        this.zoomFallback.classList.remove("hidden");
+      }
+
+      this.zoomCaption.textContent = `${art.title} - ${art.artist} | Cliquer hors de l'image, sur x, ou appuyer sur E / Échap pour fermer.`;
+      this.zoomOverlay.classList.remove("hidden");
+    }
+
+    closeArtworkZoom() {
+      this.zoomOverlay.classList.add("hidden");
+      this.zoomImage.classList.add("hidden");
+      this.zoomFallback.classList.add("hidden");
+      this.zoomImage.removeAttribute("src");
     }
 
     openArtworkModal(artworkId) {
@@ -1744,13 +1814,17 @@
       card.className = "artwork-card";
 
       const mediaWrap = document.createElement("div");
+      mediaWrap.className = "artwork-media";
+      mediaWrap.setAttribute("role", "button");
+      mediaWrap.tabIndex = 0;
       const fallback = document.createElement("div");
       fallback.className = "artwork-fallback";
       fallback.innerHTML = `<span>${art.title}<br>${art.artist}</span>`;
 
       const paletteA = art.room === 1 ? "#b78357" : art.room === 2 ? "#5a9fc3" : "#a464aa";
       const paletteB = art.room === 1 ? "#613925" : art.room === 2 ? "#275670" : "#5e2b64";
-      fallback.style.backgroundImage = `url('${createFallbackSvgData(art.title, paletteA, paletteB)}')`;
+      const fallbackDataUrl = createFallbackSvgData(art.title, paletteA, paletteB);
+      fallback.style.backgroundImage = `url('${fallbackDataUrl}')`;
       fallback.style.backgroundSize = "cover";
       fallback.style.backgroundPosition = "center";
 
@@ -1767,6 +1841,21 @@
         mediaWrap.appendChild(img);
       }
       mediaWrap.appendChild(fallback);
+
+      const zoomChip = document.createElement("div");
+      zoomChip.className = "zoom-chip";
+      zoomChip.innerHTML = '<span class="loupe-icon" aria-hidden="true"></span><span>Voir en grand</span>';
+      mediaWrap.appendChild(zoomChip);
+
+      const openZoom = () => this.openArtworkZoom(art, fallbackDataUrl);
+      mediaWrap.addEventListener("click", openZoom);
+      mediaWrap.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openZoom();
+        }
+      });
+
       card.appendChild(mediaWrap);
 
       const meta = document.createElement("div");
